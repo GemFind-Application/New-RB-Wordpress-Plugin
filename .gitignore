@@ -27,3 +27,6 @@ composer.phar
 # Test / coverage
 coverage/
 .phpunit.result.cache
+
+# Nightly automation logs
+scripts/logs/
