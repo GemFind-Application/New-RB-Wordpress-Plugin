@@ -17,7 +17,7 @@ const DropHintPopup = ({ onClose, settingId, isLabSetting, ringurl, shopurl,diam
   recipient_email: '',
   gift_reason: '',
   hint_message: '',
-  gift_deadline: '',
+  gift_deadline: getTodayLocal(),
   islabsettings: isLabSetting, 
   shopurl: shopurl,
   
@@ -64,8 +64,9 @@ const recaptcha = useRef();
       return;
     }
     setFormData({ ...formData, [name]: value });
-    if (errors[name]) {
-      setErrors({ ...errors, [name]: '' });
+    const errorKey = name === 'gift_deadline' ? 'giftDeadline' : name;
+    if (errors[errorKey]) {
+      setErrors({ ...errors, [errorKey]: '' });
     }
   };
   

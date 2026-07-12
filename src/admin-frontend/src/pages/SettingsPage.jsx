@@ -23,6 +23,11 @@ const TABS = [
   { id: "advanced", label: "Advanced" },
 ];
 
+const RECAPTCHA_VERSION_OPTIONS = [
+  { value: "v2", label: "reCAPTCHA v2 (checkbox)" },
+  { value: "v3", label: "reCAPTCHA v3 (badge / invisible)" },
+];
+
 const PER_PAGE_OPTIONS = [12, 24, 48, 99].map((n) => ({
   value: String(n),
   label: `Records Per Page: ${n}`,
@@ -49,7 +54,7 @@ const FEATURE_TOGGLES = [
   { key: "show_powered_by", label: "Show 'Powered by GemFind'" },
   { key: "show_filter_info", label: "Show Filter Info" },
   { key: "display_tryon", label: "Enable Virtual Try-On" },
-  { key: "buySingleDiamond", label: "Buy Diamond Without Mounting" },
+  { key: "buySingleDiamond", label: "Buy Single Diamond" },
   { key: "show_copyright", label: "Show Copyright Notice" },
 ];
 
@@ -61,6 +66,10 @@ function normalizeToolVersion(value) {
   const v = String(value || "2.0").toLowerCase();
   if (v === "version-one" || v === "1" || v.startsWith("1.")) return "1.0";
   return "2.0";
+}
+
+function normalizeRecaptchaVersion(value) {
+  return String(value || "v2").toLowerCase() === "v3" ? "v3" : "v2";
 }
 
 export default function SettingsPage() {
@@ -87,6 +96,7 @@ export default function SettingsPage() {
           const merged = {
             ...res.data,
             tool_version: normalizeToolVersion(res.data.tool_version),
+            recaptcha_version: normalizeRecaptchaVersion(res.data.recaptcha_version),
             default_view: res.data.default_view || res.data.default_viewmode || "list",
             ...normalizeFontFamilyFields(res.data),
           };
@@ -366,22 +376,15 @@ export default function SettingsPage() {
           {tab === "advanced" && (
             <div className="wpdl-tab-section">
               <h2>Advanced Settings</h2>
-              <Field label="Dealer API Password" help="Stored securely and never exposed on the public storefront.">
-                <input
-                  className="wpdl-input"
-                  type="password"
-                  name="dealerpassword"
-                  value={form.dealerpassword || ""}
+              <Field
+                label="Google reCAPTCHA Version"
+                help="Use v2 to show a checkbox on each form. Use v3 for site-wide protection (badge) and token validation on form submit."
+              >
+                <Select
+                  name="recaptcha_version"
+                  value={normalizeRecaptchaVersion(form.recaptcha_version)}
                   onChange={onChange}
-                  autoComplete="new-password"
-                />
-              </Field>
-              <Field label="Sender Email Address" help="Used as the From address for customer-facing emails.">
-                <input
-                  className="wpdl-input"
-                  name="from_email_address"
-                  value={form.from_email_address || ""}
-                  onChange={onChange}
+                  options={RECAPTCHA_VERSION_OPTIONS}
                 />
               </Field>
               <Field label="Google reCAPTCHA Site Key">
@@ -395,20 +398,6 @@ export default function SettingsPage() {
                   value={form.secret_key || ""}
                   onChange={onChange}
                   autoComplete="new-password"
-                />
-              </Field>
-              <Field
-                label="Load catalog from WooCommerce"
-                help="When enabled, certain products can be sourced from your WooCommerce catalog instead of JewelCloud only."
-              >
-                <Select
-                  name="load_from_woocommerce"
-                  value={boolVal(form.load_from_woocommerce) ? "1" : "0"}
-                  onChange={onChange}
-                  options={[
-                    { value: "0", label: "JewelCloud API only" },
-                    { value: "1", label: "Prefer WooCommerce where applicable" },
-                  ]}
                 />
               </Field>
             </div>

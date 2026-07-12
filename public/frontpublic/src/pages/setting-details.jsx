@@ -692,9 +692,6 @@ const SettingPage = ({ formSetting, settingNavigationData, isLabGrown, shopUrl, 
                         </div>
                       )}
 
-                      <div className="setting-price button52_b non-clickable">
-                        <b className="setting-price-label"><ShowCostInCard settingDetailForCost={product} configAppData={configAppData}></ShowCostInCard></b>
-                      </div>
                       {notFitMessage && (
                         <div className="filter-opened7">
                           <div className="select-side-stone"></div>
@@ -704,22 +701,23 @@ const SettingPage = ({ formSetting, settingNavigationData, isLabGrown, shopUrl, 
                     </form>
                     <div className="actions1">
                       <div className="buttons1">
-                        {/* submit the form */}
-                        {/* <button type="submit" className="button52" onClick={onButtonClick}>
-                          <b className="select-485">Select - {product.currencySymbol}{product.cost}</b>
-                        </button> */}
-                        {isDiamondSelectedFirst == false ?
-                          <button type="button" className="button52" onClick={selectRingSetting} >
-                            <b className="select-485">Add Your Diamond</b>
-                          </button> :
-                          <button type="button" className="button52" onClick={selectRingSetting} >
-                            <b className="select-485">Complete Your Ring</b>
-                          </button>
-                        }
-                        {configAppData.display_tryon == "1" && product.tryon == true &&
-                          <button className="button52_b" onClick={() => showVirtualTryOnIframe(utils.getskuForVirtualTryOn(product.styleNumber))}>
-                            <b> Virtual Try On</b>
-                          </button>}
+                        <div className="setting-price button52_b non-clickable">
+                          <b className="setting-price-label"><ShowCostInCard settingDetailForCost={product} configAppData={configAppData}></ShowCostInCard></b>
+                        </div>
+                        <div className="primary-buttons">
+                          {isDiamondSelectedFirst == false ?
+                            <button type="button" className="button52" onClick={selectRingSetting} >
+                              <b className="select-485">Add Your Diamond</b>
+                            </button> :
+                            <button type="button" className="button52" onClick={selectRingSetting} >
+                              <b className="select-485">Complete Your Ring</b>
+                            </button>
+                          }
+                          {configAppData.display_tryon == "1" && product.tryon == true &&
+                            <button type="button" className="button52" onClick={() => showVirtualTryOnIframe(utils.getskuForVirtualTryOn(product.styleNumber))}>
+                              <b className="select-485">Virtual Try On</b>
+                            </button>}
+                        </div>
                       </div>
 
                       <div className="social-icons-stroke"></div>

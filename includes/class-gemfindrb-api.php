@@ -479,10 +479,23 @@ final class GEMFINDRB_API {
 		$setting_id = sanitize_text_field( (string) $req->get_param( 'setting_id' ) );
 		$shop       = sanitize_text_field( (string) ( $req->get_param( 'shop' ) ?? gemfindRB_shop_key() ) );
 		$type       = sanitize_text_field( (string) ( $req->get_param( 'type' ) ?? 'mined' ) );
+		$body       = $this->body( $req );
+		$is_lab     = (int) ( $body['islabsettings'] ?? $req->get_param( 'islabsettings' ) ?? 0 );
+		$options    = array_merge(
+			$body,
+			array_filter(
+				[
+					'ringsizesettingonly' => $req->get_param( 'ringsizesettingonly' ),
+					'metaltype'           => $req->get_param( 'metaltype' ),
+					'islabsettings'       => $is_lab,
+				],
+				static fn( $value ) => $value !== null && $value !== ''
+			)
+		);
 
 		$diamond = GEMFINDRB_JewelCloud::get_diamond_by_id( $diamond_id, $type, $shop );
-		$ring    = GEMFINDRB_JewelCloud::get_ring_by_id( $setting_id, $shop, 0 );
-		$url     = GEMFINDRB_Woo_Cart::get_add_to_cart_url_for_complete_ring( $diamond, $diamond_id, $ring['ringData'] ?? [], $setting_id );
+		$ring    = GEMFINDRB_JewelCloud::get_ring_by_id( $setting_id, $shop, $is_lab );
+		$url     = GEMFINDRB_Woo_Cart::get_add_to_cart_url_for_complete_ring( $diamond, $diamond_id, $ring['ringData'] ?? [], $setting_id, $options );
 		if ( is_wp_error( $url ) ) {
 			return $this->error( $url->get_error_message(), (int) ( $url->get_error_data()['status'] ?? 400 ) );
 		}

@@ -65,36 +65,50 @@ final class GEMFINDRB_Woo_Cart {
 	/**
 	 * @param array<string,mixed> $diamond
 	 * @param array<string,mixed> $ring
+	 * @param array<string,mixed> $options
 	 */
-	public static function get_add_to_cart_url_for_complete_ring( array $diamond, string $diamond_id, array $ring, string $setting_id ): string|WP_Error {
-		$d_price = self::parse_price( $diamond );
-		$r_price = self::parse_price( $ring );
-		if ( $d_price === null && $r_price === null ) {
-			return new WP_Error( 'gemfindRB_no_price', __( 'Price is not available for this complete ring.', 'gemfind-ring-builder' ), [ 'status' => 400 ] );
+	public static function get_add_to_cart_url_for_complete_ring( array $diamond, string $diamond_id, array $ring, string $setting_id, array $options = [] ): string|WP_Error {
+		$items = [];
+
+		$ring_prepared = self::prepare_cart_product(
+			self::TYPE_RING,
+			self::normalize_sku( 'R-' . $setting_id ),
+			(string) ( $ring['mainHeader'] ?? $ring['settingName'] ?? sprintf( __( 'Ring Setting %s', 'gemfind-ring-builder' ), $setting_id ) ),
+			self::parse_price( $ring ),
+			self::ring_meta_line( $ring, $options ),
+			$ring
+		);
+		if ( is_wp_error( $ring_prepared ) ) {
+			return $ring_prepared;
+		}
+		$items[] = $ring_prepared;
+
+		$diamond_prepared = self::prepare_cart_product(
+			self::TYPE_DIAMOND,
+			self::normalize_sku( 'D-' . $diamond_id ),
+			self::diamond_title( $diamond, $diamond_id ),
+			self::parse_price( $diamond ),
+			self::diamond_meta_line( $diamond ),
+			$diamond
+		);
+		if ( is_wp_error( $diamond_prepared ) ) {
+			return $diamond_prepared;
+		}
+		$items[] = $diamond_prepared;
+
+		$added = self::add_items_to_cart( $items );
+		if ( is_wp_error( $added ) ) {
+			return $added;
 		}
 
-		$price = (float) ( $d_price ?? 0 ) + (float) ( $r_price ?? 0 );
-		$title = sprintf(
-			/* translators: 1: ring title, 2: diamond title */
-			__( 'Complete Ring: %1$s + %2$s', 'gemfind-ring-builder' ),
-			(string) ( $ring['mainHeader'] ?? $setting_id ),
-			self::diamond_title( $diamond, $diamond_id )
-		);
-
-		return self::build_cart_url(
-			self::TYPE_COMPLETE,
-			self::normalize_sku( 'CR-' . $setting_id . '-' . $diamond_id ),
-			$title,
-			$price,
-			$title,
-			array_merge( $diamond, [ '_ring' => $ring ] )
-		);
+		return function_exists( 'wc_get_cart_url' ) ? wc_get_cart_url() : home_url( '/cart/' );
 	}
 
 	/**
 	 * @param array<string,mixed> $payload
+	 * @return array{product_id:int,cart_item_data:array<string,mixed>}|WP_Error
 	 */
-	private static function build_cart_url( string $type, string $sku, string $title, ?float $price, string $details_line, array $payload ): string|WP_Error {
+	private static function prepare_cart_product( string $type, string $sku, string $title, ?float $price, string $details_line, array $payload ): array|WP_Error {
 		if ( ! function_exists( 'wc_get_product' ) ) {
 			return new WP_Error( 'gemfindRB_no_woocommerce', __( 'WooCommerce must be active.', 'gemfind-ring-builder' ), [ 'status' => 503 ] );
 		}
@@ -106,15 +120,18 @@ final class GEMFINDRB_Woo_Cart {
 		}
 
 		$product_id = function_exists( 'wc_get_product_id_by_sku' ) ? (int) wc_get_product_id_by_sku( $sku ) : 0;
+		$image_url  = self::resolve_payload_image_url( $type, $payload );
 		if ( $product_id > 0 ) {
 			$product = wc_get_product( $product_id );
-			if ( $product instanceof WC_Product ) {
-				$product->set_name( $title );
-				$product->set_regular_price( (string) $price );
-				$product->set_catalog_visibility( 'visible' );
-				$product->update_meta_data( '_gemfind_product_type', $type );
-				$product->save();
+			if ( ! $product instanceof WC_Product ) {
+				return new WP_Error( 'gemfindRB_product_missing', __( 'Could not load cart product.', 'gemfind-ring-builder' ), [ 'status' => 500 ] );
 			}
+			$product->set_name( $title );
+			$product->set_regular_price( (string) $price );
+			$product->set_catalog_visibility( 'visible' );
+			$product->update_meta_data( '_gemfind_product_type', $type );
+			self::sync_product_featured_image( $product, $image_url, $sku );
+			$product->save();
 		} else {
 			$product = new WC_Product_Simple();
 			$product->set_name( $title );
@@ -125,6 +142,7 @@ final class GEMFINDRB_Woo_Cart {
 			$product->set_stock_status( 'instock' );
 			$product->set_status( 'publish' );
 			$product->update_meta_data( '_gemfind_product_type', $type );
+			self::sync_product_featured_image( $product, $image_url, $sku );
 			$product_id = (int) $product->save();
 		}
 
@@ -132,7 +150,58 @@ final class GEMFINDRB_Woo_Cart {
 			return new WP_Error( 'gemfindRB_create_failed', __( 'Could not create cart product.', 'gemfind-ring-builder' ), [ 'status' => 500 ] );
 		}
 
-		$token = wp_generate_password( 24, false, false );
+		return [
+			'product_id'     => $product_id,
+			'cart_item_data' => [
+				'gemfindRB_details_line'  => $details_line,
+				'gemfindRB_product_type'  => $type,
+			],
+		];
+	}
+
+	/**
+	 * @param list<array{product_id:int,cart_item_data:array<string,mixed>}> $items
+	 */
+	private static function add_items_to_cart( array $items ): bool|WP_Error {
+		if ( ! function_exists( 'WC' ) ) {
+			return new WP_Error( 'gemfindRB_no_woocommerce', __( 'WooCommerce must be active.', 'gemfind-ring-builder' ), [ 'status' => 503 ] );
+		}
+
+		if ( is_null( WC()->cart ) && function_exists( 'wc_load_cart' ) ) {
+			wc_load_cart();
+		}
+
+		if ( ! WC()->cart instanceof WC_Cart ) {
+			return new WP_Error( 'gemfindRB_cart_unavailable', __( 'Could not load cart.', 'gemfind-ring-builder' ), [ 'status' => 500 ] );
+		}
+
+		foreach ( $items as $item ) {
+			$product_id     = (int) ( $item['product_id'] ?? 0 );
+			$cart_item_data = is_array( $item['cart_item_data'] ?? null ) ? $item['cart_item_data'] : [];
+			if ( $product_id <= 0 ) {
+				return new WP_Error( 'gemfindRB_invalid_product', __( 'Invalid cart product.', 'gemfind-ring-builder' ), [ 'status' => 400 ] );
+			}
+
+			$cart_item_key = WC()->cart->add_to_cart( $product_id, 1, 0, [], $cart_item_data );
+			if ( ! $cart_item_key ) {
+				return new WP_Error( 'gemfindRB_cart_add_failed', __( 'Could not add item to cart.', 'gemfind-ring-builder' ), [ 'status' => 500 ] );
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * @param array<string,mixed> $payload
+	 */
+	private static function build_cart_url( string $type, string $sku, string $title, ?float $price, string $details_line, array $payload ): string|WP_Error {
+		$prepared = self::prepare_cart_product( $type, $sku, $title, $price, $details_line, $payload );
+		if ( is_wp_error( $prepared ) ) {
+			return $prepared;
+		}
+
+		$product_id = (int) $prepared['product_id'];
+		$token      = wp_generate_password( 24, false, false );
 		set_transient(
 			self::CART_CTX_PREFIX . $token,
 			[
@@ -146,9 +215,9 @@ final class GEMFINDRB_Woo_Cart {
 		$base = function_exists( 'wc_get_cart_url' ) ? wc_get_cart_url() : home_url( '/cart/' );
 		return add_query_arg(
 			[
-				'add-to-cart'         => $product_id,
-				'quantity'            => 1,
-				'gemfindRB_cart_ctx'  => $token,
+				'add-to-cart'        => $product_id,
+				'quantity'           => 1,
+				'gemfindRB_cart_ctx' => $token,
 			],
 			$base
 		);
@@ -230,9 +299,17 @@ final class GEMFINDRB_Woo_Cart {
 	 * @param array<string,mixed> $item
 	 */
 	private static function parse_price( array $item ): ?float {
-		foreach ( [ 'price', 'fltPrice', 'FltPrice', 'settingPrice' ] as $key ) {
-			if ( isset( $item[ $key ] ) && is_numeric( $item[ $key ] ) ) {
-				$p = (float) $item[ $key ];
+		foreach ( [ 'cost', 'price', 'fltPrice', 'FltPrice', 'settingPrice' ] as $key ) {
+			if ( ! isset( $item[ $key ] ) ) {
+				continue;
+			}
+
+			$raw = is_string( $item[ $key ] )
+				? str_replace( [ ',', '$' ], '', trim( $item[ $key ] ) )
+				: $item[ $key ];
+
+			if ( is_numeric( $raw ) ) {
+				$p = (float) $raw;
 				return $p > 0 ? $p : null;
 			}
 		}
@@ -271,11 +348,144 @@ final class GEMFINDRB_Woo_Cart {
 	private static function ring_meta_line( array $ring, array $options ): string {
 		$parts = array_filter(
 			[
-				$ring['metalType'] ?? '',
+				$ring['metalType'] ?? $options['metaltype'] ?? '',
 				$ring['settingName'] ?? '',
-				$options['size'] ?? $options['ringSize'] ?? '',
+				$options['size'] ?? $options['ringSize'] ?? $options['ringsizesettingonly'] ?? '',
 			]
 		);
 		return implode( ' · ', array_map( 'strval', $parts ) );
+	}
+
+	/**
+	 * @param array<string,mixed> $payload
+	 */
+	private static function resolve_payload_image_url( string $type, array $payload ): string {
+		if ( $type === self::TYPE_RING ) {
+			return self::resolve_ring_image_url( $payload );
+		}
+
+		if ( $type === self::TYPE_COMPLETE ) {
+			$ring = is_array( $payload['_ring'] ?? null ) ? $payload['_ring'] : [];
+			$url  = self::resolve_ring_image_url( $ring );
+			if ( $url !== '' ) {
+				return $url;
+			}
+		}
+
+		return self::resolve_diamond_image_url( $payload );
+	}
+
+	/**
+	 * @param array<string,mixed> $diamond
+	 */
+	private static function resolve_diamond_image_url( array $diamond ): string {
+		$keys = [
+			'image2',
+			'image1',
+			'biggerDiamondimage',
+			'diamondImage',
+			'diamondImageUrl',
+			'defaultDiamondImage',
+		];
+
+		foreach ( $keys as $key ) {
+			if ( empty( $diamond[ $key ] ) || is_array( $diamond[ $key ] ) ) {
+				continue;
+			}
+			$url = self::normalize_image_url( (string) $diamond[ $key ] );
+			if ( $url !== '' ) {
+				return $url;
+			}
+		}
+
+		return '';
+	}
+
+	/**
+	 * @param array<string,mixed> $ring
+	 */
+	private static function resolve_ring_image_url( array $ring ): string {
+		$keys = [
+			'mainImageURL',
+			'mainImage',
+			'imageUrl',
+			'imageURL',
+			'image1',
+			'settingImage',
+		];
+
+		foreach ( $keys as $key ) {
+			if ( empty( $ring[ $key ] ) || is_array( $ring[ $key ] ) ) {
+				continue;
+			}
+			$url = self::normalize_image_url( (string) $ring[ $key ] );
+			if ( $url !== '' ) {
+				return $url;
+			}
+		}
+
+		return '';
+	}
+
+	private static function normalize_image_url( string $url ): string {
+		$url = trim( $url );
+		if ( $url === '' ) {
+			return '';
+		}
+		if ( str_starts_with( $url, '//' ) ) {
+			return 'https:' . $url;
+		}
+
+		return $url;
+	}
+
+	private static function sync_product_featured_image( WC_Product $product, string $image_url, string $sku ): void {
+		if ( $image_url === '' ) {
+			return;
+		}
+
+		$existing_url = (string) $product->get_meta( '_gemfind_source_image_url', true );
+		$has_image    = (int) $product->get_image_id() > 0;
+		if ( $has_image && $existing_url === $image_url ) {
+			return;
+		}
+
+		$attach_id = self::sideload_featured_image( $image_url, $sku );
+		if ( $attach_id > 0 ) {
+			$product->set_image_id( $attach_id );
+			$product->update_meta_data( '_gemfind_source_image_url', $image_url );
+		}
+	}
+
+	private static function sideload_featured_image( string $url, string $sku ): int {
+		$url = str_replace( ' ', '%20', esc_url_raw( self::normalize_image_url( $url ) ) );
+		if ( $url === '' ) {
+			return 0;
+		}
+
+		if ( ! function_exists( 'media_sideload_image' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/media.php';
+			require_once ABSPATH . 'wp-admin/includes/file.php';
+			require_once ABSPATH . 'wp-admin/includes/image.php';
+		}
+
+		$tmp = download_url( $url );
+		if ( is_wp_error( $tmp ) ) {
+			return 0;
+		}
+
+		$file_array = [
+			'name'     => 'gemfind-' . sanitize_file_name( $sku ) . '.jpg',
+			'tmp_name' => $tmp,
+		];
+
+		$id = media_handle_sideload( $file_array, 0 );
+		if ( is_wp_error( $id ) ) {
+			wp_delete_file( $tmp );
+
+			return 0;
+		}
+
+		return (int) $id;
 	}
 }

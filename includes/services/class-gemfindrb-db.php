@@ -73,6 +73,7 @@ class GEMFINDRB_DB {
 			'diamond_details_textarea'   => 'text DEFAULT NULL',
 			'site_key'                   => 'varchar(255) DEFAULT NULL',
 			'secret_key'                 => 'varchar(255) DEFAULT NULL',
+			'recaptcha_version'          => "varchar(10) DEFAULT 'v2'",
 			'price_row_format'           => "varchar(50) DEFAULT 'left'",
 			'tool_version'               => "varchar(50) DEFAULT '2.0'",
 		];

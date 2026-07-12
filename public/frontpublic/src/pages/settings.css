@@ -33,7 +33,8 @@
 	line-height: normal;
 	letter-spacing: normal;
 }
-#GemFind.gemfind-ring-builder-scope .loaderpopup {
+#GemFind.gemfind-ring-builder-scope .loaderpopup,
+#portals .portalPopupOverlay .popup-overlay.loaderpopup {
 	background-color: transparent;
 	border-radius: 0%;
 	box-shadow: none;
@@ -52,12 +53,16 @@
 	flex-direction: column;
 	gap: 10px;
 }
-#GemFind.gemfind-ring-builder-scope .setting-product-list .loaderpopup .popup-content {
+#GemFind.gemfind-ring-builder-scope .setting-product-list .loaderpopup .popup-content,
+#portals .portalPopupOverlay .popup-overlay.loaderpopup .popup-content {
 	overflow-y: hidden;
 }
-#GemFind.gemfind-ring-builder-scope .loader {
+#GemFind.gemfind-ring-builder-scope .loader,
+#portals .portalPopupOverlay .popup-overlay.loaderpopup .loader {
 	width: 200px;
 	height: 200px;
+	display: block;
+	object-fit: contain;
 }
 #GemFind.gemfind-ring-builder-scope .no-setting-found {
     font-size: 31px;

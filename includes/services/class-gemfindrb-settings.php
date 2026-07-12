@@ -32,7 +32,6 @@ class GEMFINDRB_Settings {
 			'default_view'               => sanitize_text_field( (string) ( $data['defaultView'] ?? $data['default_view'] ?? 'list' ) ),
 			'shop_logo'                  => esc_url_raw( (string) ( $data['shopLogo'] ?? $data['shop_logo'] ?? '' ) ),
 			'settings_carat_ranges'      => sanitize_textarea_field( (string) ( $data['caratRanges'] ?? $data['settings_carat_ranges'] ?? '' ) ),
-			'load_from_woocommerce'      => $bool( $data['loadFromWooCommerce'] ?? $data['load_from_woocommerce'] ?? 0 ),
 			'buySingleDiamond'           => sanitize_text_field( (string) ( $data['buySingleDiamond'] ?? '0' ) ),
 			'products_pp'                => (int) ( $data['productsPerPage'] ?? $data['products_pp'] ?? 12 ),
 			'font_family'                => sanitize_text_field( (string) ( $data['fontFamily'] ?? $data['font_family'] ?? 'Helvetica' ) ),
@@ -53,6 +52,7 @@ class GEMFINDRB_Settings {
 			'diamond_details_textarea'   => sanitize_textarea_field( (string) ( $data['diamond_details_textarea'] ?? '' ) ),
 			'site_key'                   => sanitize_text_field( (string) ( $data['site_key'] ?? '' ) ),
 			'secret_key'                 => sanitize_text_field( (string) ( $data['secret_key'] ?? '' ) ),
+			'recaptcha_version'          => strtolower( sanitize_text_field( (string) ( $data['recaptcha_version'] ?? $data['recaptchaVersion'] ?? 'v2' ) ) ) === 'v3' ? 'v3' : 'v2',
 			'price_row_format'           => sanitize_text_field( (string) ( $data['price_row_format'] ?? 'left' ) ),
 			'tool_version'               => GEMFINDRB_Frontend_Version::normalize(
 				(string) ( $data['tool_version'] ?? $data['toolversion'] ?? GEMFINDRB_Frontend_Version::DEFAULT )

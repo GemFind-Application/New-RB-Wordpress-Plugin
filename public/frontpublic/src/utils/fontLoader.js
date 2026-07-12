@@ -1,7 +1,7 @@
 /**
  * Font loading utility functions for Version 2
  */
-import { getGemFindScopeEl, getGemFindThemeTarget } from './gemfindScope';
+import { getGemFindScopeEl, getGemFindThemeTargets } from './gemfindScope';
 
 /**
  * List of system fonts that don't need to be loaded from Google Fonts
@@ -72,13 +72,12 @@ export const applyFontFamily = (fontFamily) => {
   // Reconstruct with proper formatting
   const cleanFontName = `${fontName}, ${fontStack}`;
 
-  const root = getGemFindThemeTarget();
-  
-  // Set CSS custom properties for font family (matching version 2 pattern)
-  root.style.setProperty('--body-font-family', cleanFontName);
-  root.style.setProperty('--h4', cleanFontName);
-  root.style.setProperty('--font-inter', cleanFontName);
-  root.style.setProperty('--font-acumin-pro', cleanFontName);
+  getGemFindThemeTargets().forEach((root) => {
+    root.style.setProperty('--body-font-family', cleanFontName);
+    root.style.setProperty('--h4', cleanFontName);
+    root.style.setProperty('--font-inter', cleanFontName);
+    root.style.setProperty('--font-acumin-pro', cleanFontName);
+  });
   
   const scope = getGemFindScopeEl();
   if (scope) {
@@ -129,12 +128,12 @@ export const loadAndApplyFont = (configData) => {
  * Resets font to default
  */
 export const resetFont = () => {
-  const root = getGemFindThemeTarget();
-  
-  root.style.setProperty('--body-font-family', 'Manrope, sans-serif');
-  root.style.setProperty('--h4', 'Manrope, sans-serif');
-  root.style.setProperty('--font-inter', 'Manrope, sans-serif');
-  root.style.setProperty('--font-acumin-pro', 'Manrope, sans-serif');
+  getGemFindThemeTargets().forEach((root) => {
+    root.style.setProperty('--body-font-family', 'Manrope, sans-serif');
+    root.style.setProperty('--h4', 'Manrope, sans-serif');
+    root.style.setProperty('--font-inter', 'Manrope, sans-serif');
+    root.style.setProperty('--font-acumin-pro', 'Manrope, sans-serif');
+  });
   
   const scope = getGemFindScopeEl();
   if (scope) {

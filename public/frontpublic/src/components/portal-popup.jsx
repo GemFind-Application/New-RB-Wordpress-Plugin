@@ -3,7 +3,11 @@ import { useMemo, useCallback, useState, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
 import "./portal-popup.css";
 import PropTypes from "prop-types";
-import { GEMFIND_PORTALS_ID } from "../utils/gemfindScope";
+import {
+  GEMFIND_PORTALS_ID,
+  GEMFIND_SCOPE_CLASS,
+  syncGemFindThemeToPortals,
+} from "../utils/gemfindScope";
 
 const PortalPopup = ({
   children,
@@ -157,7 +161,9 @@ export const Portal = ({ children, containerId = GEMFIND_PORTALS_ID }) => {
   if (!portalsDiv) {
     portalsDiv = document.createElement("div");
     portalsDiv.setAttribute("id", containerId);
+    portalsDiv.classList.add(GEMFIND_SCOPE_CLASS);
     document.body.appendChild(portalsDiv);
+    syncGemFindThemeToPortals();
   }
 
   return createPortal(children, portalsDiv);

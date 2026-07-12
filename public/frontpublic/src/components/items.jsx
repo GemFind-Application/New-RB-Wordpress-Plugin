@@ -56,14 +56,21 @@ useEffect(() => {
    // setShowPopupId(id);
   };
 
+  const openDetailPage = () => {
+    if (saveFiltersAfterDetails) {
+      saveFiltersAfterDetails();
+    }
+    navigate(`/${diamondDetailUrl}/${utils.getDiamondViewUrl(diamond, isLabGrown)}`);
+  };
+
   return (
     <div className={`items ${className}`}>
-      <div className="product-card">
+      <div className="product-card" onClick={openDetailPage}>
         <div className="product-info1">
           <div className="product-name">
             <b className="princess-1001-carath5">{diamond.shape} {' '}{diamond.carat} CARAT</b>
           </div>
-          <div className="actions10">
+          <div className="actions10" onClick={(e) => e.stopPropagation()}>
             {(diamond.hasVideo)&&
             <div className="actions11"
                  id={diamond.diamondId}

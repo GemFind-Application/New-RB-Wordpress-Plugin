@@ -8,7 +8,7 @@ import ImageGallery from 'react-image-gallery';
 import MeasurementItems from "../components/measurement-items";
 import Stats from "../components/stats";
 import "./diamond-page.css";
-import { diamondService } from "../Services";
+import { cartService, diamondService } from "../Services";
 import VideoDiamondTryOn from "../components/VideoDiamondTryOn";
 //import PortalPopup from "./portal-popup";
 import Header from "../components/Header";
@@ -344,67 +344,18 @@ const DiamondPage = ({ formSetting, configAppData, additionOptionSetting, shopUr
     setShowLoading(true);
 
     try {
-      const shopDomain = window.Shopify?.shop || configAppData.shop || window.location.hostname;
-      const diamondType = diamondDetail.isLabCreated ? 'labcreated' : 'mined';
-
-      // Use proxy: same-origin request (e.g. https://daviddesso.com/apps/ringbuilder/...)
-      // so no CORS; proxy forwards to backend. shop param is myshopify domain for backend.
-      const cartAddUrl = `${window.location.origin}/apps/ringbuilder/cartadd/${diamondDetail.diamondId}/${diamondType}?shop=${encodeURIComponent(shopDomain)}`;
-
-      const response = await fetch(cartAddUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
+      const result = await cartService.addDiamondToCart({
+        diamondDetail,
+        configAppData,
+        isLabGrown,
       });
 
-      if (!response.ok) {
-        throw new Error(`Failed to add to cart: ${response.statusText}`);
+      if (result.mode === 'woocommerce') {
+        cartService.redirectToCartUrl(result.cartUrl);
+        return;
       }
 
-      const data = await response.json();
-      if (!data.success) {
-        throw new Error(data.error || 'Failed to add to cart');
-      }
-
-      // Use current origin for Cart API so request is same-origin (no CORS). See:
-      // https://shopify.dev/docs/api/ajax/reference/cart
-      const cartApiUrl = `${window.location.origin}${(window.Shopify?.routes?.root ?? '/')}cart/add.js`;
-      let properties = data.properties || {};
-      if (Array.isArray(properties)) properties = {};
-      const variantId = data.variant_id ?? data.diamond_variant_id;
-
-      const items = [{
-        id: parseInt(variantId),
-        quantity: data.quantity ?? 1,
-        properties,
-      }];
-
-      const cartFetchOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ items }),
-      };
-      const maxCartRetries = 7;
-      const cartRetryDelayMs = 1500;
-      let cartResponse = await fetch(cartApiUrl, cartFetchOptions);
-      let attempt = 1;
-      while (cartResponse.status === 422 && attempt < maxCartRetries) {
-        await new Promise((r) => setTimeout(r, cartRetryDelayMs));
-        cartResponse = await fetch(cartApiUrl, cartFetchOptions);
-        attempt += 1;
-      }
-
-      if (!cartResponse.ok) {
-        const errorData = await cartResponse.json().catch(() => ({}));
-        throw new Error(errorData.description || 'Failed to add item to cart');
-      }
-
-      const cartData = await cartResponse.json();
-
-      // Show success modal
-      setAddedProductName(data.product_title || diamondDetail.mainHeader || 'Product');
+      setAddedProductName(result.productTitle || diamondDetail.mainHeader || 'Product');
       setShowCartSuccessModal(true);
       setShowLoading(false);
       setIsAddingToCart(false);
@@ -412,7 +363,7 @@ const DiamondPage = ({ formSetting, configAppData, additionOptionSetting, shopUr
       console.error('Error adding to cart:', error);
       setShowLoading(false);
       setIsAddingToCart(false);
-      alert('Failed to add item to cart. Please try again.');
+      alert(typeof error === 'string' ? error : 'Failed to add item to cart. Please try again.');
     }
   }
   const handleCertificateDownload = async (e) => {
@@ -500,18 +451,34 @@ const DiamondPage = ({ formSetting, configAppData, additionOptionSetting, shopUr
                       </h1>
                       <div className="specs-header">
                         <div className="header-items">
-                          <b className="header-labels price-label"><ShowCostInCardDiamond configAppData={configAppData} diamondDetail={diamondDetail}></ShowCostInCardDiamond></b>
+                          <span className="header-labels price-label">
+                            <ShowCostInCardDiamond configAppData={configAppData} diamondDetail={diamondDetail} />
+                          </span>
                         </div>
                         <div className="header-items1">
                           <div className="header-items-child" />
                         </div>
-                        <div className="ships" onClick={openDiamondDetails}>
-                          <div className="header-items">
-                            <div className="back-to-all">
-                              Diamond Details
-                            </div>
-                          </div>
-                          <img className="dd102d7" loading="lazy" alt="" width="24" height="24" src={`${imageUrl}` + "/group.svg"} />
+                        <div
+                          className="ships diamond-details-link"
+                          role="button"
+                          tabIndex={0}
+                          onClick={openDiamondDetails}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter" || e.key === " ") {
+                              e.preventDefault();
+                              openDiamondDetails();
+                            }
+                          }}
+                        >
+                          <span className="back-to-all">Diamond Details</span>
+                          <img
+                            className="dd102d7"
+                            loading="lazy"
+                            alt=""
+                            width="16"
+                            height="16"
+                            src={`${imageUrl}/group.svg`}
+                          />
                         </div>
                         <div className="header-items1">
                           <div className="header-items-child" />

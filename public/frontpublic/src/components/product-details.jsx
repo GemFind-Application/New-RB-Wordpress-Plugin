@@ -17,6 +17,7 @@ import './product-details.css';
 import ShowCostInCard from './showCostInCard';
 import ShowCostInCardDiamond from './showCostInCardDiamond';
 import CartSuccessModal from './CartSuccessModal';
+import { cartService } from '../Services';
 const ProductDetails = ({
     className = '',
     shopUrl,
@@ -177,7 +178,7 @@ const ProductDetails = ({
         setShowLoading(true);
 
         try {
-            let formData = {
+            const ringOptions = {
                 metaltype: settingDetail.metalType,
                 ringId: settingDetail.settingId,
                 ringsizesettingonly: ringSize,
@@ -192,79 +193,23 @@ const ProductDetails = ({
                 islabsettings: settingDetail.isLabSetting,
             };
 
-            // Use proxy: same-origin request (e.g. https://daviddesso.com/apps/ringbuilder/...)
-            // so no CORS; proxy forwards to backend. shop param is myshopify domain for backend.
-            const shopDomain = window.Shopify?.shop || configAppData.shop || window.location.hostname;
-            const completePurchaseUrl = `${window.location.origin}/apps/ringbuilder/completePurchase/${diamondDetail.diamondId}/${settingDetail.settingId}?shop=${encodeURIComponent(shopDomain)}`;
-
-            const response = await fetch(completePurchaseUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                },
-                body: JSON.stringify(formData),
+            const result = await cartService.addCompleteRingToCart({
+                diamondDetail,
+                settingDetail,
+                configAppData,
+                isLabGrown: diamondType,
+                ringOptions,
             });
 
-            if (!response.ok) {
-                throw new Error(`Failed to add to cart: ${response.statusText}`);
-            }
-
-            const data = await response.json();
-
-            if (!data.success || !data.items || data.items.length === 0) {
-                throw new Error('Failed to add to cart');
-            }
-
-            // Use current origin for Cart API so request is same-origin (no CORS). See:
-            // https://shopify.dev/docs/api/ajax/reference/cart
-            const cartApiUrl = `${window.location.origin}${(window.Shopify?.routes?.root ?? '/')}cart/add.js`;
-
-            // Prepare items array for Shopify Ajax Cart API (items: [{ id, quantity, properties }])
-            const items = data.items.map(item => {
-                let properties = item.properties || {};
-                if (Array.isArray(properties)) properties = {};
-                return {
-                    id: parseInt(item.variant_id),
-                    quantity: item.quantity || 1,
-                    properties,
-                };
-            });
-
-            const cartFetchOptions = {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ items }),
-            };
-            const maxCartRetries = 7;
-            const cartRetryDelayMs = 1500;
-            let cartResponse = await fetch(cartApiUrl, cartFetchOptions);
-            let attempt = 1;
-            while (cartResponse.status === 422 && attempt < maxCartRetries) {
-                await new Promise((r) => setTimeout(r, cartRetryDelayMs));
-                cartResponse = await fetch(cartApiUrl, cartFetchOptions);
-                attempt += 1;
-            }
-
-            if (!cartResponse.ok) {
-                const errorData = await cartResponse.json().catch(() => ({}));
-                throw new Error(errorData.description || 'Failed to add items to cart');
-            }
-
-            const cartData = await cartResponse.json();
-
-            // Build product name from both items
-            const productNames = data.items.map(item => item.product_title).filter(Boolean);
-            const productName = productNames.length > 0
-                ? productNames.join(' & ')
-                : 'Your items';
-
-            // Clean up localStorage
             localStorage.removeItem('selectedDiamond');
             localStorage.removeItem('selectedRing');
 
-            // Show success modal
-            setAddedProductName(productName);
+            if (result.mode === 'woocommerce') {
+                cartService.redirectToCartUrl(result.cartUrl);
+                return;
+            }
+
+            setAddedProductName(result.productTitle || 'Your items');
             setShowCartSuccessModal(true);
             setShowLoading(false);
             setIsAddingToCart(false);
@@ -272,7 +217,7 @@ const ProductDetails = ({
             console.error('Error adding to cart:', error);
             setShowLoading(false);
             setIsAddingToCart(false);
-            alert('Failed to add items to cart. Please try again.');
+            alert(typeof error === 'string' ? error : 'Failed to add items to cart. Please try again.');
         }
     };
     const changeSetting = () => {
