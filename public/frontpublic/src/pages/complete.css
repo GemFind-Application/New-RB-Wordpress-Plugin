@@ -1,0 +1,60 @@
+#GemFind.gemfind-ring-builder-scope .frame-parent {
+  /* width: 1680px; */
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--gap-61xl);
+  max-width: 100%;
+  width: 100%;
+}
+#GemFind.gemfind-ring-builder-scope .complete-inner {
+/*   padding: var(--gap-11xl);
+  max-width: 100%;
+  width: 100%;
+  align-self: stretch;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  box-sizing: border-box; */
+}
+#GemFind.gemfind-ring-builder-scope .gemfind-app-store4 {
+  position: relative;
+}
+#GemFind.gemfind-ring-builder-scope .pagination5 {
+  align-self: stretch;
+  border-top: 1px solid var(--stroke);
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  padding: var(--padding-3xs) var(--padding-xl) var(--padding-xs);
+}
+
+
+@media screen and (max-width: 1575px) {
+  #GemFind.gemfind-ring-builder-scope .frame-parent {
+    flex-wrap: wrap;
+  }
+}
+@media screen and (max-width: 1275px) {
+  #GemFind.gemfind-ring-builder-scope .frame-parent {
+    gap: var(--gap-21xl);
+  }
+
+  #GemFind.gemfind-ring-builder-scope .complete-inner {
+  /*   padding-bottom: var(--padding-23xl);
+    box-sizing: border-box; */
+  }
+}
+@media screen and (max-width: 825px) {
+  #GemFind.gemfind-ring-builder-scope .frame-parent {
+    gap: var(--gap-xl);
+  }
+
+  #GemFind.gemfind-ring-builder-scope .complete-inner {
+    /* padding-bottom: var(--padding-8xl);
+    box-sizing: border-box; */
+  }
+}

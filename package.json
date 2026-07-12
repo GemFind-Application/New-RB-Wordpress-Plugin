@@ -1,0 +1,18 @@
+{
+  "name": "gemfind-ring-builder",
+  "private": true,
+  "description": "GemFind Ring Builder WordPress plugin — build orchestration (Diamond Link layout)",
+  "scripts": {
+    "install:all": "npm install --prefix public/frontpublic && npm install --prefix src/admin-frontend",
+    "build": "node scripts/build-all.cjs",
+    "build:all": "node scripts/build-all.cjs",
+    "build:admin": "node scripts/build-all.cjs admin",
+    "build:v2": "node scripts/build-all.cjs v2",
+    "build:v1": "node scripts/build-all.cjs v1",
+    "download:images": "node scripts/download-local-images.js",
+    "dev:admin": "npm run dev --prefix src/admin-frontend",
+    "dev:v2": "npm run dev --prefix public/frontpublic",
+    "package": "node scripts/package-plugin.cjs",
+    "scope:css": "npm run scope:css --prefix public/frontpublic"
+  }
+}

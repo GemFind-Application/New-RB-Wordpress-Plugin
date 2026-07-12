@@ -1,0 +1,96 @@
+#GemFind.gemfind-ring-builder-scope .requestInfopopup-overlay .request_infocta .preferences {
+  display: flex;
+  gap: 16px;
+}
+#GemFind.gemfind-ring-builder-scope .request_infocta .schduleb .preferences {
+  display: inline;
+  gap: 0;
+}
+#GemFind.gemfind-ring-builder-scope .request_infocta .preferences label {
+  display: flex;
+  align-items: center;
+}
+
+#GemFind.gemfind-ring-builder-scope .request_infocta .preferences input[type="radio"] {
+  margin-right: 8px;
+  width: auto;
+}
+
+#GemFind.gemfind-ring-builder-scope .flex-cta .availability {
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex: 1;
+}
+
+#GemFind.gemfind-ring-builder-scope .flex-cta {
+  align-items: center;
+}
+
+#GemFind.gemfind-ring-builder-scope .flex-cta button {
+  /* height: 52px; */
+  flex: 1;
+}
+
+#GemFind.gemfind-ring-builder-scope .flex {
+  gap: 10px;
+}
+
+#GemFind.gemfind-ring-builder-scope .requestInfopopup-overlay .preference_val {
+  display: flex;
+  gap: 5px;
+  align-items: flex-start;
+}
+
+#GemFind.gemfind-ring-builder-scope .requestInfopopup-overlay .preference_val label {
+  cursor: pointer;
+}
+
+#GemFind.gemfind-ring-builder-scope .request_infocta .preferences .preference_val input[type="radio"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: var(--accent);
+}
+
+/* Validation errors css styles */
+#GemFind.gemfind-ring-builder-scope .error {
+  border: 1px solid #b00;
+}
+
+#GemFind.gemfind-ring-builder-scope .error::placeholder {
+  color: #b00;
+}
+
+/* For older browsers */
+#GemFind.gemfind-ring-builder-scope .error:-ms-input-placeholder {
+  color: #b00;
+}
+
+#GemFind.gemfind-ring-builder-scope .error::-ms-input-placeholder {
+  color: #b00;
+}
+
+#GemFind.gemfind-ring-builder-scope .error-message {
+  color: #b00;
+  font-size: 0.8em;
+  margin-top: 5px;
+}
+
+/* Style for radio buttons in error state */
+#GemFind.gemfind-ring-builder-scope .error-radio {
+  color: #b00;
+}
+
+#GemFind.gemfind-ring-builder-scope input.error, #GemFind.gemfind-ring-builder-scope textarea.error {
+  border: 1px solid #b00;
+}
+
+@media screen and (max-width: 825px) {
+  #GemFind.gemfind-ring-builder-scope .flex-cta button {
+    width: 100%;
+  }
+  #GemFind.gemfind-ring-builder-scope .requestInfopopup-overlay .flex-cta button {
+    margin-top: 20px;
+  }
+}

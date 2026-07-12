@@ -1,0 +1,310 @@
+#GemFind.gemfind-ring-builder-scope .schedule-viewing {
+  margin: 0;
+  align-self: stretch;
+  position: relative;
+  font-size: inherit;
+  line-height: 120%;
+  font-weight: 700;
+  font-family: inherit;
+}
+#GemFind.gemfind-ring-builder-scope .see-this-item {
+  align-self: stretch;
+  position: relative;
+  font-size: var(--body-font-size);
+  font-family: var(--body-font-family);
+  color: var(--grey);
+}
+#GemFind.gemfind-ring-builder-scope .h12 {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: var(--gap-5xs);
+}
+#GemFind.gemfind-ring-builder-scope .your-name1 {
+  width: 69px;
+  border: none;
+  outline: none;
+  font-family: var(--body-font-family);
+  font-size: var(--body-font-size);
+  background-color: transparent;
+  height: 19px;
+  position: relative;
+  color: var(--grey);
+  text-align: center;
+  display: inline-block;
+  padding: 0;
+}
+#GemFind.gemfind-ring-builder-scope .drop5 {
+  width: 250px;
+  border-radius: var(--br-21xl);
+  border: 1px solid var(--stroke);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  padding: var(--padding-4xs) var(--padding-xl);
+}
+#GemFind.gemfind-ring-builder-scope .your-email1 {
+  width: 66px;
+  border: none;
+  outline: none;
+  font-family: var(--body-font-family);
+  font-size: var(--body-font-size);
+  background-color: transparent;
+  height: 19px;
+  position: relative;
+  color: var(--grey);
+  text-align: center;
+  display: inline-block;
+  padding: 0;
+}
+#GemFind.gemfind-ring-builder-scope .your-phone-number1 {
+  width: 127px;
+  border: none;
+  outline: none;
+  font-family: var(--body-font-family);
+  font-size: var(--body-font-size);
+  background-color: transparent;
+  height: 19px;
+  position: relative;
+  color: var(--grey);
+  text-align: center;
+  display: inline-block;
+  padding: 0;
+}
+#GemFind.gemfind-ring-builder-scope .contact-form {
+  width: 524px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 24px 22px;
+  min-height: 104px;
+  max-width: 100%;
+}
+#GemFind.gemfind-ring-builder-scope .drop8 {
+  border: 1px solid var(--stroke);
+  background-color: transparent;
+  height: 125px;
+  width: auto;
+  outline: none;
+  align-self: stretch;
+  border-radius: var(--br-xl);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-xl);
+  font-family: var(--body-font-family);
+  font-size: var(--body-font-size);
+  color: var(--grey);
+}
+#GemFind.gemfind-ring-builder-scope .location {
+  position: relative;
+  font-size: var(--body-font-size);
+  font-family: var(--body-font-family);
+  color: var(--grey);
+  text-align: center;
+  display: inline-block;
+  min-width: 57px;
+}
+#GemFind.gemfind-ring-builder-scope .location-icon {
+  height: 5px;
+  width: 10px;
+  position: relative;
+}
+#GemFind.gemfind-ring-builder-scope .drop9 {
+  width: 250px;
+  border-radius: var(--br-21xl);
+  border: 1px solid var(--stroke);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--padding-4xs) var(--padding-xl);
+  gap: var(--gap-xl);
+}
+#GemFind.gemfind-ring-builder-scope .when-are-you {
+  position: relative;
+  font-size: var(--body-font-size);
+  font-family: var(--body-font-family);
+  color: var(--grey);
+  text-align: center;
+}
+#GemFind.gemfind-ring-builder-scope .time-icon-input {
+  width: 76px;
+  border: none;
+  outline: none;
+  font-family: var(--body-font-family);
+  font-size: var(--body-font-size);
+  background-color: transparent;
+  height: 19px;
+  position: relative;
+  color: var(--grey);
+  text-align: center;
+  display: inline-block;
+  padding: 0;
+}
+#GemFind.gemfind-ring-builder-scope .vector-icon1 {
+  height: 21px;
+  width: 20px;
+  position: relative;
+  min-height: 21px;
+  cursor: pointer;
+}
+#GemFind.gemfind-ring-builder-scope .drop10 {
+  align-self: stretch;
+  border-radius: var(--br-21xl);
+  border: 1px solid var(--stroke);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--padding-5xs) var(--padding-xl);
+  gap: var(--gap-xl);
+}
+#GemFind.gemfind-ring-builder-scope .mail3 {
+  width: 290px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 0px var(--padding-xl);
+  box-sizing: border-box;
+  gap: var(--gap-5xs);
+  flex-shrink: 0;
+}
+#GemFind.gemfind-ring-builder-scope .request1 {
+  position: relative;
+  font-size: var(--buttom-size);
+  text-transform: uppercase;
+  display: inline-block;
+  font-family: var(--body-font-family);
+  color: var(--white);
+  text-align: left;
+  min-width: 73px;
+}
+#GemFind.gemfind-ring-builder-scope .button5 {
+  cursor: pointer;
+  border: none;
+  padding: var(--padding-mini) var(--padding-xl);
+  background-color: var(--accent);
+  flex: 1;
+  border-radius: var(--br-37xl);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-width: 178px;
+}
+#GemFind.gemfind-ring-builder-scope .button5:hover {
+  background-color: var(--color-rosybrown-100);
+}
+#GemFind.gemfind-ring-builder-scope .availability {
+  align-self: stretch;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: center;
+  gap: var(--gap-xs);
+}
+#GemFind.gemfind-ring-builder-scope .mail2 {
+  margin: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: var(--gap-xs);
+  min-width: 509px;
+  max-width: 100%;
+}
+#GemFind.gemfind-ring-builder-scope .inputs2 {
+  align-self: stretch;
+  border-top: 1px solid var(--divider);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-5xl) 0px 0px;
+  gap: var(--gap-5xl);
+  min-height: 408px;
+  max-width: 100%;
+}
+#GemFind.gemfind-ring-builder-scope .top4 {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: var(--gap-5xl);
+  max-width: 100%;
+}
+#GemFind.gemfind-ring-builder-scope .content4 {
+  position: absolute;
+  top: 39.5px;
+  left: calc(50% - 268px);
+  width: 536px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  max-width: 100%;
+  text-align: left;
+  font-size: var(--h4-size);
+  color: var(--black);
+  font-family: var(--h4);
+}
+#GemFind.gemfind-ring-builder-scope .close-icon3 {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 32px;
+  height: 32px;
+  overflow: hidden;
+  z-index: 1;
+}
+#GemFind.gemfind-ring-builder-scope .schedule {
+  width: 100%;
+  height: 572px;
+  position: relative;
+  border-radius: var(--br-base);
+  background-color: var(--white);
+  overflow: hidden;
+  line-height: normal;
+  letter-spacing: normal;
+}
+
+@media screen and (max-width: 1275px) {
+  #GemFind.gemfind-ring-builder-scope .mail2 {
+    min-width: 100%;
+  }
+}
+@media screen and (max-width: 825px) {
+  #GemFind.gemfind-ring-builder-scope .schedule-viewing {
+    font-size: var(--buttom-size);
+    line-height: 19px;
+  }
+
+  #GemFind.gemfind-ring-builder-scope .button5 {
+    width: calc(100% - 40px);
+  }
+
+  #GemFind.gemfind-ring-builder-scope .availability {
+    flex-wrap: wrap;
+  }
+
+  #GemFind.gemfind-ring-builder-scope .schedule {
+    height: auto;
+    min-height: 572;
+  }
+}

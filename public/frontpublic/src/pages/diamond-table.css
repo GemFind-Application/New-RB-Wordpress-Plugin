@@ -1,0 +1,19 @@
+#GemFind.gemfind-ring-builder-scope .diamond-table-child {
+  align-self: stretch;
+  height: 154px;
+  position: relative;
+  display: none;
+  cursor: pointer;
+}
+#GemFind.gemfind-ring-builder-scope .diamond-table {
+  width: 100%;
+  position: relative;
+  background-color: var(--white);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  line-height: normal;
+  letter-spacing: normal;
+}

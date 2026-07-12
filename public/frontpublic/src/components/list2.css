@@ -1,0 +1,24 @@
+#GemFind.gemfind-ring-builder-scope .list4 {
+  height: 833px;
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-5xl) 0px 0px;
+  box-sizing: border-box;
+  gap: var(--gap-5xl);
+  max-width: calc(100% - 281px);
+}
+
+@media screen and (max-width: 1575px) {
+  #GemFind.gemfind-ring-builder-scope .list4 {
+    height: auto;
+  }
+}
+@media screen and (max-width: 1275px) {
+  #GemFind.gemfind-ring-builder-scope .list4 {
+    max-width: 100%;
+  }
+}

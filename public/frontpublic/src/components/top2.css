@@ -1,0 +1,169 @@
+#GemFind.gemfind-ring-builder-scope .setting-details3 {
+  margin: 0;
+  align-self: stretch;
+  position: relative;
+  font-size: var(--h4-size);
+  line-height: 120%;
+  font-weight: 700;
+  font-family: inherit;
+}
+#GemFind.gemfind-ring-builder-scope .setting-number1 {
+  position: relative;
+  font-weight: 500;
+  display: inline-block;
+  min-width: 108px;
+}
+#GemFind.gemfind-ring-builder-scope .f1619-33-14kw-21 {
+  position: relative;
+  display: inline-block;
+  color: var(--black);
+  min-width: 121px;
+}
+#GemFind.gemfind-ring-builder-scope .setting-row {
+  flex: 1;
+  border-radius: var(--br-base);
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: var(--gap-9xs);
+  min-width: 94px;
+}
+#GemFind.gemfind-ring-builder-scope .price8 {
+  position: relative;
+  font-weight: 500;
+  display: inline-block;
+  min-width: 38px;
+}
+#GemFind.gemfind-ring-builder-scope .a14 {
+  text-decoration: none;
+  position: relative;
+  font-weight: 700;
+  color: var(--black);
+  display: inline-block;
+  min-width: 35px;
+  white-space: nowrap;
+}
+#GemFind.gemfind-ring-builder-scope .metal-type1 {
+  position: relative;
+  font-weight: 500;
+  display: inline-block;
+  min-width: 77px;
+}
+#GemFind.gemfind-ring-builder-scope .white-gold1 {
+  position: relative;
+  display: inline-block;
+  color: var(--black);
+  min-width: 75px;
+}
+#GemFind.gemfind-ring-builder-scope .stats6 {
+  align-self: stretch;
+  border-top: 1px solid var(--divider);
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-3xl) var(--padding-3xl) 0px 0px;
+  gap: var(--gap-5xl);
+  text-align: center;
+  color: var(--grey);
+  font-family: var(--body-font-family);
+}
+#GemFind.gemfind-ring-builder-scope .side-diamond-details {
+  align-self: stretch;
+  position: relative;
+  line-height: 17px;
+}
+#GemFind.gemfind-ring-builder-scope .side-diamond-details h3 {
+  font-size: 18px;
+  letter-spacing: 0;
+}
+#GemFind.gemfind-ring-builder-scope .number-of-diamonds {
+  position: relative;
+  font-weight: 500;
+}
+#GemFind.gemfind-ring-builder-scope .number-separator {
+  position: relative;
+  display: inline-block;
+  color: var(--black);
+  min-width: 7px;
+}
+#GemFind.gemfind-ring-builder-scope .number-row {
+  border-radius: var(--br-base);
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: var(--gap-9xs);
+}
+#GemFind.gemfind-ring-builder-scope .cut4 {
+  position: relative;
+  font-weight: 500;
+  display: inline-block;
+  min-width: 29px;
+}
+#GemFind.gemfind-ring-builder-scope .round2 {
+  position: relative;
+  display: inline-block;
+  color: var(--black);
+  min-width: 44px;
+}
+#GemFind.gemfind-ring-builder-scope .carat-separator {
+  position: relative;
+  display: inline-block;
+  color: var(--black);
+  min-width: 49px;
+}
+#GemFind.gemfind-ring-builder-scope .carat-row {
+  flex: 1;
+  border-radius: var(--br-base);
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: var(--gap-9xs);
+  min-width: 124px;
+}
+#GemFind.gemfind-ring-builder-scope .stats7 {
+  align-self: stretch;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 0px var(--padding-10xs) 0px 0px;
+  gap: 24px 23.5px;
+  text-align: center;
+  color: var(--grey);
+  font-family: var(--body-font-family);
+}
+#GemFind.gemfind-ring-builder-scope .side {
+  align-self: stretch;
+  border-top: 1px solid var(--divider);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-3xl) 0px 0px;
+  gap: var(--gap-5xl);
+}
+#GemFind.gemfind-ring-builder-scope .top10 {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: var(--gap-5xl);
+  text-align: left;
+  font-size: var(--body-font-size);
+  color: var(--black);
+  font-family: var(--h4);
+}
+
+@media screen and (max-width: 1275px) {
+  #GemFind.gemfind-ring-builder-scope .setting-details3 {
+    font-size: var(--buttom-size);
+    line-height: 19px;
+  }
+}

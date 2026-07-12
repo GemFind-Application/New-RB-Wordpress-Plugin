@@ -1,0 +1,66 @@
+#GemFind.gemfind-ring-builder-scope .list5 {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-mini) var(--padding-11xl);
+  box-sizing: border-box;
+  gap: var(--gap-11xl) var(--gap-mini);
+  width: 100%;
+  margin: 0 auto;
+  text-align: left;
+  font-size: var(--body-font-size);
+  color: var(--black);
+  font-family: var(--body-font-family);
+}
+#GemFind.gemfind-ring-builder-scope .list5 .diamond-details {
+  /* padding: 0; */
+}
+#GemFind.gemfind-ring-builder-scope .list5 .diamond-expand-detail-wrapper {
+  padding-top: 20px;
+  /* border-top: 1px solid var(--boderColor10); */
+  margin-top: 15px;
+}
+#GemFind.gemfind-ring-builder-scope .list5 .diamond-expand-detail-wrapper .diamond-details img.image-gallery-image {
+  max-height: 100% !important;
+  height: auto;
+  width: 75%;
+}
+#GemFind.gemfind-ring-builder-scope .list5 .diamond-expand-detail-wrapper .diamond-details .image-gallery-slide-wrapper {
+  background-color: transparent;
+}
+#GemFind.gemfind-ring-builder-scope .list5 .diamond-expand-detail-wrapper .diamond-details .buttons {
+  padding: var(--padding-11xl) 0 0;
+  border-top: 1px solid var(--stroke);
+  border-bottom: 0 none;
+}
+#GemFind.gemfind-ring-builder-scope .list5 .diamond-expand-detail-wrapper .diamond-details b {
+  color: inherit;
+}
+#GemFind.gemfind-ring-builder-scope .list5 .diamond-details .image-gallery-slide-wrapper {
+  padding: 0;
+}
+
+@media screen and (max-width: 1275px) {
+  #GemFind.gemfind-ring-builder-scope .list5 {
+    padding-left: var(--padding-11xl);
+    padding-right: var(--padding-11xl);
+    box-sizing: border-box;
+  }
+}
+@media screen and (max-width: 1275px) {
+  #GemFind.gemfind-ring-builder-scope .list5 {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+#GemFind.gemfind-ring-builder-scope .diamond-expand-detail-wrapper h3.diamond-details1 {
+  font-family: var(--h4);
+  font-size: var(--h4-size);
+  font-weight: 700;
+  line-height: 24px;
+  text-align: left;
+  padding:0;
+  margin: 0;
+}

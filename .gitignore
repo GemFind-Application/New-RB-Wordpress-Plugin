@@ -1,0 +1,29 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea/
+.vscode/
+*.log
+
+# Build artifacts (keep committed bundles under assets/build and public/**/build)
+*.zip
+*.tmp
+*.temp
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# PHP / Composer cache (keep vendor/ committed for WordPress deploys)
+composer.phar
+
+# Test / coverage
+coverage/
+.phpunit.result.cache

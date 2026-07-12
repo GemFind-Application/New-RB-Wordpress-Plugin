@@ -1,0 +1,344 @@
+#GemFind.gemfind-ring-builder-scope .image-icon4 {
+	height: 84px;
+	width: 84px;
+	position: relative;
+	border-radius: var(--br-xl);
+	object-fit: cover;
+}
+#GemFind.gemfind-ring-builder-scope .princess-1001-carath3 {
+	position: relative;
+	line-height: 120%;
+}
+#GemFind.gemfind-ring-builder-scope .diamond-weight-type {
+	position: relative;
+	font-size: var(--body-font-size);
+	display: inline-block;
+	font-family: var(--body-font-family);
+	text-align: center;
+}
+#GemFind.gemfind-ring-builder-scope .name2 {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	justify-content: flex-start;
+	gap: var(--gap-6xs);
+}
+#GemFind.gemfind-ring-builder-scope .diamond-details4 {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: flex-start;
+	gap: var(--gap-6xl);
+	max-width: 100%;
+	font-size: var(--h4-size);
+	font-family: var(--h4);
+}
+#GemFind.gemfind-ring-builder-scope .union-icon {
+	height: 20px;
+	width: 20px;
+	position: relative;
+	min-height: 20px;
+}
+#GemFind.gemfind-ring-builder-scope .princess1 {
+	position: relative;
+	display: inline-block;
+	min-width: 59px;
+}
+#GemFind.gemfind-ring-builder-scope .img {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: flex-start;
+	padding: var(--padding-xl) 0px;
+	gap: var(--gap-smi);
+}
+/* .diamond-carat-value {
+	position: relative;
+	display: inline-block;
+	min-width: 35px;
+}
+.carat2 {
+	position: relative;
+	color: var(--grey);
+	display: inline-block;
+	min-width: 36px;
+} */
+#GemFind.gemfind-ring-builder-scope .diamond-carat-info {
+	display: flex;
+	flex-direction: row;
+	align-items: flex-start;
+	justify-content: flex-start;
+	gap: var(--gap-9xs);
+	flex-wrap: wrap;
+}
+#GemFind.gemfind-ring-builder-scope .d1 {
+	position: relative;
+	display: inline-block;
+	min-width: 10px;
+}
+#GemFind.gemfind-ring-builder-scope .color3 {
+	position: relative;
+	color: var(--grey);
+	display: inline-block;
+	min-width: 35px;
+}
+#GemFind.gemfind-ring-builder-scope .cell {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	justify-content: flex-start;
+	padding: var(--padding-xl) 0px;
+	gap: var(--gap-9xs);
+}
+#GemFind.gemfind-ring-builder-scope .vvs11 {
+	position: relative;
+	display: inline-block;
+	/* min-width: 34px; */
+}
+
+#GemFind.gemfind-ring-builder-scope .diamond-table-value {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: flex-start;
+	gap: var(--gap-9xs);
+}
+#GemFind.gemfind-ring-builder-scope .polish4 {
+	position: relative;
+	color: var(--grey);
+	display: inline-block;
+	min-width: 39px;
+}
+#GemFind.gemfind-ring-builder-scope .diamond-measurement-value {
+	width: 0px;
+	height: 19px;
+	position: relative;
+	display: inline-block;
+}
+#GemFind.gemfind-ring-builder-scope .cell4 {
+	width: 0px;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	justify-content: flex-start;
+	padding: var(--padding-xl) 0px;
+	box-sizing: border-box;
+	color: var(--grey);
+}
+#GemFind.gemfind-ring-builder-scope .x371x2322 {
+	position: relative;
+	display: inline-block;
+	min-width: 101px;
+}
+#GemFind.gemfind-ring-builder-scope .measurement2 {
+	position: relative;
+	color: var(--grey);
+	text-align: center;
+	display: inline-block;
+	min-width: 90px;
+}
+#GemFind.gemfind-ring-builder-scope .diamond-card-action {
+	position: relative;
+	display: inline-block;
+	min-width: 6px;
+}
+/* .intensity1 {
+	position: relative;
+	color: var(--grey);
+	display: inline-block;
+	min-width: 57px;
+} */
+#GemFind.gemfind-ring-builder-scope .video-icon {
+	height: 15.1px;
+	width: 24px;
+	position: relative;
+}
+#GemFind.gemfind-ring-builder-scope .actions4 {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	padding: var(--padding-smi-4) var(--padding-5xs) var(--padding-smi-5);
+	box-sizing: border-box;
+	width: 40px;
+	height: 40px;
+}
+#GemFind.gemfind-ring-builder-scope .compare-icon {
+	height: 40px;
+	width: 40px;
+	position: relative;
+	overflow: hidden;
+	flex-shrink: 0;
+}
+#GemFind.gemfind-ring-builder-scope .actions5 {
+	display: flex;
+	flex-direction: row;
+	align-items: flex-start;
+	justify-content: flex-start;
+}
+#GemFind.gemfind-ring-builder-scope .button-item {
+	position: relative;
+	object-fit: contain;
+}
+#GemFind.gemfind-ring-builder-scope .button25 {
+	height: 40px;
+	width: 40px;
+	border-radius: var(--br-37xl);
+	background-color: var(--accent);
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	padding: 0;
+	box-sizing: border-box;
+}
+#GemFind.gemfind-ring-builder-scope .actions3 {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: flex-end;
+	padding: var(--padding-xl) 0px;
+	gap: 5px;
+	margin-left: auto;
+}
+#GemFind.gemfind-ring-builder-scope .diamond-card-details {
+	align-self: stretch;
+	display: flex;
+	flex-direction: row;
+	align-items: flex-start;
+	max-width: 100%;
+	gap: var(--gap-xl);
+	flex-wrap: wrap;
+}
+#GemFind.gemfind-ring-builder-scope .diamond-card-details .f_50 {
+	/* width: 50px; */
+}
+#GemFind.gemfind-ring-builder-scope .show--more-diamond_info,
+#GemFind.gemfind-ring-builder-scope .list-diamond--video,
+#GemFind.gemfind-ring-builder-scope .compare-list--diamond {
+	cursor: pointer;
+}
+#GemFind.gemfind-ring-builder-scope .diamond-list-header {
+	/* width: 1680px; */
+	width: 100%;
+	border-radius: var(--br-xl);
+	background-color: var(--beige-00);
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	justify-content: flex-start;
+	padding: var(--padding-base);
+	box-sizing: border-box;
+	max-width: 100%;
+	text-align: left;
+	font-size: var(--body-font-size);
+	color: var(--black);
+	font-family: var(--body-font-family);
+}
+@media screen and (min-width: 826px) {
+	#GemFind.gemfind-ring-builder-scope .diamond-card-details {
+		flex-wrap: wrap;
+	}
+	#GemFind.gemfind-ring-builder-scope .ddl_list {
+        flex-grow: 0;
+        flex-shrink: 0;
+	}
+	#GemFind.gemfind-ring-builder-scope .ddl_w100 {
+		max-width: 100px;
+		flex-basis: 100px;
+		width: 100%;
+	}
+	#GemFind.gemfind-ring-builder-scope .ddl_w150 {
+		max-width: 150px;
+		flex-basis: 150px;
+		width: 100%;
+	}
+	#GemFind.gemfind-ring-builder-scope .ddl_w400 {
+		max-width: 400px;
+		flex-basis: 400px;
+		width: 100%;
+	}
+	#GemFind.gemfind-ring-builder-scope .ddl_w200 {
+		max-width: 200px;
+		flex-basis: 200px;
+		width: 100%;
+	}
+	#GemFind.gemfind-ring-builder-scope .ddl_w250 {
+		max-width: 250px;
+		flex-basis: 250px;
+		width: 100%;
+	}
+	#GemFind.gemfind-ring-builder-scope .ddl_w300 {
+		max-width: 300px;
+		flex-basis: 300px;
+		width: 100%;
+	}
+}
+
+@media screen and (max-width: 825px) {
+	#GemFind.gemfind-ring-builder-scope .diamond-list-header .diamond-card-details {
+		position: relative;
+		align-items: flex-start;
+		justify-content: flex-start;
+		gap: 10px;
+	}
+	#GemFind.gemfind-ring-builder-scope .cell {
+		width: 100%;
+		gap: 10px;
+		max-width: 29%;
+		padding: 10px 0 0;
+	}
+	#GemFind.gemfind-ring-builder-scope .cell4 {
+		display: none;
+	}
+	#GemFind.gemfind-ring-builder-scope .diamond-list-header .diamond-details4 {
+		flex-wrap: wrap;
+		width: 100%;
+		flex-direction: column;
+		justify-content: flex-start;
+		align-items: baseline;
+	}
+	#GemFind.gemfind-ring-builder-scope .diamond-list-header .diamond-weight-type {
+		text-align: left;
+	}
+	#GemFind.gemfind-ring-builder-scope .diamond-list-header .actions3 {
+		position: absolute;
+		top: 0;
+		right: 0;
+	}
+	#GemFind.gemfind-ring-builder-scope .diamond-list-header .img {
+		border-top: 1px solid var(--boderColor10);
+		border-bottom: 1px solid var(--boderColor10);
+		width: 100%;
+	}
+	#GemFind.gemfind-ring-builder-scope .list5 .diamond-expand-detail-wrapper .diamond-details {
+		padding: 0;
+		flex-direction: column;
+	}
+	#GemFind.gemfind-ring-builder-scope .filters-wrapper .cutClarityColor  .dropdown-content {
+		display: grid;
+		grid-template-columns: repeat(5, minmax(0, 1fr));
+		border-radius: 0;
+	}
+	#GemFind.gemfind-ring-builder-scope .filters-wrapper .cutClarityColor  .dropdown-content .dropdown-btns .option--btn.active--item {
+		border-radius: 0;
+	}
+}
+@media screen and (max-width: 650px) { 
+	#GemFind.gemfind-ring-builder-scope .diamond-list-header .diamond-carat-info,
+	#GemFind.gemfind-ring-builder-scope .diamond-list-header .diamond-table-value {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+}
+@media screen and (max-width: 450px) {
+	#GemFind.gemfind-ring-builder-scope .princess-1001-carath3 {
+		font-size: var(--buttom-size);
+		line-height: 19px;
+	}
+	#GemFind.gemfind-ring-builder-scope .list5 .diamond-expand-detail-wrapper .measurement-labels, #GemFind.gemfind-ring-builder-scope .list5 .diamond-expand-detail-wrapper .measurement-labels1, #GemFind.gemfind-ring-builder-scope .list5 .diamond-expand-detail-wrapper .measurement-labels2 {
+		flex: 1;
+		padding: var(--padding-xl);
+		min-height: 100px;
+	}
+}

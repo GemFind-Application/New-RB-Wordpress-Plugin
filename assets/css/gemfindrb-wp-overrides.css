@@ -1,0 +1,107 @@
+/**
+ * WordPress / theme layout overrides for GemFind Ring Builder.
+ * Mirrors gemfind-diamond-link wp-overrides — full-width breakout + no outer border.
+ */
+
+.gemfind-app-wrapper.gemfind-ring-builder-scope,
+#GemFind.gemfind-ring-builder-scope,
+.gemfind-app-wrapper.gemfind-ring-builder-scope #GemFind {
+	border: none !important;
+	outline: none !important;
+	box-shadow: none !important;
+}
+
+.gemfind-app-wrapper.gemfind-ring-builder-scope {
+	max-width: 100% !important;
+	width: 100%;
+	margin-left: 0 !important;
+	margin-right: 0 !important;
+	box-sizing: border-box;
+	font-family: Manrope, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+#GemFind.gemfind-ring-builder-scope {
+	max-width: 100% !important;
+	width: 100%;
+	box-sizing: border-box;
+}
+
+/* Full-bleed when embedded in constrained block themes */
+.gemfind-app-wrapper.gemfind-ring-builder-scope {
+	width: 100vw;
+	max-width: 100vw !important;
+	margin-left: calc(50% - 50vw) !important;
+	margin-right: calc(50% - 50vw) !important;
+	padding-left: 0 !important;
+	padding-right: 0 !important;
+}
+
+body:has(.gemfind-app-wrapper.gemfind-ring-builder-scope) {
+	overflow-x: hidden;
+}
+
+body:has(.gemfind-app-wrapper.gemfind-ring-builder-scope) .has-global-padding {
+	padding-left: 0 !important;
+	padding-right: 0 !important;
+}
+
+.is-layout-constrained > .wp-block-shortcode:has(.gemfind-app-wrapper.gemfind-ring-builder-scope),
+.is-layout-constrained .wp-block-shortcode:has(.gemfind-app-wrapper.gemfind-ring-builder-scope),
+.is-layout-constrained > :where(:not(.alignleft):not(.alignright):not(.alignfull)):has(.gemfind-app-wrapper.gemfind-ring-builder-scope),
+.is-layout-constrained > .gemfind-app-wrapper.gemfind-ring-builder-scope {
+	max-width: 100% !important;
+	width: 100% !important;
+	margin-left: 0 !important;
+	margin-right: 0 !important;
+	border: none !important;
+}
+
+/* Gemfind theme: full-width Ring Builder page template */
+body.gemfind-full-width-layout .gemfind-site-main,
+.gemfind-full-width-main {
+	max-width: none !important;
+	width: 100% !important;
+	padding-left: 0 !important;
+	padding-right: 0 !important;
+	margin: 0 !important;
+}
+
+/* v1 diamond / setting gallery — center main product image */
+.gemfind-app-wrapper--v1 .ring-diamond-image .imageloader,
+.gemfind-app-wrapper--v1 .ring-diamond-image-dia .imageloader {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	width: 100%;
+}
+
+.gemfind-app-wrapper--v1 .ring-diamond-image .imageloader img,
+.gemfind-app-wrapper--v1 .ring-diamond-image-dia .imageloader img {
+	margin-inline: auto;
+}
+
+/* v1 Bootstrap video modal — stay centered while loader/video is loading */
+body .modal.show .modal-dialog.modal-lg.modal-dialog-centered .modal-body.gf-rb-video-modal-body,
+body .modal.show .gf-rb-video-modal-body {
+	min-height: 500px;
+}
+
+body .modal.show .modal-dialog.modal-lg .modal-body .modal__spinner,
+body .modal.show .modal-dialog.modal-lg .modal-body .gf-rb-video-modal-spinner {
+	position: static !important;
+	top: auto !important;
+	left: auto !important;
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+	min-height: 500px;
+	width: 100%;
+	background-color: #fff;
+}
+
+body .modal.show .modal-dialog.modal-lg .modal-body .modal__video-style {
+	width: 100%;
+	min-height: 500px;
+	border: 0;
+}

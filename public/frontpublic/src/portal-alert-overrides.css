@@ -1,0 +1,102 @@
+/**
+ * Alert / reset / form popups render under #portals on document.body (outside #GemFind scope).
+ * Mirror portal-popup.css so dialogs are visible and centered.
+ */
+#portals .portalPopupOverlay .popup-overlay {
+	background-color: #ffffff;
+	border-radius: 12px;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+	max-width: 700px !important;
+	width: 100%;
+	font-family: inherit;
+	position: relative;
+	margin: 0 auto;
+	height: auto !important;
+	overflow: auto;
+}
+
+#portals .portalPopupOverlay .popup-overlay.resetPopup {
+	max-width: 550px !important;
+}
+
+#portals .portalPopupOverlay .popup-overlay.resetPopup .success-message,
+#portals .portalPopupOverlay .popup-overlay.resetPopup .success-message p.text-left {
+	text-align: center !important;
+}
+
+#portals .portalPopupOverlay .popup-overlay.resetPopup .success-message button {
+	display: inline-block;
+	cursor: pointer;
+	border: none;
+	padding: var(--padding-mini, 8px) var(--padding-xl, 24px);
+	background-color: var(--accent, #836a5d);
+	border-radius: 50px;
+	font-size: 14px;
+	font-weight: 600;
+	color: #ffffff;
+	text-transform: uppercase;
+	margin-top: 12px;
+}
+
+#portals .portalPopupOverlay .popup-overlay.resetPopup .popup-content {
+	display: block;
+	flex-direction: inherit;
+}
+
+#portals .portalPopupOverlay .popup-content {
+	display: flex;
+	flex-direction: column;
+	align-content: center;
+	justify-content: flex-start;
+	height: auto;
+	position: relative;
+	padding: 30px;
+	flex-wrap: wrap;
+	gap: 10px;
+}
+
+#portals .portalPopupOverlay .popup-content .close-button {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	font-size: 0;
+	cursor: pointer;
+	background-color: transparent;
+	width: 32px;
+	height: 32px;
+	padding: 0;
+	border: none;
+}
+
+#portals .portalPopupOverlay .popup-content .close-button::before {
+	content: "";
+	display: inline-block;
+	background-image: url("data:image/svg+xml,%3Csvg width='32' height='32' viewBox='0 0 32 32' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cg clip-path='url(%23clip0_502_2509)'%3E%3Cpath d='M22.848 9.89685L22.8269 9.9179C22.6637 10.089 22.49 10.2548 22.3216 10.4232L16.7448 16L22.848 22.1032C23.0559 22.3111 23.0401 22.6374 22.848 22.848C22.6558 23.0585 22.2979 23.0427 22.1032 22.848L22.0821 22.8269C21.911 22.6637 21.7452 22.49 21.5768 22.3216L16 16.7448L9.89685 22.848C9.68893 23.0559 9.36259 23.0401 9.15204 22.848C8.9415 22.6558 8.95729 22.2979 9.15204 22.1032L9.1731 22.0821C9.33627 21.911 9.50997 21.7452 9.6784 21.5768L15.2552 16L9.15204 9.89685C8.94413 9.68893 8.95992 9.36259 9.15204 9.15204C9.34417 8.9415 9.70209 8.95729 9.89685 9.15204L9.9179 9.1731C10.089 9.33627 10.2548 9.50997 10.4232 9.6784L16 15.2552L22.1032 9.15204C22.3111 8.94413 22.6374 8.95992 22.848 9.15204C23.0585 9.34417 23.0427 9.69946 22.848 9.89685Z' fill='%236A665E'/%3E%3Ccircle cx='16' cy='16' r='15.75' stroke='%236A665E' stroke-width='0.5'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_502_2509'%3E%3Crect width='32' height='32' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E%0A");
+	background-repeat: no-repeat;
+	width: 32px;
+	height: 32px;
+	background-color: transparent;
+}
+
+#portals .portalPopupOverlay .popup-content .success-message h2 {
+	font-size: var(--h2-size, 24px);
+	margin-top: 20px;
+	margin-bottom: 10px;
+	font-weight: bold;
+	color: var(--black, #262523);
+}
+
+#portals .portalPopupOverlay .popup-content .success-message p {
+	text-align: center;
+	font-size: 14px;
+	margin: 0;
+}
+
+#portals .portalPopupOverlay .popup-overlay.loaderpopup {
+	background-color: transparent;
+	border-radius: 0;
+	box-shadow: none;
+	max-width: inherit !important;
+	width: 100%;
+	margin: 0 auto;
+}

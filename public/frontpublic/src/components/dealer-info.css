@@ -1,0 +1,78 @@
+#GemFind.gemfind-ring-builder-scope .drop4 {
+	width: 100%;
+	max-width: inherit;
+	display: flex;
+	align-items: center;
+}
+#GemFind.gemfind-ring-builder-scope .drop4 input {
+	width: 100%;
+}
+#GemFind.gemfind-ring-builder-scope .submit {
+	position: relative;
+	font-size: var(--buttom-size);
+	text-transform: uppercase;
+	display: inline-block;
+	font-family: var(--body-font-family);
+	color: var(--white);
+	text-align: left;
+	min-width: 61px;
+}
+#GemFind.gemfind-ring-builder-scope .button4 {
+	cursor: pointer;
+	border: none;
+	padding: var(--padding-mini) var(--padding-xl);
+	background-color: var(--accent);
+	flex: 1;
+	border-radius: var(--br-37xl);
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	box-sizing: border-box;
+	min-width: 170px;
+}
+#GemFind.gemfind-ring-builder-scope .button4:hover {
+	background-color: var(--color-rosybrown-100);
+}
+#GemFind.gemfind-ring-builder-scope .fw-600 {
+	font-weight: 600;
+}
+#GemFind.gemfind-ring-builder-scope .errorText {
+	color: red;
+	min-width: 100%;
+}
+#GemFind.gemfind-ring-builder-scope .top3 {
+	width: 100%;
+}
+
+#GemFind.gemfind-ring-builder-scope .dealerinfo-label {
+	font-weight: bold;
+}
+#GemFind.gemfind-ring-builder-scope .dealer-info .h11 {
+    display: flex;
+	margin-bottom: 15px;
+    /* flex-direction: column;
+    gap: 10px; */
+}
+#GemFind.gemfind-ring-builder-scope .h11.dealerinfores {
+    display: flex;
+    justify-content: space-between;
+}
+#GemFind.gemfind-ring-builder-scope .vendorInfo.success-message h2 {
+	margin-bottom: 20px !important;
+    text-align: center;
+}
+#GemFind.gemfind-ring-builder-scope .h11.dealerinfores:nth-child(2n) {
+	background-color: #FAFAFA;
+}
+#GemFind.gemfind-ring-builder-scope .h11.dealerinfores > div {
+    width: 50%;
+    padding: 5px 6px;
+	font-size: 14px;
+    border-top: 1px solid var(--boderColor10);
+	font-size: var(--body-font-family);
+	word-wrap: break-word;
+}
+#GemFind.gemfind-ring-builder-scope .h11.dealerinfores:last-child > div {
+	border-bottom: 1px solid var(--boderColor10);
+}

@@ -1,0 +1,139 @@
+#GemFind.gemfind-ring-builder-scope .schedule-viewing-popup .availability {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 5px;
+}
+#GemFind.gemfind-ring-builder-scope .schedule-viewing-popup .availability input {
+  /* flex-grow: 1;
+  margin-bottom: 0; */
+}
+
+#GemFind.gemfind-ring-builder-scope .schedule-viewing-popup .calendar-icon {
+  width: 20px;
+  height: 20px;
+  margin-left: 8px;
+}
+
+#GemFind.gemfind-ring-builder-scope .schedule-viewing-popup .request-button {
+  background-color: #a67f78;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s ease;
+}
+
+#GemFind.gemfind-ring-builder-scope .schedule-viewing-popup .request-button:hover {
+  background-color: #8e6962;
+}
+
+#GemFind.gemfind-ring-builder-scope .schedule-viewing-popup .close-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #999;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+}
+
+#GemFind.gemfind-ring-builder-scope .availability_container {
+  align-items: baseline;
+  gap: 10px;
+}
+
+#GemFind.gemfind-ring-builder-scope .availability_container > * {
+  flex: 1;
+}
+
+#GemFind.gemfind-ring-builder-scope button.submit-button {
+  /* cursor: pointer;
+  border: none;
+  padding: var(--padding-mini) var(--padding-xl);
+  background-color: var(--accent);
+  flex: 1;
+  border-radius: var(--br-37xl);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-width: 250px;
+  white-space: nowrap;
+  max-width: 100%;
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+  border-radius: 50px; */
+}
+
+#GemFind.gemfind-ring-builder-scope .select_location {
+  margin-bottom: 20px;
+}
+#GemFind.gemfind-ring-builder-scope .rb_grid.rb_col2.form-group.select_location {
+  align-items: self-end;
+}
+#GemFind.gemfind-ring-builder-scope .flex-cta .request_infocta .availability label {
+  margin-bottom: 0 ;
+}
+
+/* VALIDATION CSS STYLES */
+#GemFind.gemfind-ring-builder-scope .error {
+  border: 1px solid rgb(175, 0, 0);;
+}
+
+#GemFind.gemfind-ring-builder-scope .error::placeholder {
+  color: rgb(175, 0, 0);;
+}
+
+#GemFind.gemfind-ring-builder-scope .error:-ms-input-placeholder {
+  color: rgb(175, 0, 0);;
+}
+
+#GemFind.gemfind-ring-builder-scope .error::-ms-input-placeholder {
+  color: rgb(175, 0, 0);;
+}
+
+#GemFind.gemfind-ring-builder-scope .error-message {
+  color: rgb(175, 0, 0);
+  font-size: 0.8em;
+  margin-top: 5px;
+}
+
+#GemFind.gemfind-ring-builder-scope .error-radio {
+  color: rgb(175, 0, 0);
+}
+
+#GemFind.gemfind-ring-builder-scope .error:focus {
+  outline: 1px solid rgb(175, 0, 0);
+}
+
+#GemFind.gemfind-ring-builder-scope .preference_val .react-datepicker-wrapper {
+  width: 100%;
+}
+
+#GemFind.gemfind-ring-builder-scope .preference_val select.no-appearance.select--outline {
+  margin-right: 0;
+}
+#GemFind.gemfind-ring-builder-scope .preference_val .react-datepicker__input-container input {
+  width: 100%;
+  border-radius: 50px;
+}
+#GemFind.gemfind-ring-builder-scope .preference_val .react-datepicker__input-container input.error {
+  outline: 1px solid rgb(175, 0, 0);
+}
+
+#GemFind.gemfind-ring-builder-scope .react-datepicker__input-container {
+  width: 100%;
+  flex: 1;
+  display: flex;
+}

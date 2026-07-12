@@ -1,0 +1,16 @@
+/**
+ * Try-on widget overrides – overrides CDN styles when this file is loaded
+ * inside the try-on iframe (e.g. via custom_css / theme_url param if supported by vendor).
+ * Use !important to win over CDN specificity.
+ */
+
+.tryon-widget {
+	margin-top: 0 !important;
+}
+
+@supports (height: 1dvh) {
+	.tryon-widget {
+		width: 100% !important;
+		height: 100dvh !important;
+	}
+}

@@ -1,0 +1,214 @@
+/**
+ * Storefront isolation — all Ring Builder UI lives under #GemFind.gemfind-ring-builder-scope.
+ * Plugin styles are also wrapped at build time via PostCSS.
+ */
+#GemFind.gemfind-ring-builder-scope,
+.gemfind-app-wrapper.gemfind-ring-builder-scope {
+  isolation: isolate;
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: var(--body-font-family, "Manrope", sans-serif);
+  font-size: 16px;
+  line-height: 1.56;
+  letter-spacing: 0;
+  color: var(--black, #262523);
+  background-color: #fff;
+  border: none;
+  outline: none;
+  box-shadow: none;
+}
+
+#GemFind.gemfind-ring-builder-scope *,
+#GemFind.gemfind-ring-builder-scope *::before,
+#GemFind.gemfind-ring-builder-scope *::after,
+#portals *,
+#portals *::before,
+#portals *::after {
+  box-sizing: border-box;
+}
+
+.gemfind-app-wrapper.gemfind-ring-builder-scope,
+#GemFind.gemfind-ring-builder-scope {
+  margin: 0;
+  padding: 0;
+}
+
+#GemFind.gemfind-ring-builder-scope .gemfind-ring-builder-tool {
+  border: none;
+  outline: none;
+  box-shadow: none;
+}
+
+#portals {
+  z-index: 99999;
+}
+
+/* Element reset — theme-proof typography & forms */
+#GemFind.gemfind-ring-builder-scope p,
+#GemFind.gemfind-ring-builder-scope h1,
+#GemFind.gemfind-ring-builder-scope h2,
+#GemFind.gemfind-ring-builder-scope h3,
+#GemFind.gemfind-ring-builder-scope h4,
+#GemFind.gemfind-ring-builder-scope h5,
+#GemFind.gemfind-ring-builder-scope h6,
+#portals p,
+#portals h1,
+#portals h2,
+#portals h3,
+#portals h4,
+#portals h5,
+#portals h6 {
+  margin: 0;
+  padding: 0;
+  font-family: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  color: inherit;
+}
+
+#GemFind.gemfind-ring-builder-scope a,
+#portals a {
+  color: var(--link-color, var(--accent, #836a5d));
+  text-decoration: none;
+  background: transparent;
+}
+
+#GemFind.gemfind-ring-builder-scope a:hover,
+#GemFind.gemfind-ring-builder-scope a:focus,
+#portals a:hover,
+#portals a:focus {
+  color: var(--over-effect, var(--accent, #836a5d));
+}
+
+#GemFind.gemfind-ring-builder-scope ul,
+#GemFind.gemfind-ring-builder-scope ol,
+#GemFind.gemfind-ring-builder-scope li,
+#portals ul,
+#portals ol,
+#portals li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: inherit;
+}
+
+#GemFind.gemfind-ring-builder-scope input,
+#GemFind.gemfind-ring-builder-scope textarea,
+#GemFind.gemfind-ring-builder-scope select,
+#GemFind.gemfind-ring-builder-scope button,
+#GemFind.gemfind-ring-builder-scope label,
+#portals input,
+#portals textarea,
+#portals select,
+#portals button,
+#portals label {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
+}
+
+#GemFind.gemfind-ring-builder-scope input,
+#GemFind.gemfind-ring-builder-scope textarea,
+#GemFind.gemfind-ring-builder-scope select,
+#portals input,
+#portals textarea,
+#portals select {
+  background-color: transparent;
+  border-radius: 0;
+}
+
+#GemFind.gemfind-ring-builder-scope button,
+#portals button {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+#GemFind.gemfind-ring-builder-scope table,
+#GemFind.gemfind-ring-builder-scope th,
+#GemFind.gemfind-ring-builder-scope td,
+#portals table,
+#portals th,
+#portals td {
+  border-collapse: collapse;
+  font-family: inherit;
+}
+
+#GemFind.gemfind-ring-builder-scope img,
+#GemFind.gemfind-ring-builder-scope svg,
+#portals img,
+#portals svg {
+  max-width: 100%;
+  height: auto;
+}
+
+#GemFind.gemfind-ring-builder-scope svg,
+#portals svg {
+  width: revert;
+  height: revert;
+}
+
+/* Scoped text primitives */
+#GemFind.gemfind-ring-builder-scope .gfrb-p,
+#portals .gfrb-p {
+  margin: 0;
+  padding: 0;
+  font-family: inherit;
+  line-height: inherit;
+  color: inherit;
+}
+
+/* Rich HTML popups (dangerouslySetInnerHTML) */
+#GemFind.gemfind-ring-builder-scope .popupalert .popup-body,
+#GemFind.gemfind-ring-builder-scope .popupalert .gfrb-rich-text,
+#portals .popupalert .popup-body,
+#portals .popupalert .gfrb-rich-text {
+  color: var(--backgroundtext, var(--black, #262523));
+}
+
+#GemFind.gemfind-ring-builder-scope .gfrb-rich-text p,
+#GemFind.gemfind-ring-builder-scope .popup-body p,
+#portals .gfrb-rich-text p,
+#portals .popup-body p {
+  margin: 0 0 0.75em;
+  font-family: inherit;
+  line-height: 1.5;
+  color: var(--backgroundtext, var(--black, #262523));
+}
+
+#GemFind.gemfind-ring-builder-scope .gfrb-rich-text ol,
+#GemFind.gemfind-ring-builder-scope .popup-body ol,
+#portals .gfrb-rich-text ol,
+#portals .popup-body ol {
+  margin: 0 0 0.75em;
+  padding-left: 1.25em;
+  list-style: decimal;
+}
+
+#GemFind.gemfind-ring-builder-scope .gfrb-rich-text li,
+#GemFind.gemfind-ring-builder-scope .popup-body li,
+#portals .gfrb-rich-text li,
+#portals .popup-body li {
+  margin: 0.25em 0;
+  list-style: inherit;
+  color: var(--backgroundtext, var(--black, #262523));
+}
+
+#GemFind.gemfind-ring-builder-scope .gfrb-rich-text a,
+#GemFind.gemfind-ring-builder-scope .popup-body a,
+#portals .gfrb-rich-text a,
+#portals .popup-body a {
+  color: var(--link-color, var(--accent, #836a5d));
+  text-decoration: underline;
+}
+
+#GemFind.gemfind-ring-builder-scope .gfrb-rich-text img,
+#GemFind.gemfind-ring-builder-scope .popup-body img,
+#portals .gfrb-rich-text img,
+#portals .popup-body img {
+  max-width: 100%;
+  height: auto;
+}

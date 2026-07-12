@@ -1,0 +1,213 @@
+#gemfdl-admin-root {
+  margin-top: 20px;
+}
+
+/* About page (PHP-rendered) */
+.wpdl2-admin-wrapper {
+  max-width: none;
+  margin: 0;
+}
+
+.wpdl2-admin-wrapper--full {
+  width: 100%;
+}
+
+.wpdl2-about-shell {
+  /* align to wpdl-admin-wrapper padding style */
+  padding: 8px 12px 24px 12px;
+}
+
+@media (min-width: 783px) {
+  .wpdl2-about-shell {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+/* Header should match Settings page header visuals */
+.wpdl2-topbar {
+  background: linear-gradient(135deg, #143a6b 0%, #0c2740 55%, #0a1f33 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  box-shadow: 0 4px 14px rgba(12, 39, 64, 0.35);
+  margin: 0 0 20px;
+  padding: 0;
+  overflow: hidden;
+  color: #fff;
+}
+
+.wpdl2-topbar__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px 24px;
+  padding: 18px 22px 18px 20px;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.wpdl2-topbar__left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 260px;
+}
+
+.wpdl2-topbar__logo {
+  display: block;
+  height: 44px;
+  width: auto;
+  max-width: min(520px, 100%);
+  object-fit: contain;
+  object-position: left center;
+  flex-shrink: 1;
+  filter: brightness(0) invert(1);
+}
+
+.wpdl2-topbar__logo--fallback {
+  height: 40px;
+  width: 40px;
+  flex-shrink: 0;
+  filter: none;
+}
+
+.wpdl2-topbar__brandPrimary {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  color: #f1f5f9;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.wpdl2-topbar__brandSecondary {
+  display: none;
+}
+
+.wpdl2-topbar__right {
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  color: #f1f5f9;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+  margin-left: auto;
+  text-align: right;
+}
+
+@media (max-width: 600px) {
+  .wpdl2-topbar__inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .wpdl2-topbar__right {
+    margin-left: 0;
+    text-align: left;
+    width: 100%;
+  }
+  .wpdl2-topbar__logo {
+    max-width: 100%;
+    height: 36px;
+  }
+}
+
+.wpdl2-admin-header {
+  background: #ffffff;
+  border: 1px solid #dcdcde;
+  border-radius: 12px;
+  padding: 18px 20px;
+}
+
+.wpdl2-admin-header__inner {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.wpdl2-admin-wordmark {
+  height: 44px;
+  width: auto;
+  max-width: 280px;
+  object-fit: contain;
+}
+
+.wpdl2-admin-logo-fallback {
+  height: 44px;
+  width: 44px;
+}
+
+.wpdl2-admin-heading {
+  margin: 0;
+  font-size: 20px;
+  line-height: 1.2;
+}
+
+.wpdl2-admin-content--card {
+  margin-top: 14px;
+}
+
+.wpdl2-import-box {
+  background: #ffffff;
+  border: 1px solid #dcdcde !important;
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin-bottom: 20px;
+}
+
+.wpdl2-view-frontend-banner {
+  margin-top: 14px;
+  background: #ffffff;
+  border: 1px solid #dcdcde;
+  border-radius: 12px;
+  padding: 14px 18px;
+}
+
+.wpdl2-view-frontend-banner__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.wpdl2-view-frontend-banner__message,
+.wpdl2-view-frontend-banner__version {
+  margin: 0;
+}
+
+.wpdl2-view-frontend-banner__btn,
+.wpdl2-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  padding: 10px 14px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.wpdl2-view-frontend-banner__btn,
+.wpdl2-btn--primary {
+  background: #0ea5e9;
+  color: #fff;
+}
+
+.wpdl2-view-frontend-banner__btn:hover,
+.wpdl2-btn--primary:hover {
+  background: #0284c7;
+  color: #fff;
+}
+
+/* Legacy cards (if any screen still uses them) */
+.card {
+  background: #fff;
+  border: 1px solid #ccd0d4;
+  border-radius: 4px;
+  padding: 20px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+.card h2 {
+  margin-top: 0;
+}

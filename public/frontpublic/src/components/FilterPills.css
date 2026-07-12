@@ -1,0 +1,47 @@
+#GemFind.gemfind-ring-builder-scope .filter-pills-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+#GemFind.gemfind-ring-builder-scope .filter-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 24px;
+    border: 1px solid var(--accent);
+    border-radius: 999px;
+    background-color: white;
+    color: var(--accent);
+    font-weight: 500;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    outline: none;
+    white-space: nowrap;
+}
+
+#GemFind.gemfind-ring-builder-scope .filter-pill:hover {
+    border-color: var(--accent);
+}
+
+#GemFind.gemfind-ring-builder-scope .filter-pill.active {
+    background-color: var(--accent);
+    border-color: var(--accent);
+    color: white;
+    font-weight: 600;
+}
+
+#GemFind.gemfind-ring-builder-scope .filter-pill.active:hover {
+    background-color: var(--accent);
+    border-color: var(--accent);
+}
+
+@media (max-width: 640px) {
+    #GemFind.gemfind-ring-builder-scope .filter-pill {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+}
+

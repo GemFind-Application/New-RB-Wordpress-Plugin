@@ -1,0 +1,136 @@
+#GemFind.gemfind-ring-builder-scope .colour1 {
+  width: 44px;
+  height: 19px;
+  position: relative;
+  display: inline-block;
+}
+#GemFind.gemfind-ring-builder-scope .i3 {
+  width: 3px;
+  height: 12px;
+  position: relative;
+  display: inline-block;
+}
+#GemFind.gemfind-ring-builder-scope .div46 {
+  width: 18px;
+  height: 18px;
+  margin: 0 !important;
+  position: absolute;
+  top: 1px;
+  right: 192px;
+  border-radius: var(--br-21xl);
+  background-color: var(--beige-05);
+  border: 1px solid var(--white);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--padding-11xs) var(--padding-7xs);
+  font-size: var(--m-sub-size);
+  color: var(--black);
+  font-family: var(--font-inter);
+}
+#GemFind.gemfind-ring-builder-scope .txt68 {
+  align-self: stretch;
+  width: 10px;
+  position: relative;
+  display: inline-block;
+}
+#GemFind.gemfind-ring-builder-scope .range68 {
+  align-self: stretch;
+  flex: 1;
+  border-bottom: 1px solid var(--divider);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: var(--padding-5xs) var(--padding-xl);
+}
+#GemFind.gemfind-ring-builder-scope .txt69 {
+  align-self: stretch;
+  width: 8px;
+  position: relative;
+  display: inline-block;
+}
+#GemFind.gemfind-ring-builder-scope .range70 {
+  align-self: stretch;
+  height: 35px;
+  background-color: var(--beige-01);
+  border-bottom: 1px solid var(--divider);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: var(--padding-5xs) var(--padding-xl);
+  text-align: left;
+  color: var(--black);
+}
+#GemFind.gemfind-ring-builder-scope .txt71 {
+  align-self: stretch;
+  width: 11px;
+  position: relative;
+  display: inline-block;
+}
+#GemFind.gemfind-ring-builder-scope .txt73 {
+  align-self: stretch;
+  width: 4px;
+  position: relative;
+  display: inline-block;
+}
+#GemFind.gemfind-ring-builder-scope .txt74 {
+  align-self: stretch;
+  width: 7px;
+  position: relative;
+  display: inline-block;
+}
+#GemFind.gemfind-ring-builder-scope .txt75 {
+  align-self: stretch;
+  width: 9px;
+  position: relative;
+  display: inline-block;
+}
+#GemFind.gemfind-ring-builder-scope .txt77 {
+  align-self: stretch;
+  width: 12px;
+  position: relative;
+  display: inline-block;
+}
+#GemFind.gemfind-ring-builder-scope .range77 {
+  align-self: stretch;
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: var(--padding-5xs) var(--padding-xl);
+}
+#GemFind.gemfind-ring-builder-scope .from-to5 {
+  align-self: stretch;
+  flex: 1;
+  border-radius: var(--br-base);
+  border: 1px solid var(--divider);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+#GemFind.gemfind-ring-builder-scope .sh5 {
+  align-self: stretch;
+  height: 401px;
+  border-bottom: 1px solid var(--stroke);
+  box-sizing: border-box;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 0px 0px var(--padding-xl);
+  position: relative;
+  gap: var(--gap-xs);
+  text-align: center;
+  font-size: var(--body-font-size);
+  color: var(--grey);
+  font-family: var(--body-font-family);
+}

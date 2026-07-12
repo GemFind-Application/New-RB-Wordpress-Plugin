@@ -1,0 +1,91 @@
+#GemFind.gemfind-ring-builder-scope .polish3 {
+  width: 39px;
+  height: 19px;
+  position: relative;
+  display: inline-block;
+}
+#GemFind.gemfind-ring-builder-scope .txt78 {
+  align-self: stretch;
+  width: 63px;
+  position: relative;
+  display: inline-block;
+}
+#GemFind.gemfind-ring-builder-scope .range78 {
+  align-self: stretch;
+  height: 52px;
+  background-color: var(--beige-01);
+  border-bottom: 1px solid var(--divider);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: var(--padding-base-5) var(--padding-xl);
+  text-align: left;
+  color: var(--black);
+}
+#GemFind.gemfind-ring-builder-scope .txt79 {
+  align-self: stretch;
+  width: 66px;
+  position: relative;
+  display: inline-block;
+}
+#GemFind.gemfind-ring-builder-scope .range79 {
+  align-self: stretch;
+  flex: 1;
+  border-bottom: 1px solid var(--divider);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: var(--padding-base-5) var(--padding-xl);
+}
+#GemFind.gemfind-ring-builder-scope .txt80 {
+  align-self: stretch;
+  width: 35px;
+  position: relative;
+  display: inline-block;
+}
+#GemFind.gemfind-ring-builder-scope .txt81 {
+  align-self: stretch;
+  width: 23px;
+  position: relative;
+  display: inline-block;
+}
+#GemFind.gemfind-ring-builder-scope .range81 {
+  align-self: stretch;
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: var(--padding-base-5) var(--padding-xl);
+}
+#GemFind.gemfind-ring-builder-scope .from-to6 {
+  align-self: stretch;
+  flex: 1;
+  border-radius: var(--br-base);
+  border: 1px solid var(--divider);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+#GemFind.gemfind-ring-builder-scope .sh6 {
+  align-self: stretch;
+  height: 259px;
+  border-bottom: 1px solid var(--stroke);
+  box-sizing: border-box;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 0px 0px var(--padding-xl);
+  gap: var(--gap-xs);
+  text-align: center;
+  font-size: var(--body-font-size);
+  color: var(--grey);
+  font-family: var(--body-font-family);
+}

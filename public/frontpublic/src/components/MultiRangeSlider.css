@@ -1,0 +1,320 @@
+/* All rules scoped to the plugin mount — beats theme + nouislider globals */
+#GemFind.gemfind-ring-builder-scope .gf_container {
+	height: 5px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 400px;
+	min-width: 220px;
+	width: 100%;
+}
+#GemFind.gemfind-ring-builder-scope .gf_container.price_slider_box {
+	height: auto;
+	flex-direction: column;
+	align-items: stretch;
+	justify-content: flex-start;
+	gap: 20px;
+	padding-bottom: 4px;
+}
+@media (min-width: 992px) {
+	#GemFind.gemfind-ring-builder-scope .gf_container {
+		min-width: 420px;
+	}
+	#GemFind.gemfind-ring-builder-scope .advanced--price-sliders {
+		/* min-width: auto;width: 100%;flex-direction: column; */
+		justify-content: space-around;
+	}
+}
+#GemFind.gemfind-ring-builder-scope .slider {
+	position: relative;
+	width: 100%;
+}
+#GemFind.gemfind-ring-builder-scope .slider__track,
+#GemFind.gemfind-ring-builder-scope .slider__range {
+	border-radius: 3px;
+	height: 3px;
+	position: absolute;
+}
+#GemFind.gemfind-ring-builder-scope .slider__track {
+	background-color: #d1c1ba;
+	width: 100%;
+	z-index: 1;
+}
+#GemFind.gemfind-ring-builder-scope .slider__range {
+	background-color: var(--slider-color);
+	z-index: 2;
+}
+#GemFind.gemfind-ring-builder-scope .slider__left-value,
+#GemFind.gemfind-ring-builder-scope .slider__right-value {
+	position: absolute;
+	bottom: -35px;
+	font-size: 14px;
+	color: #b9a9a1;
+	border: 0;
+	font-family: var(--body-font-family);
+	padding: 0;
+	background-color: transparent;
+	-webkit-appearance: none;
+	appearance: none;
+}
+#GemFind.gemfind-ring-builder-scope .slider__left-value:focus-visible,
+#GemFind.gemfind-ring-builder-scope .slider__right-value:focus-visible {
+	border: 0 none;
+	border-radius: 0;
+	outline: 0 none;
+}
+#GemFind.gemfind-ring-builder-scope .slider__left-value {
+	left: 0;
+	text-align: left;
+}
+#GemFind.gemfind-ring-builder-scope .slider__right-value {
+	right: 0;
+	border: 0;
+	text-align: right;
+}
+#GemFind.gemfind-ring-builder-scope .gf_container .noUi-target {
+	width: 100%;
+}
+#GemFind.gemfind-ring-builder-scope .noUi-horizontal {
+	height: 5px;
+}
+#GemFind.gemfind-ring-builder-scope .noUi-horizontal .noUi-handle {
+	width: 18px;
+	height: 18px;
+	right: -17px;
+	top: -6px;
+	box-shadow: none;
+	border-radius: 50%;
+	border: 1px solid var(--border-color);
+	background: var(--slider-color);
+}
+#GemFind.gemfind-ring-builder-scope .noUi-handle:before,
+#GemFind.gemfind-ring-builder-scope .noUi-handle:after {
+	content: none;
+}
+#GemFind.gemfind-ring-builder-scope .noUi-txt-dir-ltr {
+	width: 100%;
+}
+#GemFind.gemfind-ring-builder-scope .noUi-connect {
+	background-color: var(--slider-color);
+}
+#GemFind.gemfind-ring-builder-scope .noUi-horizontal .noUi-tooltip {
+	display: none !important;
+}
+#GemFind.gemfind-ring-builder-scope .filter-options-container.priceFilterBox .noUi-base,
+#GemFind.gemfind-ring-builder-scope .advanced-filter-group .noUi-base {
+	background: #d1c1ba;
+	border-radius: 3px;
+}
+#GemFind.gemfind-ring-builder-scope .filter-options-container.priceFilterBox .noUi-target,
+#GemFind.gemfind-ring-builder-scope .advanced-filter-group .noUi-target {
+	box-shadow: none;
+	border: none;
+	background: transparent;
+}
+/* Removing the default appearance */
+#GemFind.gemfind-ring-builder-scope .advanced-filter-group .thumb {
+	position: relative;
+}
+#GemFind.gemfind-ring-builder-scope .thumb,
+#GemFind.gemfind-ring-builder-scope .thumb::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	-webkit-tap-highlight-color: transparent;
+}
+#GemFind.gemfind-ring-builder-scope .thumb {
+	pointer-events: none;
+	position: absolute;
+	height: 0;
+	width: 100%;
+	outline: none;
+	top: 2px;
+}
+#GemFind.gemfind-ring-builder-scope .thumb--zindex-3 {
+	z-index: 3;
+}
+#GemFind.gemfind-ring-builder-scope .thumb--zindex-4 {
+	z-index: 4;
+}
+#GemFind.gemfind-ring-builder-scope .thumb--zindex-5 {
+	z-index: 5;
+}
+/* For Chrome browsers */
+#GemFind.gemfind-ring-builder-scope .thumb::-webkit-slider-thumb {
+	background-color: var(--slider-thumb);
+	border: none;
+	border-radius: 50%;
+	cursor: pointer;
+	height: 20px;
+	width: 20px;
+	margin-top: 0;
+	pointer-events: all;
+	position: relative;
+}
+/* For Firefox browsers */
+#GemFind.gemfind-ring-builder-scope .thumb::-moz-range-thumb {
+	background-color: var(--slider-thumb);
+	border: none;
+	border-radius: 50%;
+	cursor: pointer;
+	height: 20px;
+	width: 20px;
+	margin-top: 0;
+	pointer-events: all;
+	position: relative;
+}
+#GemFind.gemfind-ring-builder-scope .advanced-filter-group .gf_container.price_slider_box {
+	position: relative;
+	margin-top: 20px;
+	width: 100% !important;
+	min-width: 100%;
+}
+#GemFind.gemfind-ring-builder-scope .advanced-filter-group .gf_container.price_slider_box .sliderValues {
+	margin-top: 10px;
+	position: relative;
+	width: 100%;
+	min-height: 24px;
+}
+#GemFind.gemfind-ring-builder-scope .advanced-filter-group .gf_container.price_slider_box .sliderValues2,
+#GemFind.gemfind-ring-builder-scope .advanced-filter-group .gf_container.price_slider_box .sliderValues1 {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	justify-content: flex-start;
+	margin-bottom: 0;
+	gap: 0;
+}
+#GemFind.gemfind-ring-builder-scope .advanced-filter-group .gf_container.price_slider_box .sliderValues1 {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+}
+#GemFind.gemfind-ring-builder-scope .advanced-filter-group .gf_container.price_slider_box .sliderValues2 {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+}
+#GemFind.gemfind-ring-builder-scope .advanced-filter-group .gf_container.price_slider_box .sliderValues1 input,
+#GemFind.gemfind-ring-builder-scope .advanced-filter-group .gf_container.price_slider_box .sliderValues2 input {
+	position: relative;
+	width: auto;
+	right: auto;
+	bottom: auto;
+	padding: 0;
+}
+#GemFind.gemfind-ring-builder-scope .advanced-filter-group .gf_container.price_slider_box .sliderValues1 .slider__left-value {
+	max-width: 30px;
+	min-width: 0;
+}
+#GemFind.gemfind-ring-builder-scope .advanced-filter-group .gf_container.price_slider_box .sliderValues2 .slider__right-value {
+	max-width: 45px;
+	min-width: 0;
+}
+#GemFind.gemfind-ring-builder-scope .advanced-filter-group .gf_container.price_slider_box .sliderValues1 .slider__left-value,
+#GemFind.gemfind-ring-builder-scope .advanced-filter-group .gf_container.price_slider_box .sliderValues2 .slider__right-value {
+	position: relative;
+	bottom: auto;
+	left: auto;
+	right: auto;
+	text-align: left;
+	color: #262523 !important;
+}
+#GemFind.gemfind-ring-builder-scope .advanced-filter-group .gf_container.price_slider_box span.percSymbol {
+	margin-left: 4px;
+	flex-shrink: 0;
+	white-space: nowrap;
+}
+#GemFind.gemfind-ring-builder-scope .advanced-filter-group .gf_container.price_slider_box .currencySymbol:empty,
+#GemFind.gemfind-ring-builder-scope .advanced-filter-group .gf_container.price_slider_box .currencySymbolleft:empty {
+	display: none;
+}
+#GemFind.gemfind-ring-builder-scope .filter-options-container.priceFilterBox .gf_container.price_slider_box .sliderValues {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+	position: relative;
+}
+#GemFind.gemfind-ring-builder-scope .filter-options-container.priceFilterBox .gf_container.price_slider_box .sliderValues .sliderValues1 .currencySymbol {
+	position: static;
+	left: auto;
+	bottom: auto;
+	font-size: 14px;
+	line-height: 18px;
+	font-family: var(--body-font-family);
+	flex-shrink: 0;
+}
+#GemFind.gemfind-ring-builder-scope .filter-options-container.priceFilterBox .gf_container.price_slider_box .sliderValues .sliderValues2 .currencySymbol {
+	position: static;
+	right: auto;
+	bottom: auto;
+	font-size: 14px;
+	line-height: 18px;
+	font-family: var(--body-font-family);
+	flex-shrink: 0;
+}
+#GemFind.gemfind-ring-builder-scope .filter-options-container.priceFilterBox .gf_container.price_slider_box .sliderValues .sliderValues1 .currencySymbolleft {
+	position: static;
+	left: auto;
+	bottom: auto;
+	font-size: 14px;
+	line-height: 18px;
+	font-family: var(--body-font-family);
+	flex-shrink: 0;
+}
+#GemFind.gemfind-ring-builder-scope .filter-options-container.priceFilterBox .gf_container.price_slider_box .sliderValues .sliderValues2 .currencySymbolleft {
+	position: static;
+	right: auto;
+	bottom: auto;
+	font-size: 14px;
+	line-height: 18px;
+	font-family: var(--body-font-family);
+	flex-shrink: 0;
+}
+#GemFind.gemfind-ring-builder-scope .filter-options-container.priceFilterBox {
+	margin-bottom: 40px;
+}
+#GemFind.gemfind-ring-builder-scope .filter-options-container.priceFilterBox .sliderValues .sliderValues1,
+#GemFind.gemfind-ring-builder-scope .filter-options-container.priceFilterBox .sliderValues .sliderValues2 {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	position: relative;
+}
+#GemFind.gemfind-ring-builder-scope .filter-options-container.priceFilterBox .sliderValues .slider__left-value {
+	width: 90px;
+	border: 1px solid var(--border-color);
+	text-align: center;
+	border-radius: 6px;
+	line-height: 18px;
+	left: auto;
+	position: static;
+	bottom: auto;
+	color: #262523 !important;
+}
+#GemFind.gemfind-ring-builder-scope .filter-options-container.priceFilterBox .sliderValues .slider__right-value {
+	width: 90px;
+	border: 1px solid var(--border-color);
+	text-align: center;
+	border-radius: 6px;
+	line-height: 18px;
+	left: auto;
+	right: auto;
+	position: static;
+	bottom: auto;
+	color: #262523 !important;
+}
+#GemFind.gemfind-ring-builder-scope .filter-options-container.priceFilterBox .sliderValues .sliderValues1 .currencySymbol,
+#GemFind.gemfind-ring-builder-scope .filter-options-container.priceFilterBox .sliderValues .sliderValues2 .currencySymbol,
+#GemFind.gemfind-ring-builder-scope .filter-options-container.priceFilterBox .sliderValues .sliderValues1 .currencySymbolleft,
+#GemFind.gemfind-ring-builder-scope .filter-options-container.priceFilterBox .sliderValues .sliderValues2 .currencySymbolleft {
+	position: static;
+	left: auto;
+	right: auto;
+	bottom: auto;
+	flex-shrink: 0;
+}
+#GemFind.gemfind-ring-builder-scope .filter-options-container.priceFilterBox .sliderValues .currencySymbol + .slider__left-value,
+#GemFind.gemfind-ring-builder-scope .filter-options-container.priceFilterBox .sliderValues .currencySymbol + .slider__right-value {
+	left: auto;
+	right: auto;
+}

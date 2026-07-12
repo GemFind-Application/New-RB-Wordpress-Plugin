@@ -1,0 +1,20 @@
+#GemFind.gemfind-ring-builder-scope .div31 {
+  position: relative;
+  display: inline-block;
+  min-width: 63px;
+}
+#GemFind.gemfind-ring-builder-scope .ct {
+  border-radius: var(--br-3xs);
+  background-color: var(--color-gray-100);
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-10xs) var(--padding-xs) var(--padding-9xs);
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: center;
+  font-size: var(--body-font-size);
+  color: var(--white);
+  font-family: var(--body-font-family);
+}

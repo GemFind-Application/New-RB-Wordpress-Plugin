@@ -1,0 +1,51 @@
+#gemfindrb-admin-root.gemfind-ring-builder-scope {
+  margin-top: 20px;
+}
+
+body[class*="ringbuilder"] #wpbody-content > .wrap > h1 {
+  display: none;
+}
+
+body[class*="ringbuilder"] #wpbody-content > .wrap {
+  margin-top: 8px;
+}
+
+/* Admin toast notifications (Diamond Link parity) — wp-admin only */
+.wp-admin .wpdl-toast {
+  position: fixed;
+  top: 52px;
+  right: 20px;
+  z-index: 100050;
+  max-width: min(380px, calc(100vw - 40px));
+  padding: 14px 18px;
+  border-radius: 6px;
+  font-size: 14px;
+  line-height: 1.45;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.18);
+  animation: wpdl-toast-in 0.25s ease-out;
+}
+
+@keyframes wpdl-toast-in {
+  from {
+    opacity: 0;
+    transform: translateX(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.wp-admin .wpdl-toast--success {
+  background: #ecfdf3;
+  border: 1px solid #86efac;
+  color: #14532d;
+}
+
+.wp-admin .wpdl-toast--error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+}
+
+/* Ring Builder About page uses wpdl2-* shell classes from admin/css/gemfindrb-admin.css */

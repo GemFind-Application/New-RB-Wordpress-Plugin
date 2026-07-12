@@ -1,0 +1,55 @@
+#GemFind.gemfind-ring-builder-scope .measurement-items {
+	border-radius: var(--br-base);
+	background-color: var(--beige-00);
+	border: 1px dashed var(--beige-04);
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: row;
+	align-items: flex-start;
+	justify-content: flex-start;
+	padding: 40px;
+	gap: 40px;
+	text-align: center;
+	font-size: var(--h4-size);
+	color: var(--backgroundtext);
+	font-family: var(--h4);
+	width: fit-content;
+}
+#GemFind.gemfind-ring-builder-scope .measurement-items img {
+	width: 24px;
+	height: auto;
+}
+#GemFind.gemfind-ring-builder-scope .measurement-sub-items {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: var(--gap-9xs);
+	text-align: left;
+}
+#GemFind.gemfind-ring-builder-scope .measurement-sub-items .measurement-sub-values {
+	position: relative;
+	line-height: 120%;
+	display: inline-block;
+}
+#GemFind.gemfind-ring-builder-scope .measurement-sub-items .depth3 {
+	position: relative;
+	font-size: var(--body-font-size);
+	font-family: var(--body-font-family);
+	color: var(--backgroundtext);
+	display: inline-block;
+}
+@media screen and (max-width: 825px) {
+	#GemFind.gemfind-ring-builder-scope .measurement-sub-values {
+		font-size: var(--buttom-size);
+		line-height: 19px;
+	}
+	#GemFind.gemfind-ring-builder-scope .number2 .measurement-items {
+		flex: 1 !important;
+	}
+	#GemFind.gemfind-ring-builder-scope .measurement-items {
+		padding: var(--padding-xs);
+		box-sizing: border-box;
+		flex: 1;
+		gap: 10px;
+	}
+}

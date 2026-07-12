@@ -1,0 +1,20 @@
+{
+  "name": "gemfind-ring-builder-admin",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite",
+    "scope:css": "node scripts/scope-css-sources.cjs"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.2.1",
+    "terser": "^5.49.0",
+    "vite": "^5.4.1"
+  }
+}

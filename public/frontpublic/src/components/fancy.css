@@ -1,0 +1,52 @@
+#GemFind.gemfind-ring-builder-scope .fancy-child {
+  margin-top: -42px;
+  width: 12.1px;
+  height: 10.5px;
+  position: relative;
+  flex-shrink: 0;
+}
+#GemFind.gemfind-ring-builder-scope .also-known-as {
+  flex: 1;
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+}
+#GemFind.gemfind-ring-builder-scope .also-known-as-fancy-color-diam-wrapper {
+  align-self: stretch;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 0px var(--padding-9xs) 0px var(--padding-11xs);
+  box-sizing: border-box;
+  max-width: 100%;
+  flex-shrink: 0;
+}
+#GemFind.gemfind-ring-builder-scope .fancy {
+  width: 608px;
+  box-shadow: var(--effect);
+  backdrop-filter: blur(32px);
+  border-radius: var(--br-xs);
+  background-color: var(--color-snow-100);
+  border: 1px solid var(--beige-03);
+  box-sizing: border-box;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-11xl) var(--padding-9xl);
+  gap: 31.5px;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: left;
+  font-size: var(--body-font-size);
+  color: var(--grey);
+  font-family: var(--body-font-family);
+}
+
+@media screen and (max-width: 825px) {
+  #GemFind.gemfind-ring-builder-scope .fancy {
+    gap: var(--gap-base);
+  }
+}

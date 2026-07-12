@@ -1,0 +1,175 @@
+#GemFind.gemfind-ring-builder-scope .price7 {
+  position: relative;
+  display: inline-block;
+  min-width: 33px;
+}
+#GemFind.gemfind-ring-builder-scope .i2 {
+  position: relative;
+  display: inline-block;
+  min-width: 3px;
+}
+#GemFind.gemfind-ring-builder-scope .empty-header-content {
+  width: 18px;
+  height: 18px;
+  border-radius: var(--br-21xl);
+  background-color: var(--beige-05);
+  border: 1px solid var(--white);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-11xs) var(--padding-7xs);
+}
+#GemFind.gemfind-ring-builder-scope .empty-headers {
+  height: 18.7px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-10xs-7) 0px 0px;
+  box-sizing: border-box;
+  font-size: var(--m-sub-size);
+  color: var(--black);
+  font-family: var(--font-inter);
+}
+#GemFind.gemfind-ring-builder-scope .filter-headers {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: var(--gap-5xs);
+}
+#GemFind.gemfind-ring-builder-scope .lab-certification-child {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  max-width: 100%;
+  overflow: hidden;
+  max-height: 100%;
+}
+#GemFind.gemfind-ring-builder-scope .lab-certification-item {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  max-width: 100%;
+  overflow: hidden;
+  max-height: 100%;
+  z-index: 2;
+}
+#GemFind.gemfind-ring-builder-scope .lab-certification {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  margin: 0 !important;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+}
+#GemFind.gemfind-ring-builder-scope .filter-options-rows {
+  position: absolute;
+  top: 44px;
+  left: 4px;
+  width: 250px;
+  height: 2px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+#GemFind.gemfind-ring-builder-scope .cut-options-content-child {
+  height: 26px;
+  width: 26px;
+  position: relative;
+  border-radius: var(--br-21xl);
+  background-color: var(--accent);
+  border: 1px solid var(--accent);
+  box-sizing: border-box;
+  display: none;
+  z-index: 0;
+}
+#GemFind.gemfind-ring-builder-scope .cut-options {
+  position: absolute;
+  margin: 0 !important;
+  bottom: -23px;
+  left: 0px;
+  display: inline-block;
+  min-width: 21px;
+  white-space: nowrap;
+}
+#GemFind.gemfind-ring-builder-scope .cut-options-content {
+  height: 26px;
+  width: 23px;
+  border-radius: var(--br-21xl);
+  background-color: var(--accent);
+  border: 1px solid var(--accent);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  position: relative;
+  gap: var(--gap-9xs);
+  z-index: 1;
+}
+#GemFind.gemfind-ring-builder-scope .color-options {
+  position: absolute;
+  margin: 0 !important;
+  bottom: -23px;
+  left: -39px;
+  display: inline-block;
+  min-width: 66px;
+  white-space: nowrap;
+}
+#GemFind.gemfind-ring-builder-scope .color-filter {
+  height: 26px;
+  width: 27px;
+  border-radius: var(--br-21xl);
+  background-color: var(--accent);
+  border: 1px solid var(--accent);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  position: relative;
+  gap: var(--gap-9xs);
+  z-index: 3;
+}
+#GemFind.gemfind-ring-builder-scope .cut-filter {
+  position: absolute;
+  top: 31px;
+  left: 3px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--gap-xl);
+  text-align: left;
+  color: var(--black);
+}
+#GemFind.gemfind-ring-builder-scope .sh4 {
+  align-self: stretch;
+  height: 115px;
+  position: relative;
+  border-bottom: 1px solid var(--stroke);
+  box-sizing: border-box;
+  flex-shrink: 0;
+  text-align: center;
+  font-size: var(--body-font-size);
+  color: var(--grey);
+  font-family: var(--body-font-family);
+}

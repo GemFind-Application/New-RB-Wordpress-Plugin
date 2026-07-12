@@ -1,0 +1,604 @@
+@import "react-image-gallery/styles/css/image-gallery.css";
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@700&display=swap");
+
+/* @import url("https://fonts.googleapis.com/css2?family=Acumin+Pro:wght@400&display=swap"); */
+:root {
+	/* fonts */
+	--body-font-family: 'Manrope', sans-serif;
+	--h4: "Libre Baskerville", sans-serif;
+	--font-inter: 'Inter', sans-serif;
+	--font-acumin-pro: 'Acumin Pro', sans-serif;
+	/* font sizes */
+	--body-font-size: 14px;
+	--h1-size: 44px;
+	--h2-size: 32px;
+	--h3-size: 24px;
+	--h4-size: 20px;
+	--h5-size: 18px;
+	--buttom-size: 16px;
+	--sub-size: 12px;
+	--m-sub-size: 10px;
+	--font-size-16xl: 35px;
+	--font-size-7xl: 26px;
+	/* Colors */
+	--white: #FFFFFF;
+	--black: #262523;
+	--stroke: #e4e3e1;
+
+	--accent: #836a5d;
+	--slider-color: #836a5d;
+	--slider-thumb: #836a5d;
+	--menus-background: #836a5d;
+	--link-color: #836a5d;
+	--border-color: #c9aea1;
+	--over-effect: #836a5d;
+	--grey: #6a655e;
+	--textcolor: #836a5d;
+	--notselectedmenucolor: #6a655e;
+	--sepratorcolor: #dccac1;
+	--backgroundtext: #262523;
+	--backgroundmenutext: #fff;
+	--backgroundmenutextdiamond: ##6a655e;
+	--note-container: #f8f4f2;
+	--color-lightgray-100: #dbd4d1;
+	--color-lightgray-200: #d4d4d4;
+	--colorbeige: #dccac1;
+	--color-lightgray-300: rgba(212, 212, 212, 0.09);
+	--color-snow-100: rgba(251, 249, 248, 0.7);
+
+	--color-gray-100: rgba(38, 37, 35, 0.8);
+	--color-rosybrown-100: #9c8578;
+	--color-rosybrown-200: rgba(156, 133, 120, 0.09);
+	--beige-00: #fbf9f8;
+	--beige-01: #f8f4f2;
+	--beige-02: #f4eeeb;
+	--beige-03: #e7dbd5;
+	--beige-04: #dccac1;
+	--beige-05: #c9aea1;
+	--divider: #eeedec;
+	--hoverBGC: #c9aea129;
+
+	--l-grey: #b1b0ae;
+	--color-mediumslateblue: #4B5ADE;
+	--popup-text-color: #333;
+	--rb-custom18: #C9AEA1;
+	--boderColor10: #E8E4E2;
+	/* Gaps */
+	--gap-12xs: 1px;
+	--gap-10xs: 3px;
+	--gap-9xs: 4px;
+	--gap-8xs: 5px;
+	--gap-6xs: 7px;
+	--gap-5xs: 8px;
+	--gap-3xs: 10px;
+	--gap-2xs: 11px;
+	--gap-xs: 12px;
+	--gap-smi: 13px;
+	--gap-sm: 14px;
+	--gap-mini: 15px;
+	--gap-base: 16px;
+	--gap-lg: 18px;
+	--gap-lgi: 19px;
+	--gap-xl: 20px;
+	--gap-3xl: 22px;
+	--gap-5xl: 24px;
+	--gap-6xl: 25px;
+	--gap-7xl: 26px;
+	--gap-9xl: 28px;
+	--gap-11xl: 30px;
+	--gap-13xl: 32px;
+	--gap-17xl: 36px;
+	--gap-21xl: 40px;
+	--gap-25xl: 44px;
+	--gap-45xl: 64px;
+	--gap-53xl: 72px;
+	--gap-61xl: 80px;
+	--gap-141xl: 160px;
+	--gap-300xl-5: 319.5px;
+	/* Paddings */
+	--padding-12xs: 1px;
+	--padding-6xs-5: 6.5px;
+	--padding-5xs: 8px;
+	--padding-3xs: 10px;
+	--padding-2xs-5: 10.5px;
+	--padding-xs: 12px;
+	--padding-smi-4: 12.4px;
+	--padding-smi-5: 12.5px;
+	--padding-smi: 13px;
+	--padding-lg: 18px;
+	--padding-sm: 14px;
+	--padding-base: 16px;
+	--padding-base-5: 16.5px;
+	--padding-xl: 20px;
+	--padding-5xl: 24px;
+	--padding-15xl: 34px;
+	--padding-28xl: 47px;
+	--padding-32xl: 51px;
+	--padding-41xl: 60px;
+	--padding-101xl: 120px;
+	--padding-11xs: 2px;
+	--padding-7xs: 6px;
+	--padding-10xs: 3px;
+	--padding-10xs-7: 2.7px;
+	--padding-mini: 15px;
+	--padding-4xs: 9px;
+	--padding-2xs: 11px;
+	--padding-mid: 17px;
+	--padding-21xl: 40px;
+	--padding-11xl: 30px;
+	--padding-12xs-5: 0.5px;
+	--padding-8xs: 5px;
+	--padding-346xl: 365px;
+	--padding-163xl: 182px;
+	--padding-9xl: 28px;
+	--padding-91xl: 110px;
+	--padding-3xl: 22px;
+	--padding-8xl: 27px;
+	--padding-36xl: 55px;
+	--padding-11xs-6: 1.6px;
+	--padding-7xs-7: 5.7px;
+	--padding-8xs-1: 4.1px;
+	--padding-9xs: 4px;
+	--padding-4xl: 23px;
+	--padding-68xl: 87px;
+	--padding-45xl: 64px;
+	--padding-35xl: 54px;
+	--padding-13xl: 32px;
+	--padding-3xs-5: 9.5px;
+	--padding-4xs-5: 8.5px;
+	--padding-mid-5: 17.5px;
+	--padding-lgi: 19px;
+	--padding-2xl: 21px;
+	--padding-6xs: 7px;
+	--padding-5xs-5: 7.5px;
+	--padding-4xs-2: 8.2px;
+	--padding-241xl: 260px;
+	--padding-111xl: 130px;
+	--padding-12xl: 31px;
+	--padding-152xl: 171px;
+	--padding-10xs-5: 2.5px;
+	--padding-37xl: 56px;
+	--padding-125xl: 144px;
+	--padding-17xl: 36px;
+	--padding-53xl: 72px;
+	--padding-6xl: 25px;
+	--padding-7xl: 26px;
+	--padding-23xl: 42px;
+	--padding-11xs-5: 1.5px;
+	--padding-27xl: 46px;
+	--padding-57xl: 76px;
+	/* Border radiuses */
+	--br-9xs: 4px;
+	--br-5xs: 8px;
+	--br-3xs: 10px;
+	--br-xs: 12px;
+	--br-base: 16px;
+	--br-xl: 20px;
+	--br-5xl: 24px;
+	--br-9xl: 28px;
+	--br-21xl: 40px;
+	--br-37xl: 56px;
+	--br-81xl: 100px;
+	/* Effects */
+	--effect: 0px 26px 80px rgba(43, 37, 37, 0.08),
+		0px 5.2px 13px rgba(43, 37, 37, 0.04);
+}
+
+/* Typography/base on scope container (not document body). */
+#GemFind.gemfind-ring-builder-scope .gemfind-ring-builder-tool {
+	font-family: var(--body-font-family);
+}
+
+#GemFind.gemfind-ring-builder-scope .product-item-skeleton {
+	border: 1px solid #e0e0e0;
+	padding: 16px;
+	margin-bottom: 16px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+#GemFind.gemfind-ring-builder-scope .skeleton-image,
+#GemFind.gemfind-ring-builder-scope .skeleton-title,
+#GemFind.gemfind-ring-builder-scope .skeleton-price {
+	background-color: #e0e0e0;
+	margin-bottom: 8px;
+}
+
+#GemFind.gemfind-ring-builder-scope .skeleton-image {
+	width: 150px;
+	height: 150px;
+}
+
+#GemFind.gemfind-ring-builder-scope .skeleton-title {
+	width: 80%;
+	height: 20px;
+}
+
+#GemFind.gemfind-ring-builder-scope .skeleton-price {
+	width: 60%;
+	height: 20px;
+}
+
+#GemFind.gemfind-ring-builder-scope .skeleton-filter {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	padding: 16px;
+}
+
+#GemFind.gemfind-ring-builder-scope .skeleton-line {
+	height: 20px;
+	background-color: #e0e0e0;
+	border-radius: 4px;
+}
+
+/* PRODUCT GALLERY */
+#GemFind.gemfind-ring-builder-scope .image-gallery-left-nav .image-gallery-svg,
+#GemFind.gemfind-ring-builder-scope .image-gallery-right-nav .image-gallery-svg {
+	height: 40px;
+}
+
+/* COMMON CLASSES */
+/* Common utility classes */
+#GemFind.gemfind-ring-builder-scope .flex {
+	display: flex;
+}
+
+#GemFind.gemfind-ring-builder-scope .flex-col {
+	flex-direction: column;
+}
+
+#GemFind.gemfind-ring-builder-scope .items-center {
+	align-items: center;
+}
+
+#GemFind.gemfind-ring-builder-scope .justify-center {
+	justify-content: center;
+}
+
+#GemFind.gemfind-ring-builder-scope .justify-between {
+	justify-content: space-between;
+}
+
+#GemFind.gemfind-ring-builder-scope .w-full {
+	width: 100%;
+}
+
+#GemFind.gemfind-ring-builder-scope .h-full {
+	height: 100%;
+}
+
+#GemFind.gemfind-ring-builder-scope .text-center {
+	text-align: center;
+}
+
+#GemFind.gemfind-ring-builder-scope .text-left {
+	text-align: left;
+}
+
+#GemFind.gemfind-ring-builder-scope .text-right {
+	text-align: right;
+}
+
+#GemFind.gemfind-ring-builder-scope .uppercase {
+	text-transform: uppercase;
+}
+
+#GemFind.gemfind-ring-builder-scope .relative {
+	position: relative;
+}
+
+#GemFind.gemfind-ring-builder-scope .absolute {
+	position: absolute;
+}
+
+#GemFind.gemfind-ring-builder-scope .sticky {
+	position: sticky;
+}
+
+#GemFind.gemfind-ring-builder-scope .overflow-hidden {
+	overflow: hidden;
+}
+
+#GemFind.gemfind-ring-builder-scope .no-display {
+	display: none !important;
+}
+
+#GemFind.gemfind-ring-builder-scope .no-appearance {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	background-image: url('data:image/svg+xml,<svg width="5" height="7" viewBox="0 0 5 7" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1.29999L3.5 3.79999L1 6.29999" stroke="%23262523"/></svg>');
+	background-repeat: no-repeat;
+	background-position-x: 100%;
+	background-position-y: 22px;
+	border: 1px solid #dfdfdf;
+	border-radius: 2px;
+	margin-right: 1rem;
+	padding: 1rem;
+	background-color: transparent;
+	box-shadow: none;
+	border: none;
+	font-weight: 700;
+	font-family: inherit;
+}
+
+#GemFind.gemfind-ring-builder-scope select.no-appearance::-ms-expand {
+	display: none;
+}
+
+#GemFind.gemfind-ring-builder-scope select.select--outline {
+	border: 0.5px solid var(--border-color);
+	border-radius: 50px;
+	padding: 10px 30px;
+	background-position-x: 90%;
+	background-position-y: 16px;
+	cursor: pointer;
+	color: var(--black);
+	font-weight: 500;
+	text-align: center;
+}
+
+#GemFind.gemfind-ring-builder-scope input:focus-visible,
+#GemFind.gemfind-ring-builder-scope textarea:focus-visible,
+#GemFind.gemfind-ring-builder-scope select.no-appearance:focus-visible {
+	outline: 0 none;
+	border: 1px solid var(--accent);
+	box-shadow: 0 0 0 transparent;
+}
+
+#GemFind.gemfind-ring-builder-scope select.select--outline option {
+	background-color: transparent;
+}
+
+#GemFind.gemfind-ring-builder-scope .no-decoration {
+	text-decoration: none;
+}
+
+#GemFind .headergroup-nav {
+	flex: 0 0 auto;
+}
+
+#GemFind.gemfind-ring-builder-scope .mined-lab-wrapper:empty,
+#GemFind.gemfind-ring-builder-scope .settingsfilter-wrapper:empty {
+	display: none;
+}
+
+#GemFind.gemfind-ring-builder-scope .rb_grid {
+	display: grid;
+}
+
+#GemFind.gemfind-ring-builder-scope .rb_col3 {
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+#GemFind.gemfind-ring-builder-scope .rb_col2 {
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+#GemFind.gemfind-ring-builder-scope .rb_col1 {
+	grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+#GemFind.gemfind-ring-builder-scope .message-info {
+	display: flex;
+	justify-content: center;
+	background-color: var(--beige-00);
+	font-size: 1.2em;
+	width: 100%;
+	padding: var(--padding-xl);
+	border-radius: var(--padding-xs);
+	font-weight: bold;
+}
+
+#GemFind.gemfind-ring-builder-scope .diamond-inner .placeholder {
+	color: var(--backgroundmenutext) !important;
+}
+
+#GemFind.gemfind-ring-builder-scope .button52 {
+	flex: 1;
+	border-radius: var(--br-37xl);
+	background-color: var(--accent);
+	border: 1px solid var(--accent);
+	color: #fff;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	padding: 0 var(--padding-xl);
+	box-sizing: border-box;
+	white-space: nowrap;
+	width: fit-content;
+	max-width: 100%;
+	cursor: pointer;
+	line-height: 20px;
+	height: 52px;
+	min-height: 52px;
+	font-family: var(--body-font-family);
+	font-size: var(--buttom-size);
+	font-weight: 700;
+	text-transform: uppercase;
+}
+
+#GemFind.gemfind-ring-builder-scope .button52_b {
+	flex: 1;
+	border-radius: var(--br-37xl);
+	background-color: transparent;
+	border: 1px solid var(--accent);
+	color: var(--accent);
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	padding: 0 var(--padding-xl);
+	box-sizing: border-box;
+	white-space: nowrap;
+	width: 100%;
+	max-width: 500px;
+	margin: 0 auto;
+	align-self: center;
+	cursor: pointer;
+	line-height: 20px;
+	height: 52px;
+	min-height: 52px;
+	font-family: var(--body-font-family);
+	font-size: var(--buttom-size);
+	font-weight: 700;
+	text-transform: uppercase;
+}
+
+#GemFind.gemfind-ring-builder-scope .button52_b.non-clickable {
+	cursor: default !important;
+}
+
+#GemFind.gemfind-ring-builder-scope .button52_b.non-clickable:hover {
+	background-color: transparent !important;
+	color: var(--accent) !important;
+	border-color: var(--accent) !important;
+}
+
+#GemFind.gemfind-ring-builder-scope .button52 b,
+#GemFind.gemfind-ring-builder-scope .button52_b b {
+	font-weight: 700;
+}
+
+#GemFind.gemfind-ring-builder-scope .button40 {
+	flex: 1;
+	border-radius: var(--br-37xl);
+	background-color: var(--accent);
+	border: 1px solid var(--accent);
+	color: #fff;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	white-space: nowrap;
+	max-width: 100%;
+	cursor: pointer;
+	line-height: 20px;
+	font-size: var(--body-font-size);
+	font-weight: 700;
+	text-transform: uppercase;
+	padding: 9px var(--padding-xl);
+	font-family: var(--body-font-family);
+}
+
+#GemFind.gemfind-ring-builder-scope .button40_b {
+	flex: 1;
+	border-radius: var(--br-37xl);
+	background-color: transparent;
+	border: 1px solid var(--beige-00);
+	color: var(--beige-00);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	white-space: nowrap;
+	max-width: 100%;
+	cursor: pointer;
+	line-height: 20px;
+	font-size: var(--body-font-size);
+	font-weight: 700;
+	text-transform: uppercase;
+	padding: 9px var(--padding-xl);
+	font-family: var(--body-font-family);
+}
+
+#GemFind.gemfind-ring-builder-scope .button52:hover,
+#GemFind.gemfind-ring-builder-scope .button52_b:hover,
+#GemFind.gemfind-ring-builder-scope .button52_b:not([disabled]):hover,
+#GemFind.gemfind-ring-builder-scope .button52_b:focus,
+#GemFind.gemfind-ring-builder-scope .button40:hover,
+#GemFind.gemfind-ring-builder-scope .button40_b:hover,
+#GemFind.gemfind-ring-builder-scope .button40_b:not([disabled]):hover,
+#GemFind.gemfind-ring-builder-scope .button40_b:focus {
+	background-color: var(--beige-05);
+	border-color: var(--beige-05);
+	color: #FFF;
+}
+
+#GemFind.gemfind-ring-builder-scope .success-message button {
+	flex: 1;
+	border-radius: var(--br-37xl);
+	background-color: var(--accent);
+	border: 1px solid var(--accent);
+	color: #fff;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	padding: var(--padding-mini) var(--padding-xl);
+	box-sizing: border-box;
+	white-space: nowrap;
+	max-width: 100%;
+	cursor: pointer;
+	line-height: 20px;
+	font-size: var(--buttom-size);
+	font-weight: 700;
+	text-transform: uppercase;
+	padding: 0 20px;
+	height: 40px;
+	margin-top: 20px;
+	font-family: var(--body-font-family);
+}
+
+#GemFind.gemfind-ring-builder-scope .button40:not([disabled]):hover,
+#GemFind.gemfind-ring-builder-scope .button40:focus {
+	color: #FFF;
+}
+
+/* Responsive utilities */
+@media (max-width: 640px) {
+	#GemFind.gemfind-ring-builder-scope .sm\:flex-col {
+		flex-direction: column;
+	}
+}
+
+@media (max-width: 768px) {
+	#GemFind.gemfind-ring-builder-scope .md\:flex-col {
+		flex-direction: column;
+	}
+
+	#GemFind.gemfind-ring-builder-scope .portalPopupOverlay {
+		overflow-y: scroll;
+		/* margin: 20px 0; */
+	}
+
+	#GemFind.gemfind-ring-builder-scope .rb_col2 {
+		grid-template-columns: repeat(1, minmax(0, 1fr));
+	}
+}
+
+@media (max-width: 1024px) {
+	#GemFind.gemfind-ring-builder-scope .lg\:flex-col {
+		flex-direction: column;
+	}
+}
+
+#GemFind.gemfind-ring-builder-scope a:empty,
+#GemFind.gemfind-ring-builder-scope ul:empty,
+#GemFind.gemfind-ring-builder-scope dl:empty,
+#GemFind.gemfind-ring-builder-scope div:empty,
+#GemFind.gemfind-ring-builder-scope section:empty,
+#GemFind.gemfind-ring-builder-scope article:empty,
+#GemFind.gemfind-ring-builder-scope p:empty,
+#GemFind.gemfind-ring-builder-scope h1:empty,
+#GemFind.gemfind-ring-builder-scope h2:empty,
+#GemFind.gemfind-ring-builder-scope h3:empty,
+#GemFind.gemfind-ring-builder-scope h4:empty,
+#GemFind.gemfind-ring-builder-scope h5:empty,
+#GemFind.gemfind-ring-builder-scope h6:empty {
+	display: block;
+}
+
+@media screen and (max-width: 768px) {
+	#GemFind.gemfind-ring-builder-scope .button40_b {
+		border: 1px solid var(--border-color);
+		color: var(--backgroundtext);
+	}
+}
+
+#GemFind.gemfind-ring-builder-scope svg {
+	width: revert !important;
+	height: revert !important;
+}
