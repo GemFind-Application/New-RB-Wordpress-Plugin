@@ -1,4 +1,4 @@
-# Register Windows scheduled task: daily GitHub sync at 12:00 AM (local time).
+# Register Windows scheduled task: daily GitHub sync at 12:00 PM (local time).
 $ErrorActionPreference = "Stop"
 
 $taskName = "GemFind-RB-GitHub-Nightly-Sync"
@@ -14,7 +14,8 @@ $action = New-ScheduledTaskAction `
     -Argument "-NoProfile -ExecutionPolicy Bypass -File `"$scriptPath`"" `
     -WorkingDirectory $repoRoot
 
-$trigger = New-ScheduledTaskTrigger -Daily -At "12:00AM"
+$noon = Get-Date -Hour 12 -Minute 0 -Second 0
+$trigger = New-ScheduledTaskTrigger -Daily -At $noon
 
 $settings = New-ScheduledTaskSettingsSet `
     -AllowStartIfOnBatteries `
@@ -36,9 +37,9 @@ Register-ScheduledTask `
     -Trigger $trigger `
     -Settings $settings `
     -Principal $principal `
-    -Description "Sync GemFind Ring Builder plugin to GitHub every night at 12:00 AM." | Out-Null
+    -Description "Sync GemFind Ring Builder plugin to GitHub daily at 12:00 PM." | Out-Null
 
 Write-Host "Scheduled task created: $taskName"
-Write-Host "Runs daily at 12:00 AM (local time)."
+Write-Host "Runs daily at 12:00 PM (local time)."
 Write-Host "Script: $scriptPath"
 Write-Host "Logs:   $(Join-Path $PSScriptRoot 'logs\nightly-sync.log')"
