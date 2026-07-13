@@ -55,8 +55,7 @@ try {
         }
 
         Invoke-Git -GitArgs @("add", "-A") | Out-Null
-        $date = Get-Date -Format "yyyy-MM-dd"
-        $commitMessage = Get-NightlyCommitMessage -DateLabel $date
+        $commitMessage = Get-NightlyCommitMessage
         $msgFile = Join-Path $env:TEMP ("gemfind-rb-nightly-commit-{0}.txt" -f ([guid]::NewGuid().ToString("N")))
         try {
             Set-Content -Path $msgFile -Value $commitMessage -Encoding UTF8
@@ -70,7 +69,7 @@ try {
                 Remove-Item $msgFile -Force
             }
         }
-        Write-Log ("Commit message: {0}" -f (($commitMessage -split "`n")[0]))
+        Write-Log ("Commit message: {0}" -f $commitMessage)
 
         Invoke-Git -GitArgs @("push", "origin", "main") | Out-Null
         Write-Log "Pushed to origin/main."

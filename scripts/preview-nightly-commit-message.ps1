@@ -22,10 +22,9 @@ $repoRoot = Split-Path $PSScriptRoot -Parent
 Push-Location $repoRoot
 try {
     Invoke-Git -GitArgs @("add", "-A") | Out-Null
-    $date = Get-Date -Format "yyyy-MM-dd"
     Write-Output "--- Nightly commit preview ---"
     Write-Output ""
-    Write-Output (Get-NightlyCommitMessage -DateLabel $date)
+    Write-Output (Get-NightlyCommitMessage)
 }
 finally {
     Pop-Location
