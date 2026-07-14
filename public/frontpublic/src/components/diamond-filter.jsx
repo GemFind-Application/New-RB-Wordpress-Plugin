@@ -1347,12 +1347,12 @@ const DiamondFilter = ({
                                 <div className="sortOrder">
                                     {orderDirection === 'ASC' && (
                                         <a onClick={() => setOrderDirection('DESC')}>
-                                            <img title="DESC" className={'imgDescAsc'} src={`${imageUrl}` + '/downarrow_dir.png'}></img>
+                                            <img title="ASC" className={'imgDescAsc'} src={`${imageUrl}` + '/uparrow_dir.png'}></img>
                                         </a>
                                     )}
                                     {orderDirection === 'DESC' && (
                                         <a onClick={() => setOrderDirection('ASC')}>
-                                            <img className={'imgDescAsc'} title="ASC" src={`${imageUrl}` + '/uparrow_dir.png'} />
+                                            <img className={'imgDescAsc'} title="DESC" src={`${imageUrl}` + '/downarrow_dir.png'} />
                                         </a>
                                     )}
                                 </div>

@@ -10,6 +10,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 final class GEMFINDRB_Email {
 
+	private const GEMFIND_DEFAULT_NOTIFICATION_EMAIL = 'donotuse@gemfind.com';
+	private const GEMFIND_DEFAULT_GREETING_NAME      = 'Prashant Gemfind';
+
 	// ── Ring emails ───────────────────────────────────────────────────────────
 
 	public static function ring_drop_hint( array $data ): bool|WP_Error {
@@ -804,8 +807,56 @@ final class GEMFINDRB_Email {
 		if ( $to === '' || ! is_email( $to ) ) {
 			return;
 		}
+		if ( ( $ctx['role'] ?? '' ) === 'retailer' ) {
+			$greeting              = self::retailer_greeting_name( $to, $cfg, $ctx );
+			$ctx['retailername']   = $greeting;
+			$ctx['vendorName']     = $greeting;
+		}
 		$html = self::render( $template, $ctx );
 		GEMFINDRB_Mail::send( $shop, sanitize_email( $to ), $subject, $html, self::html_headers( $cfg ) );
+	}
+
+	/**
+	 * Retailer/admin notification greeting: GemFind default inbox keeps vendor name;
+	 * merchant-configured admin inbox uses a generic Admin salutation.
+	 *
+	 * @param array<string,mixed> $ctx
+	 */
+	private static function retailer_greeting_name( string $to, ?object $cfg, array $ctx ): string {
+		$to_normalized = strtolower( sanitize_email( $to ) );
+
+		if ( $to_normalized === self::GEMFIND_DEFAULT_NOTIFICATION_EMAIL ) {
+			return self::GEMFIND_DEFAULT_GREETING_NAME;
+		}
+
+		if ( self::is_configured_admin_recipient( $to_normalized, $cfg ) ) {
+			return __( 'Admin', 'gemfind-ring-builder' );
+		}
+
+		return (string) ( $ctx['retailername'] ?? $ctx['vendorName'] ?? '' );
+	}
+
+	/**
+	 * @return list<string>
+	 */
+	private static function configured_admin_recipients( ?object $cfg ): array {
+		if ( ! is_object( $cfg ) || empty( $cfg->admin_email_address ) ) {
+			return [];
+		}
+
+		$emails = [];
+		foreach ( explode( ',', (string) $cfg->admin_email_address ) as $email ) {
+			$email = strtolower( sanitize_email( trim( $email ) ) );
+			if ( is_email( $email ) ) {
+				$emails[] = $email;
+			}
+		}
+
+		return array_values( array_unique( $emails ) );
+	}
+
+	private static function is_configured_admin_recipient( string $to, ?object $cfg ): bool {
+		return in_array( strtolower( sanitize_email( $to ) ), self::configured_admin_recipients( $cfg ), true );
 	}
 
 	/**

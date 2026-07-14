@@ -414,7 +414,8 @@ final class GEMFINDRB_API {
 		$body        = $this->body( $req );
 		$shop        = sanitize_text_field( (string) ( $body['shop_domain'] ?? $body['shop'] ?? $this->shop( $req ) ) );
 		$diamond_id  = sanitize_text_field( (string) ( $body['diamond_id'] ?? '' ) );
-		$type        = sanitize_text_field( (string) ( $body['list_type'] ?? $body['type'] ?? 'mined' ) );
+		// v2 sends list_type; v1 classic bundle sends diamond_type (fancydiamonds|labcreated|mined).
+		$type        = sanitize_text_field( (string) ( $body['list_type'] ?? $body['diamond_type'] ?? $body['type'] ?? 'mined' ) );
 
 		$diamond = GEMFINDRB_JewelCloud::get_diamond_by_id( $diamond_id, $type, $shop );
 		if ( empty( $diamond['diamondId'] ) ) {
@@ -426,7 +427,15 @@ final class GEMFINDRB_API {
 			return $this->error( $url->get_error_message(), (int) ( $url->get_error_data()['status'] ?? 400 ) );
 		}
 
-		return new WP_REST_Response( $url, 200 );
+		// Object shape for v1 (success/cart_url); url key kept for v2 parseCartUrlResponse.
+		return new WP_REST_Response(
+			[
+				'success'  => true,
+				'cart_url' => $url,
+				'url'      => $url,
+			],
+			200
+		);
 	}
 
 	public function handle_add_ring( WP_REST_Request $req ): WP_REST_Response {
@@ -445,7 +454,14 @@ final class GEMFINDRB_API {
 			return $this->error( $url->get_error_message(), (int) ( $url->get_error_data()['status'] ?? 400 ) );
 		}
 
-		return new WP_REST_Response( $url, 200 );
+		return new WP_REST_Response(
+			[
+				'success'  => true,
+				'cart_url' => $url,
+				'url'      => $url,
+			],
+			200
+		);
 	}
 
 	public function handle_cartadd_diamond( WP_REST_Request $req ) {
@@ -478,29 +494,118 @@ final class GEMFINDRB_API {
 		$diamond_id = sanitize_text_field( (string) $req->get_param( 'diamond_id' ) );
 		$setting_id = sanitize_text_field( (string) $req->get_param( 'setting_id' ) );
 		$shop       = sanitize_text_field( (string) ( $req->get_param( 'shop' ) ?? gemfindRB_shop_key() ) );
-		$type       = sanitize_text_field( (string) ( $req->get_param( 'type' ) ?? 'mined' ) );
 		$body       = $this->body( $req );
+		// v2 query: type=; v1 FormData: diamondtype=
+		$type       = sanitize_text_field(
+			(string) (
+				$body['diamondtype']
+				?? $body['diamond_type']
+				?? $body['list_type']
+				?? $req->get_param( 'diamondtype' )
+				?? $req->get_param( 'type' )
+				?? 'mined'
+			)
+		);
 		$is_lab     = (int) ( $body['islabsettings'] ?? $req->get_param( 'islabsettings' ) ?? 0 );
 		$options    = array_merge(
 			$body,
 			array_filter(
 				[
-					'ringsizesettingonly' => $req->get_param( 'ringsizesettingonly' ),
-					'metaltype'           => $req->get_param( 'metaltype' ),
+					'ringsizesettingonly' => $body['ringsizesettingonly'] ?? $req->get_param( 'ringsizesettingonly' ),
+					'metaltype'           => $body['metaltype'] ?? $req->get_param( 'metaltype' ),
 					'islabsettings'       => $is_lab,
 				],
 				static fn( $value ) => $value !== null && $value !== ''
 			)
 		);
 
-		$diamond = GEMFINDRB_JewelCloud::get_diamond_by_id( $diamond_id, $type, $shop );
-		$ring    = GEMFINDRB_JewelCloud::get_ring_by_id( $setting_id, $shop, $is_lab );
-		$url     = GEMFINDRB_Woo_Cart::get_add_to_cart_url_for_complete_ring( $diamond, $diamond_id, $ring['ringData'] ?? [], $setting_id, $options );
-		if ( is_wp_error( $url ) ) {
-			return $this->error( $url->get_error_message(), (int) ( $url->get_error_data()['status'] ?? 400 ) );
+		$wants_json = $this->wants_json_cart_response( $req );
+
+		if ( $diamond_id === '' || $setting_id === '' ) {
+			return $this->complete_purchase_fail( __( 'Diamond and setting are required.', 'gemfind-ring-builder' ), 400, $wants_json );
 		}
+
+		$diamond = GEMFINDRB_JewelCloud::get_diamond_by_id( $diamond_id, $type, $shop );
+		if ( empty( $diamond['diamondId'] ) ) {
+			return $this->complete_purchase_fail( __( 'Diamond not found', 'gemfind-ring-builder' ), 404, $wants_json );
+		}
+
+		$ring     = GEMFINDRB_JewelCloud::get_ring_by_id( $setting_id, $shop, $is_lab );
+		$ringData = $ring['ringData'] ?? [];
+		if ( empty( $ringData['settingId'] ) && empty( $ringData['settingid'] ) ) {
+			return $this->complete_purchase_fail( __( 'Ring setting not found', 'gemfind-ring-builder' ), 404, $wants_json );
+		}
+
+		// Adds setting + diamond as two WooCommerce line items, then returns cart URL.
+		$url = GEMFINDRB_Woo_Cart::get_add_to_cart_url_for_complete_ring( $diamond, $diamond_id, $ringData, $setting_id, $options );
+		if ( is_wp_error( $url ) ) {
+			return $this->complete_purchase_fail(
+				$url->get_error_message(),
+				(int) ( $url->get_error_data()['status'] ?? 400 ),
+				$wants_json
+			);
+		}
+
+		if ( $wants_json ) {
+			// v1 Classic UI expects { success, redirect_url }.
+			return new WP_REST_Response(
+				[
+					'success'      => true,
+					'redirect_url' => $url,
+					'cart_url'     => $url,
+					'url'          => $url,
+				],
+				200
+			);
+		}
+
+		// v2 navigates the browser here (GET) and follows the redirect into cart.
 		wp_safe_redirect( $url, 302 );
 		exit;
+	}
+
+	/**
+	 * v1 axios POSTs multipart/JSON and needs a JSON body; v2 does a full-page GET and needs a redirect.
+	 */
+	private function wants_json_cart_response( WP_REST_Request $req ): bool {
+		$accept = strtolower( (string) $req->get_header( 'accept' ) );
+		if ( str_contains( $accept, 'application/json' ) ) {
+			return true;
+		}
+
+		$content_type = strtolower( (string) $req->get_header( 'content-type' ) );
+		if (
+			str_contains( $content_type, 'multipart/form-data' )
+			|| str_contains( $content_type, 'application/json' )
+			|| str_contains( $content_type, 'application/x-www-form-urlencoded' )
+		) {
+			return true;
+		}
+
+		if ( strtolower( (string) $req->get_header( 'x-requested-with' ) ) === 'xmlhttprequest' ) {
+			return true;
+		}
+
+		return (string) $req->get_param( 'format' ) === 'json';
+	}
+
+	/**
+	 * @return WP_REST_Response
+	 */
+	private function complete_purchase_fail( string $message, int $status, bool $wants_json ): WP_REST_Response {
+		if ( $wants_json ) {
+			return new WP_REST_Response(
+				[
+					'success' => false,
+					'error'   => $message,
+					'message' => $message,
+					'status'  => 'fail',
+				],
+				$status
+			);
+		}
+
+		return $this->error( $message, $status );
 	}
 
 	// ── Emails ────────────────────────────────────────────────────────────────

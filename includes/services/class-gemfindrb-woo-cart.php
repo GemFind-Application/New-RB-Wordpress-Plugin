@@ -14,8 +14,9 @@ final class GEMFINDRB_Woo_Cart {
 	public const TYPE_RING     = 'gemfindRB_ring';
 	public const TYPE_COMPLETE = 'gemfindRB_complete_ring';
 
-	private const CART_CTX_PREFIX = 'gemfindRB_cart_ctx_';
-	private const CART_CTX_TTL    = 1200;
+	private const CART_CTX_PREFIX      = 'gemfindRB_cart_ctx_';
+	private const COMPLETE_CTX_PREFIX  = 'gemfindRB_complete_ctx_';
+	private const CART_CTX_TTL         = 1200;
 
 	private static bool $hooks_registered = false;
 
@@ -28,6 +29,7 @@ final class GEMFINDRB_Woo_Cart {
 		add_filter( 'woocommerce_add_cart_item_data', [ self::class, 'add_cart_item_data_from_token' ], 10, 4 );
 		add_filter( 'woocommerce_get_item_data', [ self::class, 'display_cart_item_data' ], 15, 2 );
 		add_action( 'woocommerce_checkout_create_order_line_item', [ self::class, 'copy_line_meta_to_order' ], 10, 4 );
+		add_action( 'wp_loaded', [ self::class, 'maybe_apply_complete_ring_cart_token' ], 20 );
 	}
 
 	/**
@@ -63,13 +65,14 @@ final class GEMFINDRB_Woo_Cart {
 	}
 
 	/**
+	 * Prepare setting + diamond products, then hand the browser a cart URL that
+	 * adds both on landing (same session-safe pattern as single-item add-to-cart).
+	 *
 	 * @param array<string,mixed> $diamond
 	 * @param array<string,mixed> $ring
 	 * @param array<string,mixed> $options
 	 */
 	public static function get_add_to_cart_url_for_complete_ring( array $diamond, string $diamond_id, array $ring, string $setting_id, array $options = [] ): string|WP_Error {
-		$items = [];
-
 		$ring_prepared = self::prepare_cart_product(
 			self::TYPE_RING,
 			self::normalize_sku( 'R-' . $setting_id ),
@@ -81,7 +84,6 @@ final class GEMFINDRB_Woo_Cart {
 		if ( is_wp_error( $ring_prepared ) ) {
 			return $ring_prepared;
 		}
-		$items[] = $ring_prepared;
 
 		$diamond_prepared = self::prepare_cart_product(
 			self::TYPE_DIAMOND,
@@ -94,14 +96,59 @@ final class GEMFINDRB_Woo_Cart {
 		if ( is_wp_error( $diamond_prepared ) ) {
 			return $diamond_prepared;
 		}
-		$items[] = $diamond_prepared;
 
-		$added = self::add_items_to_cart( $items );
-		if ( is_wp_error( $added ) ) {
-			return $added;
+		$token = wp_generate_password( 24, false, false );
+		set_transient(
+			self::COMPLETE_CTX_PREFIX . $token,
+			[
+				'items' => [ $ring_prepared, $diamond_prepared ],
+			],
+			self::CART_CTX_TTL
+		);
+
+		$base = function_exists( 'wc_get_cart_url' ) ? wc_get_cart_url() : home_url( '/cart/' );
+		return add_query_arg( [ 'gemfindRB_complete_ctx' => $token ], $base );
+	}
+
+	/**
+	 * Consume complete-ring token on cart landing and add both WooCommerce products.
+	 */
+	public static function maybe_apply_complete_ring_cart_token(): void {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$token = isset( $_GET['gemfindRB_complete_ctx'] ) ? sanitize_text_field( wp_unslash( (string) $_GET['gemfindRB_complete_ctx'] ) ) : '';
+		if ( $token === '' || ! function_exists( 'WC' ) ) {
+			return;
 		}
 
-		return function_exists( 'wc_get_cart_url' ) ? wc_get_cart_url() : home_url( '/cart/' );
+		$payload = get_transient( self::COMPLETE_CTX_PREFIX . $token );
+		if ( ! is_array( $payload ) || empty( $payload['items'] ) || ! is_array( $payload['items'] ) ) {
+			return;
+		}
+
+		delete_transient( self::COMPLETE_CTX_PREFIX . $token );
+
+		if ( is_null( WC()->cart ) && function_exists( 'wc_load_cart' ) ) {
+			wc_load_cart();
+		}
+		if ( ! WC()->cart instanceof WC_Cart ) {
+			return;
+		}
+
+		foreach ( $payload['items'] as $item ) {
+			if ( ! is_array( $item ) ) {
+				continue;
+			}
+			$product_id     = (int) ( $item['product_id'] ?? 0 );
+			$cart_item_data = is_array( $item['cart_item_data'] ?? null ) ? $item['cart_item_data'] : [];
+			if ( $product_id <= 0 ) {
+				continue;
+			}
+			WC()->cart->add_to_cart( $product_id, 1, 0, [], $cart_item_data );
+		}
+
+		$cart_url = function_exists( 'wc_get_cart_url' ) ? wc_get_cart_url() : home_url( '/cart/' );
+		wp_safe_redirect( $cart_url, 302 );
+		exit;
 	}
 
 	/**

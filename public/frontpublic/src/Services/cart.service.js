@@ -54,6 +54,9 @@ export function parseCartUrlResponse(data) {
     return trimmed !== '' ? trimmed : null;
   }
   if (data && typeof data === 'object') {
+    if (typeof data.cart_url === 'string' && data.cart_url.trim() !== '') {
+      return data.cart_url.trim();
+    }
     if (typeof data.url === 'string' && data.url.trim() !== '') {
       return data.url.trim();
     }
