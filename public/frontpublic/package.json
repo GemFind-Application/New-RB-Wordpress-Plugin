@@ -45,7 +45,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && node ../../scripts/patch-v1-nouislider-range.js",
     "scope:css": "node scripts/scope-css-sources.cjs",
     "lint:css-scope": "node -e \"const{execSync}=require('child_process');const fs=require('fs');const path=require('path');function walk(d,a=[]){for(const e of fs.readdirSync(d,{withFileTypes:true})){const f=path.join(d,e.name);if(e.isDirectory())walk(f,a);else if(e.name.endsWith('.css'))a.push(f);}return a;}const bad=[];for(const f of walk('src')){if(path.basename(f)==='gemfind-scope.css')continue;const c=fs.readFileSync(f,'utf8');if(!c.includes('#GemFind.gemfind-ring-builder-scope')&&!c.trim().startsWith('@import'))bad.push(path.relative('src',f));}if(bad.length){console.error('CSS files missing scope prefix:\\n'+bad.join('\\n'));process.exit(1);}console.log('All CSS files include scope prefix.');\"",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",

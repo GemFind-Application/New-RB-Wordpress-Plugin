@@ -182,6 +182,20 @@ function main() {
   console.log("\n────────────────────────────────────────");
   console.log("Build complete");
   console.log(`Time: ${elapsed}s`);
+
+  // Always re-assert noUiSlider equal-range safety after storefront builds.
+  if (targets.includes("v1") || targets.includes("v2")) {
+    console.log("\nVerifying noUiSlider equal-range guard…");
+    execSync("node scripts/patch-v1-nouislider-range.js", {
+      cwd: pluginRoot,
+      stdio: "inherit",
+    });
+    execSync("node scripts/smoke-nouislider-range.js", {
+      cwd: pluginRoot,
+      stdio: "inherit",
+    });
+  }
+
   console.log("\nOutput locations (enqueued by WordPress):");
   console.log("  Admin  → assets/build/admin.js");
   console.log("  v2     → public/frontpublic/build/assets/frontend.js");

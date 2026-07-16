@@ -454,7 +454,25 @@ final class GEMFINDRB_JewelCloud {
 		return (bool) preg_match( '/^(?:[0-9A-Fa-f]{3}|[0-9A-Fa-f]{6}|[0-9A-Fa-f]{8})$/', $color );
 	}
 
-	public static function proxy_get( string $endpoint, array $params = [] ): array|WP_Error {
+	/**
+	 * Decode a JewelCloud response body, preserving JSON scalars (e.g. auth strings).
+	 *
+	 * @return array<mixed>|string|bool|int|float|null
+	 */
+	private static function decode_jc_body( string $raw ): array|string|bool|int|float|null {
+		$data = json_decode( $raw, true );
+		if ( json_last_error() === JSON_ERROR_NONE ) {
+			return $data;
+		}
+
+		return [ 'raw' => $raw ];
+	}
+
+	/**
+	 * @param array<string, scalar> $params
+	 * @return array<mixed>|string|bool|int|float|null|WP_Error
+	 */
+	public static function proxy_get( string $endpoint, array $params = [] ): array|string|bool|int|float|null|WP_Error {
 		$url = self::JC_BASE . $endpoint;
 		if ( $params !== [] ) {
 			$url .= '?' . http_build_query( $params );
@@ -476,13 +494,13 @@ final class GEMFINDRB_JewelCloud {
 			return $response;
 		}
 
-		$raw  = (string) wp_remote_retrieve_body( $response );
-		$data = json_decode( $raw, true );
-
-		return is_array( $data ) ? $data : [ 'raw' => $raw ];
+		return self::decode_jc_body( (string) wp_remote_retrieve_body( $response ) );
 	}
 
-	public static function proxy_post( string $endpoint, string $body ): array|WP_Error {
+	/**
+	 * @return array<mixed>|string|bool|int|float|null|WP_Error
+	 */
+	public static function proxy_post( string $endpoint, string $body ): array|string|bool|int|float|null|WP_Error {
 		$response = wp_remote_post(
 			self::ensure_https_url( self::JC_BASE . $endpoint ),
 			[
@@ -497,10 +515,7 @@ final class GEMFINDRB_JewelCloud {
 			return $response;
 		}
 
-		$raw  = (string) wp_remote_retrieve_body( $response );
-		$data = json_decode( $raw, true );
-
-		return is_array( $data ) ? $data : [ 'raw' => $raw ];
+		return self::decode_jc_body( (string) wp_remote_retrieve_body( $response ) );
 	}
 
 	/**

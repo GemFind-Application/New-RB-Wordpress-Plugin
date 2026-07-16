@@ -142,6 +142,18 @@ const MultiRangeSlider = ({ min, max, onChange,value ,isPrice=true,showPercent,s
   const callAction=()=>{
     onChange({min:Number(minVal),max:Number(maxVal)})
   }
+
+  // noUiSlider throws when min === max; coerce a usable span from filter APIs with a single value.
+  const rangeStep = Number(step) > 0 ? Number(step) : (isPrice ? 0.01 : 0.01);
+  let rangeMin = parseFloat(min);
+  let rangeMax = parseFloat(max);
+  if (!Number.isFinite(rangeMin)) rangeMin = 0;
+  if (!Number.isFinite(rangeMax) || rangeMax <= rangeMin) {
+    rangeMax = rangeMin + (Number.isFinite(rangeStep) && rangeStep > 0 ? rangeStep : 1);
+  }
+  const startMin = Math.min(Math.max(parseFloat(minVal), rangeMin), rangeMax);
+  const startMax = Math.min(Math.max(parseFloat(maxVal), rangeMin), rangeMax);
+
  // onBlur={callAction}
  //console.log(labelMax)
   return (
@@ -151,12 +163,12 @@ const MultiRangeSlider = ({ min, max, onChange,value ,isPrice=true,showPercent,s
               connect
               behaviour={"tap"}
               start={[
-                minVal,maxVal
+                startMin, startMax
               ]}    
               step={1}          
               range={{
-                min:parseFloat(min),
-                max: parseFloat(max),
+                min: rangeMin,
+                max: rangeMax,
               }}
               onUpdate={showupdatedvalue}
               onChange={rangeSelectorprops}
@@ -164,12 +176,12 @@ const MultiRangeSlider = ({ min, max, onChange,value ,isPrice=true,showPercent,s
             connect
             behaviour={"tap"}
             start={[
-              minVal,maxVal
+              startMin, startMax
             ]}    
             tooltips={true}      
             range={{
-              min:parseFloat(min),
-              max: parseFloat(max),
+              min: rangeMin,
+              max: rangeMax,
             }}
             onUpdate={showupdatedvalue}
             onChange={rangeSelectorprops}

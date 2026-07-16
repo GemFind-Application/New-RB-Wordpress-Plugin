@@ -784,6 +784,13 @@ final class GEMFINDRB_API {
 		if ( is_wp_error( $data ) ) {
 			return $this->error( $data->get_error_message(), 502 );
 		}
+		// AccountAuthentication returns a JSON string; keep scalars (and unwrap plain-text { raw }).
+		if ( is_array( $data ) && array_keys( $data ) === [ 'raw' ] && is_string( $data['raw'] ) ) {
+			$raw = trim( $data['raw'] );
+			if ( $raw !== '' && ( $raw[0] ?? '' ) !== '{' && ( $raw[0] ?? '' ) !== '[' ) {
+				$data = $raw;
+			}
+		}
 		return new WP_REST_Response( $data, 200 );
 	}
 
