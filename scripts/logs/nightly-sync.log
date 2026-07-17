@@ -31,3 +31,18 @@
 [2026-07-15 12:00:09] Nightly sync completed successfully.
 [2026-07-16 12:00:04] Nightly sync started.
 [2026-07-16 12:00:04] Copying from C:\Users\javai\Local Sites\gemfind-dl-plugin\app\public\wp-content\plugins\gemfind-ring-builder to D:\work\cursor git\wp-RB-plugin\New-RB-Wordpress-Plugin
+[2026-07-16 12:00:05] [main e6593b5] ∩╗┐Update Code - 16-07-2026
+ 20 files changed, 901 insertions(+), 22 deletions(-)
+ create mode 100644 scripts/_inspect-adv-sliders.js
+ create mode 100644 scripts/_probe-fancy.js
+ create mode 100644 scripts/_probe-loader.js
+ create mode 100644 scripts/patch-v1-filter-last-sentinel.js
+ create mode 100644 scripts/patch-v1-nouislider-range.js
+ create mode 100644 scripts/patch-v1-setting-filter-fallback.js
+ create mode 100644 scripts/patch-v1-slider-pip-labels.js
+ create mode 100644 scripts/patch-v1-vendor-info.js
+ create mode 100644 scripts/smoke-nouislider-range.js
+[2026-07-16 12:00:05] Commit message: Update Code - 16-07-2026
+[2026-07-16 12:00:06] ERROR: git push origin main failed with exit code 128
+[2026-07-17 12:00:01] Nightly sync started.
+[2026-07-17 12:00:01] Copying from C:\Users\javai\Local Sites\gemfind-dl-plugin\app\public\wp-content\plugins\gemfind-ring-builder to D:\work\cursor git\wp-RB-plugin\New-RB-Wordpress-Plugin
