@@ -22,10 +22,10 @@ function gemfindrb_email_layout_open( string $title, array $vars = [] ): void {
 <title><?php echo esc_html( $title ); ?></title>
 </head>
 <body style="margin:0;padding:0;background-color:#f6f6f6;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.4;color:#333;">
-<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color:#f6f6f6;width:100%;">
-<tr><td style="padding:10px 0;">&nbsp;</td>
-<td width="720" style="max-width:720px;width:100%;">
-<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color:#ffffff;max-width:720px;width:100%;">
+<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color:#f6f6f6;width:100%;border-collapse:collapse;">
+<tr>
+<td align="center" style="padding:10px;">
+<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="720" style="background-color:#ffffff;max-width:720px;width:100%;border-collapse:collapse;">
 <tr><td style="padding:20px;">
 <?php
 	gemfindrb_email_logo_header(
@@ -42,11 +42,12 @@ function gemfindrb_email_layout_close( ?string $footer_html = null ): void {
 </td></tr>
 </table>
 <?php if ( $footer_html !== null && $footer_html !== '' ) : ?>
-<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin-top:10px;">
+<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="720" style="max-width:720px;width:100%;margin-top:10px;border-collapse:collapse;">
 <tr><td style="text-align:center;font-size:12px;color:#999999;padding:10px 0;"><?php echo $footer_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td></tr>
 </table>
 <?php endif; ?>
-</td><td style="padding:10px 0;">&nbsp;</td></tr>
+</td>
+</tr>
 </table>
 </body>
 </html>
@@ -74,10 +75,12 @@ function gemfindrb_email_logo_header( string $shopurl, string $shop_logo, string
 if ( ! function_exists( 'gemfindrb_email_dear' ) ) {
 function gemfindrb_email_dear( string $name ): void {
 	?>
-<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin-top:24px;">
+<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin-top:24px;border-collapse:collapse;">
 <tr><td>
 <h2 style="margin:0 0 8px;font-size:30px;font-weight:400;color:#000;font-family:Arial,Helvetica,sans-serif;"><?php printf( 'Dear %s', esc_html( $name ) ); ?></h2>
 <table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td style="height:3px;width:100px;background-color:#26a9e0;font-size:1px;line-height:3px;">&nbsp;</td></tr></table>
+</td></tr>
+</table>
 <?php
 }
 }
@@ -85,12 +88,11 @@ function gemfindrb_email_dear( string $name ): void {
 if ( ! function_exists( 'gemfindrb_email_intro' ) ) {
 function gemfindrb_email_intro( string $text, bool $allow_html = false ): void {
 	?>
-<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:20px 0;">
+<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:20px 0;border-collapse:collapse;">
 <tr><td style="font-size:14px;color:#000;font-family:Arial,Helvetica,sans-serif;">
 <p style="margin:0 0 8px;"><?php echo $allow_html ? wp_kses_post( $text ) : esc_html( $text ); ?></p>
 </td></tr>
 </table>
-</td></tr></table>
 <?php
 }
 }

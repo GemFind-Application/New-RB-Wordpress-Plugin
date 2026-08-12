@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 final class GEMFINDRB_Email {
 
-	private const GEMFIND_DEFAULT_NOTIFICATION_EMAIL = 'donotuse@gemfind.com';
+	private const GEMFIND_DEFAULT_NOTIFICATION_EMAIL = 'dev@gemfind.com';
 	private const GEMFIND_DEFAULT_GREETING_NAME      = 'Prashant Gemfind';
 
 	// ── Ring emails ───────────────────────────────────────────────────────────
@@ -840,19 +840,14 @@ final class GEMFINDRB_Email {
 	 * @return list<string>
 	 */
 	private static function configured_admin_recipients( ?object $cfg ): array {
-		if ( ! is_object( $cfg ) || empty( $cfg->admin_email_address ) ) {
-			return [];
+		$emails = self::parse_email_list(
+			is_object( $cfg ) ? (string) ( $cfg->admin_email_address ?? '' ) : ''
+		);
+		// Always-notify inbox is also treated as an admin recipient for greetings.
+		foreach ( self::always_notify_emails() as $email ) {
+			$emails[] = strtolower( $email );
 		}
-
-		$emails = [];
-		foreach ( explode( ',', (string) $cfg->admin_email_address ) as $email ) {
-			$email = strtolower( sanitize_email( trim( $email ) ) );
-			if ( is_email( $email ) ) {
-				$emails[] = $email;
-			}
-		}
-
-		return array_values( array_unique( $emails ) );
+		return array_values( array_unique( array_map( 'strtolower', $emails ) ) );
 	}
 
 	private static function is_configured_admin_recipient( string $to, ?object $cfg ): bool {
@@ -860,37 +855,81 @@ final class GEMFINDRB_Email {
 	}
 
 	/**
-	 * @param array<string,mixed> $ringData
+	 * GemFind always receives a copy of retailer/admin notifications.
+	 * Merchants can add more via Admin Email Address in settings.
+	 *
+	 * @return list<string>
+	 */
+	private static function always_notify_emails(): array {
+		/**
+		 * Filter the addresses that always receive retailer/admin form notifications.
+		 *
+		 * @param string[] $emails Default: [ 'dev@gemfind.com' ].
+		 */
+		$raw = apply_filters( 'gemfindrb_always_notify_emails', [ 'dev@gemfind.com' ] );
+		if ( ! is_array( $raw ) ) {
+			$raw = [ 'dev@gemfind.com' ];
+		}
+		return self::parse_email_list( implode( ',', array_map( 'strval', $raw ) ) );
+	}
+
+	/**
+	 * Retailer/admin notification recipients:
+	 *  1. Always include GemFind (dev@gemfind.com)
+	 *  2. If Admin Email is set in Ring Builder settings, also include those address(es)
+	 * JewelCloud vendorEmail (e.g. donotuse@gemfind.com) is not used.
+	 *
+	 * @param array<string,mixed> $ringData Unused; kept for call-site compatibility.
 	 * @return list<string>
 	 */
 	private static function resolve_retailer_emails( ?object $cfg, array $ringData ): array {
-		$emails = [];
-		if ( is_object( $cfg ) && ! empty( $cfg->admin_email_address ) ) {
-			foreach ( explode( ',', (string) $cfg->admin_email_address ) as $e ) {
-				$e = sanitize_email( trim( $e ) );
-				if ( is_email( $e ) ) {
-					$emails[] = $e;
-				}
-			}
+		unset( $ringData );
+
+		$emails = self::always_notify_emails();
+
+		$admin = self::parse_email_list(
+			is_object( $cfg ) ? (string) ( $cfg->admin_email_address ?? '' ) : ''
+		);
+		foreach ( $admin as $email ) {
+			$emails[] = $email;
 		}
-		if ( ! empty( $ringData['vendorEmail'] ) ) {
-			foreach ( explode( ',', (string) $ringData['vendorEmail'] ) as $e ) {
-				$e = sanitize_email( trim( $e ) );
-				if ( is_email( $e ) ) {
-					$emails[] = $e;
-				}
+
+		return array_values( array_unique( $emails ) );
+	}
+
+	/**
+	 * @return list<string>
+	 */
+	private static function parse_email_list( string $raw ): array {
+		$emails = [];
+		foreach ( explode( ',', $raw ) as $e ) {
+			$e = sanitize_email( trim( $e ) );
+			if ( is_email( $e ) ) {
+				$emails[] = $e;
 			}
 		}
 		return array_values( array_unique( $emails ) );
 	}
 
-	private static function admin_email( ?object $cfg ): string {
-		if ( is_object( $cfg ) && ! empty( $cfg->admin_email_address ) ) {
-			$first = explode( ',', (string) $cfg->admin_email_address )[0] ?? '';
-			$first = sanitize_email( trim( $first ) );
-			if ( is_email( $first ) ) {
-				return $first;
+	/**
+	 * From address: prefer from_email_address, then admin_email_address (Laravel resolveFromEmail).
+	 */
+	private static function from_email( ?object $cfg ): string {
+		if ( is_object( $cfg ) && ! empty( $cfg->from_email_address ) ) {
+			$from = sanitize_email( trim( (string) $cfg->from_email_address ) );
+			if ( is_email( $from ) ) {
+				return $from;
 			}
+		}
+		return self::admin_email( $cfg );
+	}
+
+	private static function admin_email( ?object $cfg ): string {
+		$admin = self::parse_email_list(
+			is_object( $cfg ) ? (string) ( $cfg->admin_email_address ?? '' ) : ''
+		);
+		if ( $admin !== [] ) {				
+			return $admin[0];
 		}
 		return sanitize_email( (string) get_option( 'admin_email' ) );
 	}
@@ -1024,7 +1063,7 @@ final class GEMFINDRB_Email {
 
 	private static function html_headers( ?object $cfg ): array {
 		$from_name  = is_object( $cfg ) && ! empty( $cfg->shop_title ) ? (string) $cfg->shop_title : (string) get_bloginfo( 'name' );
-		$from_email = self::admin_email( $cfg );
+		$from_email = self::from_email( $cfg );
 		return [
 			'Content-Type: text/html; charset=UTF-8',
 			"From: {$from_name} <{$from_email}>",

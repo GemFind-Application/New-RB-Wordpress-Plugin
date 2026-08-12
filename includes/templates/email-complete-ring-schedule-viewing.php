@@ -24,7 +24,7 @@ if ( ! empty( $appnt_time ) ) {
 
 if ( $role === 'sender' ) {
 	gemfindrb_email_dear( (string) ( $name ?? '' ) );
-	gemfindrb_email_intro( 'Your appoint has been confirmed.' );
+	gemfindrb_email_intro( 'Your appointment has been confirmed.' );
 	gemfindrb_email_intro( '<strong>Disclaimer : </strong>Not all settings and/or diamonds are in stock. A sales representative will inform you of alternative options.', true );
 	gemfindrb_email_section_heading( 'Appointment Calendar' );
 	gemfindrb_email_info_table( $appt_rows );

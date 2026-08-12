@@ -156,28 +156,68 @@
   margin-bottom: 20px;
 }
 
-.wpdl2-view-frontend-banner {
-  margin-top: 14px;
-  background: #ffffff;
-  border: 1px solid #dcdcde;
-  border-radius: 12px;
-  padding: 14px 18px;
+/* Match Settings/CSS React banner (ViewInFrontendBanner.jsx / wpdl-admin.css). */
+.wpdl2-about-shell .wpdl-view-frontend-banner,
+.wpdl-view-frontend-banner {
+  margin: 0 0 20px;
+  background: #fff;
+  border: 1px solid #d8dee6;
+  border-radius: 10px;
+  padding: 18px 20px;
+  box-sizing: border-box;
 }
 
-.wpdl2-view-frontend-banner__inner {
+.wpdl-view-frontend-banner__inner {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
+  gap: 16px 20px;
 }
 
-.wpdl2-view-frontend-banner__message,
-.wpdl2-view-frontend-banner__version {
+.wpdl-view-frontend-banner__message {
+  margin: 0 0 8px;
+  font-weight: 700;
+  color: #1d4f91;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.wpdl-view-frontend-banner__version {
   margin: 0;
+  font-weight: 700;
+  color: #198754;
+  font-size: 14px;
 }
 
-.wpdl2-view-frontend-banner__btn,
+.wpdl-view-frontend-banner__version-tag {
+  margin-left: 4px;
+}
+
+.wpdl-view-frontend-banner__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 0 22px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff !important;
+  text-decoration: none !important;
+  background: #198754;
+  border-radius: 6px;
+  border: none;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+  transition: background 0.15s ease, filter 0.15s ease;
+}
+
+.wpdl-view-frontend-banner__btn:hover,
+.wpdl-view-frontend-banner__btn:focus {
+  background: #157347;
+  color: #fff !important;
+  filter: brightness(1.02);
+}
+
 .wpdl2-btn {
   display: inline-flex;
   align-items: center;
@@ -188,13 +228,11 @@
   font-weight: 600;
 }
 
-.wpdl2-view-frontend-banner__btn,
 .wpdl2-btn--primary {
   background: #0ea5e9;
   color: #fff;
 }
 
-.wpdl2-view-frontend-banner__btn:hover,
 .wpdl2-btn--primary:hover {
   background: #0284c7;
   color: #fff;

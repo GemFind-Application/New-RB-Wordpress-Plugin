@@ -304,13 +304,30 @@ export default function SettingsPage() {
           {tab === "email" && (
             <div className="wpdl-tab-section">
               <h2>Email &amp; Notifications</h2>
-              <Field label="Admin Email Address(es)" help="Comma-separated for multiple recipients.">
+              <Field
+                label="Admin Email Address(es)"
+                help="Optional extra notification recipients (comma-separated). GemFind (dev@gemfind.com) always receives a copy; these addresses get an additional copy."
+              >
                 <input
                   className="wpdl-input"
-                  type="email"
+                  type="text"
                   name="admin_email_address"
                   value={form.admin_email_address || ""}
                   onChange={onChange}
+                  placeholder="store-owner@example.com"
+                />
+              </Field>
+              <Field
+                label="From Email Address"
+                help="Address shown in the From header. Falls back to the first Admin Email, then the site admin email."
+              >
+                <input
+                  className="wpdl-input"
+                  type="email"
+                  name="from_email_address"
+                  value={form.from_email_address || ""}
+                  onChange={onChange}
+                  placeholder="dev@gemfind.com"
                 />
               </Field>
             </div>

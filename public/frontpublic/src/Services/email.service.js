@@ -1,5 +1,9 @@
 import axios from 'axios';
 
+// Email endpoints send multiple SMTP messages + JewelCloud lookups before
+// responding. 15s was too short (UI showed timeout while mail still arrived).
+const EMAIL_REQUEST_TIMEOUT_MS = 60000;
+
 // Create axios instance for email APIs
 const createEmailClient = () => {
   // When running inside Shopify app proxy (store.com/apps/ringbuilder/...)
@@ -9,7 +13,7 @@ const createEmailClient = () => {
   if (cfg?.restUrl) {
     return axios.create({
       baseURL: cfg.restUrl.replace(/\/$/, ''),
-      timeout: 15000,
+      timeout: EMAIL_REQUEST_TIMEOUT_MS,
       headers: {
         'Content-Type': 'application/json',
         'X-WP-Nonce': cfg.nonce || '',
@@ -22,7 +26,7 @@ const createEmailClient = () => {
       : `${window.location.origin}/wp-json/gemfind-ring-builder/v1`;
     return axios.create({
       baseURL: base,
-      timeout: 15000,
+      timeout: EMAIL_REQUEST_TIMEOUT_MS,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -44,7 +48,7 @@ const createEmailClient = () => {
 
   return axios.create({
     baseURL: `${baseURL}/api`,
-    timeout: 15000,
+    timeout: EMAIL_REQUEST_TIMEOUT_MS,
     headers: {
       'Content-Type': 'application/json',
     },
