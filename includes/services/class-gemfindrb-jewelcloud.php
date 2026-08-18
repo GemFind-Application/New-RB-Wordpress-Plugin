@@ -473,15 +473,117 @@ final class GEMFINDRB_JewelCloud {
 	 * @return array<mixed>|string|bool|int|float|null|WP_Error
 	 */
 	public static function proxy_get( string $endpoint, array $params = [] ): array|string|bool|int|float|null|WP_Error {
+		// JewelCloud GetColorDiamond ignores PriceMin/PriceMax; apply them locally after fetch.
+		if ( $endpoint === 'GetColorDiamond' && self::color_diamond_has_price_bounds( $params ) ) {
+			return self::proxy_get_color_diamond_priced( $params );
+		}
+
+		return self::proxy_get_raw( $endpoint, $params );
+	}
+
+	/**
+	 * @param array<string, scalar> $params
+	 */
+	private static function color_diamond_has_price_bounds( array $params ): bool {
+		return self::param_present( $params, [ 'PriceMin', 'priceMin' ] )
+			&& self::param_present( $params, [ 'PriceMax', 'priceMax' ] );
+	}
+
+	/**
+	 * @param array<string, scalar> $params
+	 * @param list<string>          $keys
+	 */
+	private static function param_present( array $params, array $keys ): bool {
+		foreach ( $keys as $key ) {
+			if ( array_key_exists( $key, $params ) && $params[ $key ] !== '' && $params[ $key ] !== null ) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * @param array<string, scalar> $params
+	 * @param list<string>          $keys
+	 * @return scalar|null
+	 */
+	private static function param_first( array $params, array $keys ) {
+		foreach ( $keys as $key ) {
+			if ( array_key_exists( $key, $params ) && $params[ $key ] !== '' && $params[ $key ] !== null ) {
+				return $params[ $key ];
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Fetch the fancy catalog (other filters still applied server-side), then enforce
+	 * PriceMin/PriceMax and re-paginate — GetColorDiamond does not honor price bounds.
+	 *
+	 * @param array<string, scalar> $params
+	 * @return array<mixed>|string|bool|int|float|null|WP_Error
+	 */
+	private static function proxy_get_color_diamond_priced( array $params ): array|string|bool|int|float|null|WP_Error {
+		$page_size   = max( 1, (int) self::param_first( $params, [ 'pageSize', 'PageSize' ] ) ?: 12 );
+		$page_number = max( 1, (int) self::param_first( $params, [ 'pageNumber', 'PageNumber' ] ) ?: 1 );
+		$price_min   = (float) self::param_first( $params, [ 'PriceMin', 'priceMin' ] );
+		$price_max   = (float) self::param_first( $params, [ 'PriceMax', 'priceMax' ] );
+
+		$fetch = $params;
+		$fetch['pageSize']   = 5000;
+		$fetch['pageNumber'] = 1;
+		unset( $fetch['PageSize'], $fetch['PageNumber'] );
+
+		$data = self::proxy_get_raw( 'GetColorDiamond', $fetch, 60 );
+		if ( is_wp_error( $data ) || ! is_array( $data ) ) {
+			return $data;
+		}
+
+		$list = $data['diamondList'] ?? null;
+		if ( ! is_array( $list ) ) {
+			return $data;
+		}
+
+		$filtered = array_values(
+			array_filter(
+				$list,
+				static function ( $row ) use ( $price_min, $price_max ): bool {
+					if ( ! is_array( $row ) ) {
+						return false;
+					}
+					$raw = $row['fltPrice'] ?? $row['realPrice'] ?? $row['price'] ?? null;
+					if ( $raw === null || $raw === '' ) {
+						return false;
+					}
+					$price = (float) preg_replace( '/[^0-9.\-]/', '', (string) $raw );
+					return $price >= $price_min && $price <= $price_max;
+				}
+			)
+		);
+
+		$offset                  = ( $page_number - 1 ) * $page_size;
+		$data['diamondList']     = array_slice( $filtered, $offset, $page_size );
+		$data['count']           = count( $filtered );
+		$data['intTotalRecords'] = $data['count'];
+
+		return $data;
+	}
+
+	/**
+	 * @param array<string, scalar> $params
+	 * @return array<mixed>|string|bool|int|float|null|WP_Error
+	 */
+	private static function proxy_get_raw( string $endpoint, array $params = [], int $timeout = 30 ): array|string|bool|int|float|null|WP_Error {
 		$url = self::JC_BASE . $endpoint;
 		if ( $params !== [] ) {
-			$url .= '?' . http_build_query( $params );
+			// RFC3986 keeps literal "+" (e.g. OrderBy=cost+desc) as %2B instead of a space.
+			$url .= '?' . http_build_query( $params, '', '&', PHP_QUERY_RFC3986 );
 		}
 
 		$response = wp_remote_get(
 			self::ensure_https_url( $url ),
 			[
-				'timeout'   => 30,
+				'timeout'   => $timeout,
 				'sslverify' => gemfindRB_http_sslverify(),
 				'headers'   => [
 					'Accept'     => 'application/json',

@@ -269,6 +269,14 @@ final class GEMFINDRB_Form_Payload {
 		$base['diamondType']     = self::resolve_diamond_type( $v );
 		$base['diamond_url']     = (string) ( $v['diamond_url'] ?? $v['diamondurl'] ?? '' );
 		$base['complete_ring_url'] = (string) ( $v['complete_ring_url'] ?? $v['completeringurl'] ?? '' );
+		$base['completering']    = (string) ( $v['completering'] ?? 'completering' );
+		if ( isset( $v['setting_price'] ) && (string) $v['setting_price'] !== '' ) {
+			$base['setting_price'] = (string) $v['setting_price'];
+		} elseif ( isset( $v['ring_price'] ) && (string) $v['ring_price'] !== '' ) {
+			$base['setting_price'] = (string) $v['ring_price'];
+		}
+		// Drop combined total so ring specs cannot misuse it as setting cost.
+		unset( $base['price'] );
 		$base['req_message']     = (string) ( $v['req_message'] ?? $v['message'] ?? $v['hint_message'] ?? '' );
 		$base['phone_no']        = (string) ( $v['phone_no'] ?? $v['phone'] ?? '' );
 		$base['contact_preference'] = (string) ( $v['contact_preference'] ?? $v['contact_pref'] ?? '' );

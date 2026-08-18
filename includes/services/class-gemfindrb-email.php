@@ -557,8 +557,19 @@ final class GEMFINDRB_Email {
 			}
 		}
 
-		if ( ! empty( $data['price'] ) ) {
-			$price_raw = str_replace( [ ',', '$' ], '', (string) $data['price'] );
+		// Prefer explicit setting price. On complete-ring forms, `price` has historically
+		// been the combined total (setting + diamond) — never use that as setting cost.
+		$setting_price = $data['setting_price'] ?? $data['ring_price'] ?? null;
+		$is_complete   = self::request_has_complete_ring( $data );
+		$price_source  = null;
+		if ( $setting_price !== null && (string) $setting_price !== '' ) {
+			$price_source = $setting_price;
+		} elseif ( ! $is_complete && ! empty( $data['price'] ) ) {
+			$price_source = $data['price'];
+		}
+
+		if ( $price_source !== null ) {
+			$price_raw = str_replace( [ ',', '$' ], '', (string) $price_source );
 			if ( is_numeric( $price_raw ) ) {
 				$ring['cost']      = (float) $price_raw;
 				$ring['showPrice'] = true;
@@ -566,6 +577,19 @@ final class GEMFINDRB_Email {
 		}
 
 		return $ring;
+	}
+
+	/**
+	 * True when the request is for a complete ring (setting + diamond).
+	 *
+	 * @param array<string,mixed> $data
+	 */
+	private static function request_has_complete_ring( array $data ): bool {
+		if ( ! empty( $data['diamondId'] ) || ! empty( $data['diamondid'] ) ) {
+			return true;
+		}
+		$flag = strtolower( trim( (string) ( $data['completering'] ?? $data['complete_ring'] ?? '' ) ) );
+		return $flag === 'completering' || $flag === '1' || $flag === 'true';
 	}
 
 	/**

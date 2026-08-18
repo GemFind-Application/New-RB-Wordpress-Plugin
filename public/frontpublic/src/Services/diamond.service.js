@@ -62,9 +62,56 @@ function getAllDiamond(option, dealerId) {
   const base = resolveJcApiBase();
   const queryParam = getQueryParam(option);
   if (option.isLabGrown === 'fancy') {
-    return fetchWrapper.get(`${base}/GetColorDiamond?DealerId=${dealerId}${queryParam}&IsLabGrown=false`);
+    // GetColorDiamond ignores PriceMin/PriceMax on JewelCloud — always enforce locally.
+    return getFancyDiamondsPriced(option, dealerId, base);
   }
   return fetchWrapper.get(`${base}/GetDiamond?DealerId=${dealerId}${queryParam}`);
+}
+
+function parseDiamondPrice(diamond) {
+  const raw = diamond?.fltPrice ?? diamond?.realPrice ?? diamond?.price;
+  if (raw === null || raw === undefined || raw === '') {
+    return NaN;
+  }
+  return Number(String(raw).replace(/[^0-9.\-]/g, ''));
+}
+
+function parsePriceBound(value) {
+  if (value === null || value === undefined || value === '') {
+    return NaN;
+  }
+  return Number(String(value).replace(/[^0-9.\-]/g, ''));
+}
+
+async function getFancyDiamondsPriced(option, dealerId, base) {
+  const pageSize = Number(option.pageSize) || 12;
+  const pageNumber = Number(option.pageNumber) || 1;
+  const priceMin = parsePriceBound(option.priceMin);
+  const priceMax = parsePriceBound(option.priceMax);
+  const hasPrice = !Number.isNaN(priceMin) && !Number.isNaN(priceMax);
+
+  if (!hasPrice) {
+    const queryParam = getQueryParam(option);
+    return fetchWrapper.get(`${base}/GetColorDiamond?DealerId=${dealerId}${queryParam}&IsLabGrown=false`);
+  }
+
+  // Pull a full page of matches (other filters still applied by JC), then enforce price.
+  const fetchOption = { ...option, pageSize: 5000, pageNumber: 1 };
+  const fetchQuery = getQueryParam(fetchOption);
+  const res = await fetchWrapper.get(
+    `${base}/GetColorDiamond?DealerId=${dealerId}${fetchQuery}&IsLabGrown=false`
+  );
+  const list = Array.isArray(res?.diamondList) ? res.diamondList : [];
+  const filtered = list.filter((d) => {
+    const price = parseDiamondPrice(d);
+    return !Number.isNaN(price) && price >= priceMin && price <= priceMax;
+  });
+  const start = (pageNumber - 1) * pageSize;
+  return {
+    ...res,
+    diamondList: filtered.slice(start, start + pageSize),
+    count: filtered.length,
+  };
 }
 
 function getDiamondNavigation(dealerId) {
@@ -87,7 +134,8 @@ function getQueryParam(option) {
   }
   if (option.orderBy) {
     filterString += filterString.length > 0 ? `&` : '';
-    filterString += 'OrderBy=' + option.orderBy + "&OrderType=" + option.orderDirection;
+    // Encode so literal "+" in values like cost+desc is not treated as a space.
+    filterString += 'OrderBy=' + encodeURIComponent(option.orderBy) + "&OrderType=" + encodeURIComponent(option.orderDirection ?? '');
   }
   if (option.priceMin !== undefined && option.priceMax !== undefined) {
     filterString += filterString.length > 0 ? `&` : '';

@@ -27,6 +27,7 @@ if(settingId&&settingId!==""){
     formDataValue.settingid = settingId;
     formDataValue.ringurl=ringurl;
     formDataValue.price = price || '';
+    formDataValue.setting_price = price || '';
     formDataValue.min_carat = min_carat || '';
     formDataValue.max_carat = max_carat || '';
     formDataValue.metalType = metalType || '';

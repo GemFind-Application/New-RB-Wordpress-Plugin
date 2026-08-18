@@ -73,9 +73,9 @@ const Settings = ({settingNavigationData,setIsLabGrown,isLabGrown,configAppData,
     storedData = null;
   } 
   const scrollRef = useRef(null);
-  const isFetchingRef = useRef(false);
   const prevIsLabGrownRef = useRef(isLabGrown);
   const hasInitialLoadRef = useRef(false);
+  const fetchRequestIdRef = useRef(0);
   
   const [activeFilters, setActiveFilters] = useState({
     collections: storedData 
@@ -224,77 +224,76 @@ const Settings = ({settingNavigationData,setIsLabGrown,isLabGrown,configAppData,
       return;
     }
     
-    // Prevent duplicate API calls when multiple dependencies change simultaneously
-    if(isFetchingRef.current) {
-      return;
-    }
-    
     // Ensure activeFilters is properly initialized before fetching
     // This handles the case when coming back from product-details with shape in URL
-    if(activeFilters && (activeFilters.shapes !== undefined || activeFilters.collections !== undefined)) {
-      // Only use selectedDiamondShape if user hasn't explicitly selected a shape in the filter panel
-      // If activeFilters.shapes has a value, it means user has explicitly selected a shape, so use that
-      // Otherwise, use selectedDiamondShape as the default
-      const filtersToUse = (activeFilters.shapes && activeFilters.shapes.length > 0)
-        ? activeFilters  // User has explicitly selected a shape, use it
-        : (selectedDiamondShape && selectedDiamondShape !== '' 
-          ? {...activeFilters, shapes: [selectedDiamondShape]}  // Use selectedDiamondShape as default
-          : activeFilters);
-      
-      // Determine if we need to fetch filter data:
-      // 1. Initial load (hasn't loaded yet)
-      // 2. When isLabGrown changes (filter options might change)
-      const isLabGrownChanged = prevIsLabGrownRef.current !== isLabGrown;
-      const shouldFetchFilterData = !hasInitialLoadRef.current || isLabGrownChanged;
-      
-      isFetchingRef.current = true;
-      setShowLoading(true);
-      
-      if(shouldFetchFilterData) {
-        // Fetch filter data first, then products (for initial load or when isLabGrown changes)
-        fetchFilterData(isLabGrown, filtersToUse)
-          .then((filterDataResponse) => {
-            // Update filters with default price range from filter API if price is empty
-            let updatedFilters = {...filtersToUse};
-            if (filterDataResponse && filterDataResponse.priceRange && filterDataResponse.priceRange.length > 0) {
-              const defaultPriceRange = [filterDataResponse.priceRange[0].minPrice, filterDataResponse.priceRange[0].maxPrice];
-              if (!updatedFilters.price || updatedFilters.price.length === 0) {
-                updatedFilters.price = defaultPriceRange;
-                // Update activeFilters state for future use
-                setActiveFilters(prevFilters => ({
-                  ...prevFilters,
-                  price: defaultPriceRange
-                }));
-              }
+    if(!(activeFilters && (activeFilters.shapes !== undefined || activeFilters.collections !== undefined))) {
+      return;
+    }
+
+    // Only use selectedDiamondShape if user hasn't explicitly selected a shape in the filter panel
+    // If activeFilters.shapes has a value, it means user has explicitly selected a shape, so use that
+    // Otherwise, use selectedDiamondShape as the default
+    const filtersToUse = (activeFilters.shapes && activeFilters.shapes.length > 0)
+      ? activeFilters  // User has explicitly selected a shape, use it
+      : (selectedDiamondShape && selectedDiamondShape !== '' 
+        ? {...activeFilters, shapes: [selectedDiamondShape]}  // Use selectedDiamondShape as default
+        : activeFilters);
+    
+    // Determine if we need to fetch filter data:
+    // 1. Initial load (hasn't loaded yet)
+    // 2. When isLabGrown changes (filter options might change)
+    const isLabGrownChanged = prevIsLabGrownRef.current !== isLabGrown;
+    const shouldFetchFilterData = !hasInitialLoadRef.current || isLabGrownChanged;
+    const requestId = ++fetchRequestIdRef.current;
+    
+    setShowLoading(true);
+    
+    const run = async () => {
+      try {
+        if (shouldFetchFilterData) {
+          const filterDataResponse = await fetchFilterData(isLabGrown, filtersToUse);
+          if (requestId !== fetchRequestIdRef.current) {
+            return;
+          }
+          let updatedFilters = {...filtersToUse};
+          if (filterDataResponse && filterDataResponse.priceRange && filterDataResponse.priceRange.length > 0) {
+            const defaultPriceRange = [filterDataResponse.priceRange[0].minPrice, filterDataResponse.priceRange[0].maxPrice];
+            if (!updatedFilters.price || updatedFilters.price.length === 0) {
+              updatedFilters.price = defaultPriceRange;
+              setActiveFilters(prevFilters => ({
+                ...prevFilters,
+                price: defaultPriceRange
+              }));
             }
-            return fetchProducts(currentPage, itemsPerPage, isLabGrown, sortOrder, updatedFilters);
-          })
-          .finally(() => {
-            isFetchingRef.current = false;
+          }
+          await fetchProducts(currentPage, itemsPerPage, isLabGrown, sortOrder, updatedFilters);
+          if (requestId === fetchRequestIdRef.current) {
             hasInitialLoadRef.current = true;
             prevIsLabGrownRef.current = isLabGrown;
-          });
-      } else {
-        // Only fetch products when filters are applied (skip filter API call)
-        // Update filters with default price range from filterData if price is empty
+          }
+          return;
+        }
+
         let updatedFilters = {...filtersToUse};
         if (filterData && filterData.priceRange && filterData.priceRange.length > 0) {
           const defaultPriceRange = [filterData.priceRange[0].minPrice, filterData.priceRange[0].maxPrice];
           if (!updatedFilters.price || updatedFilters.price.length === 0) {
             updatedFilters.price = defaultPriceRange;
-            // Update activeFilters state for future use
             setActiveFilters(prevFilters => ({
               ...prevFilters,
               price: defaultPriceRange
             }));
           }
         }
-        fetchProducts(currentPage, itemsPerPage, isLabGrown, sortOrder, updatedFilters)
-          .finally(() => {
-            isFetchingRef.current = false;
-          });
+        await fetchProducts(currentPage, itemsPerPage, isLabGrown, sortOrder, updatedFilters);
+      } finally {
+        if (requestId === fetchRequestIdRef.current) {
+          setShowLoading(false);
+        }
       }
-    }
+    };
+
+    run();
   }, [isLabGrown, currentPage, itemsPerPage, sortOrder, activeFilters, selectedDiamondShape, isDiamondDetailLoaded]);
   //setIsLabGrown
   const handlePageChange = (pageNumber) => {

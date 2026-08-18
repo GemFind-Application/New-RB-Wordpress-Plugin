@@ -38,7 +38,7 @@ function gemfindrb_email_partial_ring_specs( array $ctx ): void {
 			[ 'label' => 'Metal Type:', 'value' => (string) ( $ctx['metaltype'] ?? '' ) ],
 			[ 'label' => 'Center Stone Min Carat:', 'value' => (string) ( $ctx['centerStoneMinCarat'] ?? '' ) ],
 			[ 'label' => 'Center Stone Max Carat:', 'value' => (string) ( $ctx['centerStoneMaxCarat'] ?? '' ) ],
-			[ 'label' => 'Price:', 'value' => (string) ( $ctx['price_rb'] ?? $ctx['price'] ?? '' ) ],
+			[ 'label' => 'Price:', 'value' => (string) ( $ctx['price_rb'] ?? '' ) ],
 		]
 	);
 }

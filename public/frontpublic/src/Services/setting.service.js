@@ -109,50 +109,52 @@ function requestMoreInfo(formData, sendRequest, apiCall) {
   return fetchWrapper.postFormData(`${baseApiUrl}/${endpoint}`, formData);
 }
 
+function appendQueryParam(filterString, key, value) {
+  if (value === undefined || value === null || value === '') {
+    return filterString;
+  }
+  const prefix = filterString.length > 0 ? '&' : '';
+  return `${filterString}${prefix}${key}=${encodeURIComponent(String(value))}`;
+}
+
 function getQueryParam(option) {
   let filterString = "";
   if (option.pageSize && option.pageSize !== undefined) {
-    filterString = 'pageSize=' + option.pageSize;
+    filterString = appendQueryParam(filterString, 'pageSize', option.pageSize);
   }
   if (option.pageNumber && option.pageNumber !== undefined) {
-    filterString += filterString.length > 0 ? `&` : '';
-    filterString += 'pageNumber=' + option.pageNumber;
+    filterString = appendQueryParam(filterString, 'pageNumber', option.pageNumber);
   }
   if (option.searchSetting && option.searchSetting !== undefined) {
-    filterString += filterString.length > 0 ? `&` : '';
-    filterString += 'SID=' + option.searchSetting;
+    filterString = appendQueryParam(filterString, 'SID', option.searchSetting);
   }
+  // JewelCloud expects a literal "+" in OrderBy (e.g. cost+desc). Unencoded "+" is
+  // treated as a space in query strings / PHP $_GET, which truncates Lab setting pages.
   if (option.orderBy && option.orderBy !== undefined) {
-    filterString += filterString.length > 0 ? `&` : '';
-    filterString += 'OrderBy=' + option.orderBy;
+    filterString = appendQueryParam(filterString, 'OrderBy', option.orderBy);
   }
   if (option.priceMin !== "" && option.priceMin !== undefined && option.priceMax !== "" && option.priceMax !== undefined) {
-    filterString += filterString.length > 0 ? `&` : '';
-    filterString += 'priceMin=' + option.priceMin + "&priceMax=" + option.priceMax;
+    filterString = appendQueryParam(filterString, 'priceMin', option.priceMin);
+    filterString = appendQueryParam(filterString, 'priceMax', option.priceMax);
   }
   if (option.shape && option.shape !== undefined) {
-    filterString += filterString.length > 0 ? `&` : '';
-    filterString += 'Shape=' + option.shape;
+    filterString = appendQueryParam(filterString, 'Shape', option.shape);
   }
   if (option.metalType && option.metalType !== undefined) {
-    filterString += filterString.length > 0 ? `&` : '';
-    filterString += 'MetalType=' + option.metalType;
+    filterString = appendQueryParam(filterString, 'MetalType', option.metalType);
   }
   if (option.style && option.style !== undefined) {
-    filterString += filterString.length > 0 ? `&` : '';
-    filterString += 'Collection=' + option.style;
+    filterString = appendQueryParam(filterString, 'Collection', option.style);
   }
   if (option.isLabSettingsAvailable == false) {
-    filterString += filterString.length > 0 ? `&` : '';
-    filterString += 'IsLabSettingsAvailable=0';
+    filterString = appendQueryParam(filterString, 'IsLabSettingsAvailable', '0');
   }
   if (option.isLabSettingsAvailable == true) {
-    filterString += filterString.length > 0 ? `&` : '';
-    filterString += 'IsLabSettingsAvailable=1';
+    filterString = appendQueryParam(filterString, 'IsLabSettingsAvailable', '1');
   }
   if (option.CenterStoneMinCarat !== "" && option.CenterStoneMaxCarat !== "") {
-    filterString += filterString.length > 0 ? `&` : '';
-    filterString += 'CenterStoneMinCarat=' + option.CenterStoneMinCarat + "&CenterStoneMaxCarat=" + option.CenterStoneMaxCarat;
+    filterString = appendQueryParam(filterString, 'CenterStoneMinCarat', option.CenterStoneMinCarat);
+    filterString = appendQueryParam(filterString, 'CenterStoneMaxCarat', option.CenterStoneMaxCarat);
   }
   if (filterString != "") {
     return "&" + filterString;
@@ -163,16 +165,13 @@ function getQueryParam(option) {
 function getQueryFilterParam(option) {
   let filterString = "";
   if (option.shape && option.shape !== undefined) {
-    filterString += filterString.length > 0 ? `&` : '';
-    filterString += 'Shape=' + option.shape;
+    filterString = appendQueryParam(filterString, 'Shape', option.shape);
   }
   if (option.metalType && option.metalType !== undefined) {
-    filterString += filterString.length > 0 ? `&` : '';
-    filterString += 'MetalType=' + option.metalType;
+    filterString = appendQueryParam(filterString, 'MetalType', option.metalType);
   }
   if (option.style && option.style !== undefined) {
-    filterString += filterString.length > 0 ? `&` : '';
-    filterString += 'Collection=' + option.style;
+    filterString = appendQueryParam(filterString, 'Collection', option.style);
   }
   if (option.isLabSettingsAvailable === true) {
     filterString += filterString.length > 0 ? `&` : '';
