@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import ShowCostInCardDiamond from './showCostInCardDiamond';
+import { utils } from '../Helpers';
 
 const DiamondDetailsPopup = ({ diamond, onClose,additionOptionSetting ,configAppData}) => {
   const popupRef = useRef(null);
@@ -43,16 +44,13 @@ const DiamondDetailsPopup = ({ diamond, onClose,additionOptionSetting ,configApp
 };
 
 const DetailRow = ({ label, value }) => {
-  if (value === null || value === undefined || typeof value !== 'object') {
-    const text = value === null || value === undefined ? '' : String(value).trim();
-    if (text === '' || text === '-' || text === '—') {
-      return null;
-    }
-  }
+  const displayValue = typeof value === 'object' && value !== null
+    ? value
+    : utils.displaySpecValue(value);
   return (
     <div className="detail-row">
       <span className="detail-label">{label}</span>
-      <span className="detail-value">{value}</span>
+      <span className="detail-value">{displayValue}</span>
     </div>
   );
 };

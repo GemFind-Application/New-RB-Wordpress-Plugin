@@ -514,32 +514,24 @@ const DiamondPage = ({ formSetting, configAppData, additionOptionSetting, shopUr
                   <div className="stats5">
                     <div className="summary-items">
                       <div className="shape1 si_label">Shape:</div>
-                      <b className="princess si_value">{diamondDetail.shape}</b>
+                      <b className="princess si_value">{utils.displaySpecValue(diamondDetail.shape)}</b>
                     </div>
-                    {utils.hasSpecValue(diamondDetail.cut) && (
-                      <div className="summary-items">
-                        <div className="cut3 si_label">Cut:</div>
-                        <b className="very-good2 si_value">{diamondDetail.cut}</b>
-                      </div>
-                    )}
-                    {utils.hasSpecValue(diamondDetail.polish) && (
-                      <div className="summary-items">
-                        <div className="clarity2 si_label">Polish :</div>
-                        <b className="very-good2 si_value">{diamondDetail.polish}</b>
-                      </div>
-                    )}
-                    {utils.hasSpecValue(diamondDetail.symmetry) && (
-                      <div className="summary-items">
-                        <div className="symmetry2 si_label">Symmetry:</div>
-                        <b className="very-good2 si_value">{diamondDetail.symmetry}</b>
-                      </div>
-                    )}
-                    {utils.hasSpecValue(diamondDetail.fancyColorIntensity) && (
-                      <div className="summary-items">
-                        <div className="intensity si_label">Intensity:</div>
-                        <b className="b12 si_value">{diamondDetail.fancyColorIntensity}</b>
-                      </div>
-                    )}
+                    <div className="summary-items">
+                      <div className="cut3 si_label">Cut:</div>
+                      <b className="very-good2 si_value">{utils.displaySpecValue(diamondDetail.cut)}</b>
+                    </div>
+                    <div className="summary-items">
+                      <div className="clarity2 si_label">Polish :</div>
+                      <b className="very-good2 si_value">{utils.displaySpecValue(diamondDetail.polish)}</b>
+                    </div>
+                    <div className="summary-items">
+                      <div className="symmetry2 si_label">Symmetry:</div>
+                      <b className="very-good2 si_value">{utils.displaySpecValue(diamondDetail.symmetry)}</b>
+                    </div>
+                    <div className="summary-items">
+                      <div className="intensity si_label">Intensity:</div>
+                      <b className="b12 si_value">{utils.displaySpecValue(diamondDetail.fancyColorIntensity)}</b>
+                    </div>
                   </div>
                   <div className="number2">
                     <MeasurementItems

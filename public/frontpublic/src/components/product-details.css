@@ -739,6 +739,25 @@
 	color: var(--white);
 }
 
+#GemFind.gemfind-ring-builder-scope .complete-ring-total-price.button52_b.non-clickable {
+	width: 100%;
+	max-width: 100%;
+	margin: 0;
+	flex: none;
+	align-self: stretch;
+	background-color: #fff;
+	color: var(--accent);
+	cursor: default;
+}
+
+#GemFind.gemfind-ring-builder-scope .complete-ring-total-price.button52_b.non-clickable .add-to-cart {
+	color: inherit;
+}
+
+#GemFind.gemfind-ring-builder-scope .cart-buttons:empty {
+	display: none;
+}
+
 #GemFind.gemfind-ring-builder-scope .product-details1 {
 	flex: 1;
 	display: flex;

@@ -468,15 +468,12 @@ const ProductDetails = ({
           </div>
         </div>*/}
                 <div className="payment-options">
-                    {settingDetail.rbEcommerce &&
-                        diamondDetail.dsEcommerce &&
-                        shouldShowPriceFlag(settingDetail.showPrice) &&
+                    {shouldShowPriceFlag(settingDetail.showPrice) &&
                         shouldShowPriceFlag(diamondDetail.showPrice) &&
                         isValidPrice(settingDetail.cost) &&
                         isValidPrice(diamondDetail.fltPrice) && (
-                            <div className="button52_b non-clickable">
+                            <div className="button52_b non-clickable complete-ring-total-price">
                                 <b className="add-to-cart">
-                                    {/* Complete Ring Price -{' '} */}
                                     <ShowTotalPrice
                                         configAppData={configAppData}
                                         settingDetailForCost={settingDetail}

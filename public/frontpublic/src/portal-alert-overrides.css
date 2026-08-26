@@ -661,6 +661,91 @@
 	margin-top: 0;
 }
 
+/* Schedule Viewing: Location + date fields share the same dropdown chrome. */
+#portals .portalPopupOverlay .requestInfopopup-overlay .rb_grid.rb_col2.form-group.select_location {
+	align-items: end;
+}
+
+#portals .portalPopupOverlay .requestInfopopup-overlay .select_location > .flex-col,
+#portals .portalPopupOverlay .requestInfopopup-overlay .select_location .preference_val.twoInOne {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	gap: 0;
+}
+
+#portals .portalPopupOverlay .requestInfopopup-overlay .select_location .preference_val.twoInOne > label {
+	min-height: 20px;
+	margin-bottom: 4px;
+	font-size: 14px;
+	color: var(--grey, #6a665e);
+}
+
+#portals .portalPopupOverlay .requestInfopopup-overlay .select_location select.no-appearance,
+#portals .portalPopupOverlay .requestInfopopup-overlay .select_location select.select--outline,
+#portals .portalPopupOverlay .requestInfopopup-overlay .gf-schedule-date-input,
+#portals .portalPopupOverlay .requestInfopopup-overlay .react-datepicker__input-container input {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	box-sizing: border-box;
+	width: 100%;
+	min-height: 40px;
+	height: 40px;
+	margin: 0;
+	padding: 0 36px 0 20px;
+	border: 1px solid var(--divider, #e4e3e1);
+	border-radius: 20px;
+	background-color: #ffffff;
+	background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23262523' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	background-position: right 16px center;
+	background-size: 10px 6px;
+	font-family: var(--body-font-family, inherit);
+	font-size: 14px;
+	font-weight: 500;
+	line-height: 28px;
+	color: var(--black, #262523);
+	text-align: left;
+	cursor: pointer;
+	box-shadow: none;
+}
+
+#portals .portalPopupOverlay .requestInfopopup-overlay .select_location select.no-appearance::-ms-expand {
+	display: none;
+}
+
+#portals .portalPopupOverlay .requestInfopopup-overlay .react-datepicker-wrapper,
+#portals .portalPopupOverlay .requestInfopopup-overlay .react-datepicker__input-container {
+	display: block;
+	width: 100%;
+}
+
+#portals .portalPopupOverlay .popup-overlay.requestInfopopup-overlay {
+	overflow: visible;
+}
+
+#portals .gf-schedule-datepicker-popper,
+#portals .react-datepicker-popper,
+#gemfind-datepicker-portal,
+#gemfind-datepicker-portal .gf-schedule-datepicker-popper,
+#gemfind-datepicker-portal .react-datepicker-popper {
+	z-index: 2147483647 !important;
+	pointer-events: auto;
+}
+
+#gemfind-datepicker-portal .gf-schedule-datepicker,
+#gemfind-datepicker-portal .react-datepicker,
+#portals .gf-schedule-datepicker,
+#portals .react-datepicker {
+	font-family: var(--body-font-family, inherit);
+	border: 1px solid var(--divider, #e4e3e1);
+	border-radius: 12px;
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+	pointer-events: auto;
+}
+
 /* E-Mail A Friend popup — balanced Cancel / Send row */
 #portals .portalPopupOverlay .EmailFriendPopup-overlay .popup-content h2 {
 	font-family: var(--h4, "Libre Baskerville", serif);

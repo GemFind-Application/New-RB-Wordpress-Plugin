@@ -29,6 +29,7 @@ final class GEMFINDRB_API {
 		'GetStyleSetting',
 		'GetDiamondsJCOptions',
 		'GetInitialFilter',
+		'ProductTracking',
 	];
 
 	public function register_routes(): void {

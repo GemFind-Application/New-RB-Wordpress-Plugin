@@ -51,6 +51,17 @@ function hasSpecValue(value) {
   return text !== '' && text !== '-' && text !== '—';
 }
 
+/** Always show a spec field; use "-" when the API value is empty/missing. */
+function displaySpecValue(value, fallback = '-') {
+  if (typeof value === 'object' && value !== null) {
+    return value;
+  }
+  if (!hasSpecValue(value)) {
+    return fallback;
+  }
+  return String(value).trim();
+}
+
 function getskuForVirtualTryOn(styleNumber) {
   if (!styleNumber || typeof styleNumber !== 'string') {
     return '';
@@ -243,6 +254,7 @@ const utils = {
   getUrl,
   truncateString,
   hasSpecValue,
+  displaySpecValue,
   getskuForVirtualTryOn,
   getTryOnOverrideCssUrl,
   isDisplayTryOnEnabled,

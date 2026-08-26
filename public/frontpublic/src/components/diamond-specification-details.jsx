@@ -8,14 +8,11 @@ import ShowPerCaratPrice from "./ShowPerCaratPrice";
 import { utils } from "../Helpers";
 
 const SpecRow = ({ label, value, valueClassName = "spec-values", ValueTag = "b" }) => {
-  if (!utils.hasSpecValue(value)) {
-    return null;
-  }
   const ValueComponent = ValueTag;
   return (
     <div className="spec-labels1">
       <div className="stats-label">{label}</div>
-      <ValueComponent className={valueClassName}>{value}</ValueComponent>
+      <ValueComponent className={valueClassName}>{utils.displaySpecValue(value)}</ValueComponent>
     </div>
   );
 };
@@ -46,19 +43,18 @@ const DiamondSpecificationDetail = ({ className = "", diamond,onClose,configAppD
           <div className="stats">
             <div className="spec-labels1">
               <div className="stats-label">{"Stock Number"}:</div>
-              <a className="spec-values">{ additionOptionSetting.show_In_House_Diamonds_First ?
+              <a className="spec-values">{utils.displaySpecValue(additionOptionSetting.show_In_House_Diamonds_First ?
                        diamond.stockNumber:
-                       diamond.diamondId}</a>
+                       diamond.diamondId)}</a>
             </div>
             <div className="spec-labels1">
               <div className="stats-label">Price:</div>
               <b className="spec-values"><ShowCostInCardDiamond configAppData={configAppData} diamondDetail={diamond}></ShowCostInCardDiamond></b>
             </div>
-            { additionOptionSetting.show_In_House_Diamonds_Column_with_SKU &&
-              utils.hasSpecValue(diamond.txtinhouse) && (
+            { additionOptionSetting.show_In_House_Diamonds_Column_with_SKU && (
               <div className="spec-labels1">
                 <div className="stats-label">In House:</div>
-                <b className="spec-values">{diamond.txtinhouse}</b>
+                <b className="spec-values">{utils.displaySpecValue(diamond.txtinhouse)}</b>
               </div>
             )}
 

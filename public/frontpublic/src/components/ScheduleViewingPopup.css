@@ -119,14 +119,33 @@
 
 #GemFind.gemfind-ring-builder-scope .preference_val .react-datepicker-wrapper {
   width: 100%;
+  display: block;
 }
 
 #GemFind.gemfind-ring-builder-scope .preference_val select.no-appearance.select--outline {
   margin-right: 0;
 }
-#GemFind.gemfind-ring-builder-scope .preference_val .react-datepicker__input-container input {
+#GemFind.gemfind-ring-builder-scope .preference_val .react-datepicker__input-container input,
+#GemFind.gemfind-ring-builder-scope .preference_val .react-datepicker__input-container input.gf-schedule-date-input {
   width: 100%;
-  border-radius: 50px;
+  box-sizing: border-box;
+  min-height: 40px;
+  height: 40px;
+  margin: 0;
+  padding: 0 36px 0 20px;
+  border: 1px solid #E4E3E1;
+  border-radius: 20px;
+  background-color: #ffffff;
+  background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23262523' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  background-size: 10px 6px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 28px;
+  color: var(--black, #262523);
+  text-align: left;
+  cursor: pointer;
 }
 #GemFind.gemfind-ring-builder-scope .preference_val .react-datepicker__input-container input.error {
   outline: 1px solid rgb(175, 0, 0);
@@ -135,5 +154,5 @@
 #GemFind.gemfind-ring-builder-scope .react-datepicker__input-container {
   width: 100%;
   flex: 1;
-  display: flex;
+  display: block;
 }

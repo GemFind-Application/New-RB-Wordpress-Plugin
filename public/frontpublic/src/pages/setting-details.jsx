@@ -35,7 +35,7 @@ import VideoPopup from "../components/VideoPopup";
 import Settingsbreadcrumb from "../components/Settingsbreadcrumb";
 import { X } from 'lucide-react';
 import '../components/PopupAlert.css';
-import { fetchWrapper, resolveJcVideoBase } from "../Helpers";
+import { fetchWrapper, resolveJcApiBase, resolveJcVideoBase } from "../Helpers";
 const SettingPage = ({ formSetting, settingNavigationData, isLabGrown, shopUrl, configAppData, setIsLabGrown, setShowLoading, setDocumentLoaded }) => {
   const dealerIdShop = useContext(ConfigContext);
   const { settingId } = useParams();
@@ -143,21 +143,27 @@ const SettingPage = ({ formSetting, settingNavigationData, isLabGrown, shopUrl, 
     try {
       if (!productDetails) return;
 
-      const ipResponse = await fetch("https://geolocation-db.com/json/");
-      const ipData = await ipResponse.json();
-      const userIp = ipData?.IPv4 || "";
+      let userIp = "";
+      try {
+        const ipResponse = await fetch("https://geolocation-db.com/json/");
+        const ipData = await ipResponse.json();
+        userIp = ipData?.IPv4 || "";
+      } catch (_ipErr) {
+        userIp = "";
+      }
 
       const productPrice = productDetails.fltPrice ?? productDetails.cost ?? "";
-      console.log(productDetails)
-      const trackingUrl =
-        `https://apps-api.jewelcloud.com/api/RingBuilder/ProductTracking?RetailerID=${configAppData?.dealerid || ""}` +
-        `&VendorID=${productDetails?.retailerInfo?.retailerID || ""}` +
-        `&GFInventoryID=${currentSettingId || ""}` +
-        `&URL=${encodeURIComponent(window.origin)}` +
-        `&UserIPAddress=${userIp}` +
-        `&price=${encodeURIComponent(productPrice)}`;
+      const trackingParams = new URLSearchParams({
+        RetailerID: String(configAppData?.dealerid || ""),
+        VendorID: String(productDetails?.retailerInfo?.retailerID || ""),
+        GFInventoryID: String(currentSettingId || ""),
+        URL: window.origin,
+        UserIPAddress: userIp,
+        price: String(productPrice),
+      });
+      const trackingUrl = `${resolveJcApiBase()}/ProductTracking?${trackingParams.toString()}`;
 
-      await fetch(trackingUrl, { method: "GET" });
+      await fetchWrapper.get(trackingUrl);
     } catch (error) {
       console.error("Error posting product tracking pingback:", error);
     }

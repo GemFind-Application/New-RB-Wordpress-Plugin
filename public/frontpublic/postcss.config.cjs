@@ -6,7 +6,7 @@ const prefixSelector = require("postcss-prefix-selector");
  */
 const SCOPE = "#GemFind.gemfind-ring-builder-scope";
 const SKIP_PREFIX =
-  /^(#GemFind|#portals|\.gemfind-ring-builder-scope|@|:root$|html$|body$|from |to |\d+%$)/;
+  /^(#GemFind|#portals|#gemfind-datepicker-portal|\.gemfind-ring-builder-scope|@|:root$|html$|body$|from |to |\d+%$)/;
 const THIRD_PARTY =
   /(image-gallery|noUi-|Mui|react-datepicker|slick-|rc-slider)/;
 
@@ -15,7 +15,7 @@ module.exports = {
     prefixSelector({
       prefix: SCOPE,
       transform(prefix, selector, prefixed) {
-        if (selector.includes("#portals")) {
+        if (selector.includes("#portals") || selector.includes("#gemfind-datepicker-portal")) {
           return selector;
         }
         if (selector.includes(SCOPE) || selector.includes("gemfind-ring-builder-scope")) {
@@ -34,6 +34,10 @@ module.exports = {
           return selector;
         }
         if (THIRD_PARTY.test(selector)) {
+          // Datepicker calendar renders inside #portals, outside #GemFind.
+          if (/react-datepicker/.test(selector)) {
+            return `${SCOPE} ${selector}, #portals ${selector}, #gemfind-datepicker-portal ${selector}`;
+          }
           return `${SCOPE} ${selector}`;
         }
         return prefixed;

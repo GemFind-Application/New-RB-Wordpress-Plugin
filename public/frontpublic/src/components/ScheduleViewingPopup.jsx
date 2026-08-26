@@ -54,6 +54,15 @@ const ScheduleViewingPopup = ({ onClose, locations, settingId, isLabSetting, rin
   const [availableTimeArray, setAvailableTimeArray] = useState([]);
   const recaptcha = useRef();
   useEffect(() => {
+    const id = 'gemfind-datepicker-portal';
+    let el = document.getElementById(id);
+    if (!el) {
+      el = document.createElement('div');
+      el.id = id;
+      document.body.appendChild(el);
+    }
+  }, []);
+  useEffect(() => {
     setAvailableTimeArray([])
     if(settingId&&settingId!==""){
       if( SettingDetails.addressList){
@@ -396,22 +405,26 @@ const ScheduleViewingPopup = ({ onClose, locations, settingId, isLabSetting, rin
                 </div>
 
                 {timearray.length > 0 && (
-                <div className="availability schduleb">
-                <label>When are you available?</label>
-                <div className="preferences">
-                  <div className="preference_val">
-                    <DatePicker 
+                <div className="flex-col">
+                  <div className="preference_val twoInOne availability schduleb">
+                    <label htmlFor="avail_date">When are you available?</label>
+                    <DatePicker
+                      id="avail_date"
                       selected={formData.avail_date}
                       onChange={handleDateChange}
                       placeholderText="00.00.0000"
-                      className={errors.preference ? 'error' : ''}
+                      className={errors.preference ? 'error gf-schedule-date-input' : 'gf-schedule-date-input'}
                       dateFormat="MM/dd/yyyy"
                       minDate={new Date()}
-                                         
+                      showPopperArrow={false}
+                      popperPlacement="top-start"
+                      popperClassName="gf-schedule-datepicker-popper"
+                      calendarClassName="gf-schedule-datepicker"
+                      portalId="gemfind-datepicker-portal"
+                      popperProps={{ strategy: 'fixed' }}
                     />
                   </div>
                 </div>
-              </div>
               )}
               </div>
               
