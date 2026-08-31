@@ -113,10 +113,6 @@ const DiamondPage = ({ formSetting, configAppData, additionOptionSetting, shopUr
     try {
       if (!productDetails) return;
 
-      const ipResponse = await fetch("https://geolocation-db.com/json/");
-      const ipData = await ipResponse.json();
-      const userIp = ipData?.IPv4 || "";
-
       const productPrice = productDetails.fltPrice ?? productDetails.cost ?? "";
 
       const trackingUrl =
@@ -124,7 +120,7 @@ const DiamondPage = ({ formSetting, configAppData, additionOptionSetting, shopUr
         `&VendorID=${productDetails?.retailerInfo?.retailerID || ""}` +
         `&DInventoryID=${currentDiamondId || ""}` +
         `&URL=${encodeURIComponent(window.origin)}` +
-        `&UsersIPAddress=${userIp}` +
+        `&UsersIPAddress=` +
         `&Price=${encodeURIComponent(productPrice)}`;
 
       await fetch(trackingUrl, { method: "GET" });

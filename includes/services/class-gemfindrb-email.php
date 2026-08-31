@@ -10,9 +10,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 final class GEMFINDRB_Email {
 
-	private const GEMFIND_DEFAULT_NOTIFICATION_EMAIL = 'dev@gemfind.com';
-	private const GEMFIND_DEFAULT_GREETING_NAME      = 'Prashant Gemfind';
-
 	// ── Ring emails ───────────────────────────────────────────────────────────
 
 	public static function ring_drop_hint( array $data ): bool|WP_Error {
@@ -372,7 +369,7 @@ final class GEMFINDRB_Email {
 		if ( $show_retailer_info === 'true' ) {
 			$cfg_arr['show_retailer'] = true;
 		}
-		unset( $cfg_arr['dealerpassword'], $cfg_arr['smtp_json'] );
+		unset( $cfg_arr['dealerpassword'], $cfg_arr['smtp_json'], $cfg_arr['admin_email_address'], $cfg_arr['from_email_address'] );
 
 		return [
 			'diamond'    => $diamond,
@@ -841,17 +838,12 @@ final class GEMFINDRB_Email {
 	}
 
 	/**
-	 * Retailer/admin notification greeting: GemFind default inbox keeps vendor name;
-	 * merchant-configured admin inbox uses a generic Admin salutation.
+	 * Retailer/admin notification greeting: merchant-configured admin inbox uses a generic Admin salutation.
 	 *
 	 * @param array<string,mixed> $ctx
 	 */
 	private static function retailer_greeting_name( string $to, ?object $cfg, array $ctx ): string {
 		$to_normalized = strtolower( sanitize_email( $to ) );
-
-		if ( $to_normalized === self::GEMFIND_DEFAULT_NOTIFICATION_EMAIL ) {
-			return self::GEMFIND_DEFAULT_GREETING_NAME;
-		}
 
 		if ( self::is_configured_admin_recipient( $to_normalized, $cfg ) ) {
 			return __( 'Admin', 'gemfind-ring-builder' );
@@ -879,29 +871,31 @@ final class GEMFINDRB_Email {
 	}
 
 	/**
-	 * GemFind always receives a copy of retailer/admin notifications.
-	 * Merchants can add more via Admin Email Address in settings.
+	 * Extra retailer/admin notification recipients.
+	 * Empty by default (WordPress.org: no phoning home without opt-in).
+	 * Site owners may add addresses via the `gemfindrb_always_notify_emails` filter.
 	 *
 	 * @return list<string>
 	 */
 	private static function always_notify_emails(): array {
 		/**
-		 * Filter the addresses that always receive retailer/admin form notifications.
+		 * Filter extra addresses that receive retailer/admin form notifications.
+		 * Default is empty so visitor form data is not sent to GemFind unless the site owner opts in.
 		 *
-		 * @param string[] $emails Default: [ 'dev@gemfind.com' ].
+		 * @param string[] $emails Default: [].
 		 */
-		$raw = apply_filters( 'gemfindrb_always_notify_emails', [ 'dev@gemfind.com' ] );
+		$raw = apply_filters( 'gemfindrb_always_notify_emails', [] );
 		if ( ! is_array( $raw ) ) {
-			$raw = [ 'dev@gemfind.com' ];
+			$raw = [];
 		}
 		return self::parse_email_list( implode( ',', array_map( 'strval', $raw ) ) );
 	}
 
 	/**
 	 * Retailer/admin notification recipients:
-	 *  1. Always include GemFind (dev@gemfind.com)
-	 *  2. If Admin Email is set in Ring Builder settings, also include those address(es)
-	 * JewelCloud vendorEmail (e.g. donotuse@gemfind.com) is not used.
+	 *  1. Optional extra addresses from `gemfindrb_always_notify_emails` (empty by default)
+	 *  2. Admin Email Address(es) from Ring Builder settings
+	 * JewelCloud vendorEmail is not used.
 	 *
 	 * @param array<string,mixed> $ringData Unused; kept for call-site compatibility.
 	 * @return list<string>
@@ -916,6 +910,13 @@ final class GEMFINDRB_Email {
 		);
 		foreach ( $admin as $email ) {
 			$emails[] = $email;
+		}
+
+		if ( $emails === [] ) {
+			$site = sanitize_email( (string) get_option( 'admin_email' ) );
+			if ( is_email( $site ) ) {
+				$emails[] = $site;
+			}
 		}
 
 		return array_values( array_unique( $emails ) );

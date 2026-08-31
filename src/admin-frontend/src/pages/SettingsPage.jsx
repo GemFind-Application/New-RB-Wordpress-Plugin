@@ -51,7 +51,7 @@ const FEATURE_TOGGLES = [
   { key: "enable_print", label: "Print Diamond" },
   { key: "enable_admin_notification", label: "Admin Email Notification" },
   { key: "enable_sticky_header", label: "Sticky Header" },
-  { key: "show_powered_by", label: "Show 'Powered by GemFind'" },
+  { key: "show_powered_by", label: "Show 'Powered by GemFind' on the storefront (opt-in)" },
   { key: "show_filter_info", label: "Show Filter Info" },
   { key: "display_tryon", label: "Enable Virtual Try-On" },
   { key: "buySingleDiamond", label: "Buy Single Diamond" },
@@ -306,7 +306,7 @@ export default function SettingsPage() {
               <h2>Email &amp; Notifications</h2>
               <Field
                 label="Admin Email Address(es)"
-                help="Optional extra notification recipients (comma-separated). GemFind (dev@gemfind.com) always receives a copy; these addresses get an additional copy."
+                help="Notification recipients for storefront forms (comma-separated). Leave blank to use the WordPress site admin email. Form data is not sent to GemFind unless you add that address here."
               >
                 <input
                   className="wpdl-input"
@@ -327,7 +327,7 @@ export default function SettingsPage() {
                   name="from_email_address"
                   value={form.from_email_address || ""}
                   onChange={onChange}
-                  placeholder="dev@gemfind.com"
+                  placeholder="store-owner@example.com"
                 />
               </Field>
             </div>

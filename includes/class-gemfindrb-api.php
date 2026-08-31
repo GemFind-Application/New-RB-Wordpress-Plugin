@@ -346,7 +346,7 @@ final class GEMFINDRB_API {
 	public function handle_get_shop_configuration( WP_REST_Request $req ): WP_REST_Response {
 		$data = GEMFINDRB_Settings::get_shop_configuration( $this->shop( $req ) );
 		if ( ! $this->is_admin_auth() ) {
-			unset( $data['dealerpassword'], $data['smtp_json'] );
+			unset( $data['dealerpassword'], $data['smtp_json'], $data['admin_email_address'], $data['from_email_address'] );
 		}
 		return $this->success( $data );
 	}

@@ -7,7 +7,6 @@ require_once __DIR__ . '/email-layout.php';
 /**
  * @param array<string,mixed> $ctx Template context from GEMFINDRB_Email.
  */
-if ( ! function_exists( 'gemfindrb_email_partial_hint_gift' ) ) {
 function gemfindrb_email_partial_hint_gift( array $ctx ): void {
 	gemfindrb_email_info_table(
 		[
@@ -17,12 +16,10 @@ function gemfindrb_email_partial_hint_gift( array $ctx ): void {
 		]
 	);
 }
-}
 
 /**
  * @param array<string,mixed> $ctx
  */
-if ( ! function_exists( 'gemfindrb_email_partial_ring_specs' ) ) {
 function gemfindrb_email_partial_ring_specs( array $ctx ): void {
 	$ring_url   = (string) ( $ctx['ring_url'] ?? '' );
 	$setting_id = (string) ( $ctx['setting_id'] ?? '' );
@@ -42,13 +39,11 @@ function gemfindrb_email_partial_ring_specs( array $ctx ): void {
 		]
 	);
 }
-}
 
 /**
  * @param list<array{label:string,value:string,html?:bool}> $rows
  * @return list<array{label:string,value:string,html?:bool}>
  */
-if ( ! function_exists( 'gemfindrb_email_filter_empty_rows' ) ) {
 function gemfindrb_email_filter_empty_rows( array $rows ): array {
 	$filtered = [];
 	foreach ( $rows as $row ) {
@@ -60,12 +55,10 @@ function gemfindrb_email_filter_empty_rows( array $rows ): array {
 	}
 	return $filtered;
 }
-}
 
 /**
  * @param array<string,mixed> $ctx
  */
-if ( ! function_exists( 'gemfindrb_email_partial_diamond_specs' ) ) {
 function gemfindrb_email_partial_diamond_specs( array $ctx ): void {
 	$diamond_url = (string) ( $ctx['diamond_url'] ?? $ctx['diamondurl'] ?? '' );
 	$diamond_id  = (string) ( $ctx['diamond_id'] ?? '' );
@@ -90,5 +83,4 @@ function gemfindrb_email_partial_diamond_specs( array $ctx ): void {
 			]
 		)
 	);
-}
 }

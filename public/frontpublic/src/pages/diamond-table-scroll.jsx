@@ -261,9 +261,7 @@ const DiamondTableScroll = () => {
         </div>
       </div>
       <footer className="pagination1">
-        <div className="gemfind-app-store">
-          © 2024 GemFind App Store Powered by GemFind.
-        </div>
+        <div className="gemfind-app-store"></div>
       </footer>
       <header
         className="diamond-table-scroll-child"

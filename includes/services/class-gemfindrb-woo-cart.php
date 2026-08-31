@@ -176,7 +176,7 @@ final class GEMFINDRB_Woo_Cart {
 			$product->set_name( $title );
 			$product->set_regular_price( (string) $price );
 			$product->set_catalog_visibility( 'visible' );
-			$product->update_meta_data( '_gemfind_product_type', $type );
+			$product->update_meta_data( '_gemfindrb_product_type', $type );
 			self::sync_product_featured_image( $product, $image_url, $sku );
 			$product->save();
 		} else {
@@ -188,7 +188,7 @@ final class GEMFINDRB_Woo_Cart {
 			$product->set_manage_stock( false );
 			$product->set_stock_status( 'instock' );
 			$product->set_status( 'publish' );
-			$product->update_meta_data( '_gemfind_product_type', $type );
+			$product->update_meta_data( '_gemfindrb_product_type', $type );
 			self::sync_product_featured_image( $product, $image_url, $sku );
 			$product_id = (int) $product->save();
 		}
@@ -333,7 +333,7 @@ final class GEMFINDRB_Woo_Cart {
 			$item->add_meta_data( __( 'Details', 'gemfind-ring-builder' ), sanitize_text_field( (string) $values['gemfindRB_details_line'] ), true );
 		}
 		if ( ! empty( $values['gemfindRB_product_type'] ) ) {
-			$item->add_meta_data( '_gemfind_product_type', sanitize_text_field( (string) $values['gemfindRB_product_type'] ), true );
+			$item->add_meta_data( '_gemfindrb_product_type', sanitize_text_field( (string) $values['gemfindRB_product_type'] ), true );
 		}
 	}
 
@@ -491,7 +491,7 @@ final class GEMFINDRB_Woo_Cart {
 			return;
 		}
 
-		$existing_url = (string) $product->get_meta( '_gemfind_source_image_url', true );
+		$existing_url = (string) $product->get_meta( '_gemfindrb_source_image_url', true );
 		$has_image    = (int) $product->get_image_id() > 0;
 		if ( $has_image && $existing_url === $image_url ) {
 			return;
@@ -500,7 +500,7 @@ final class GEMFINDRB_Woo_Cart {
 		$attach_id = self::sideload_featured_image( $image_url, $sku );
 		if ( $attach_id > 0 ) {
 			$product->set_image_id( $attach_id );
-			$product->update_meta_data( '_gemfind_source_image_url', $image_url );
+			$product->update_meta_data( '_gemfindrb_source_image_url', $image_url );
 		}
 	}
 

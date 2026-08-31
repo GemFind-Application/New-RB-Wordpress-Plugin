@@ -11,7 +11,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * @param array<string,mixed> $vars
  */
-if ( ! function_exists( 'gemfindrb_email_layout_open' ) ) {
 function gemfindrb_email_layout_open( string $title, array $vars = [] ): void {
 	?>
 <!DOCTYPE html>
@@ -34,9 +33,7 @@ function gemfindrb_email_layout_open( string $title, array $vars = [] ): void {
 		(string) ( $vars['shop_logo_alt'] ?? '' )
 	);
 }
-}
 
-if ( ! function_exists( 'gemfindrb_email_layout_close' ) ) {
 function gemfindrb_email_layout_close( ?string $footer_html = null ): void {
 	?>
 </td></tr>
@@ -53,9 +50,7 @@ function gemfindrb_email_layout_close( ?string $footer_html = null ): void {
 </html>
 <?php
 }
-}
 
-if ( ! function_exists( 'gemfindrb_email_logo_header' ) ) {
 function gemfindrb_email_logo_header( string $shopurl, string $shop_logo, string $shop_logo_alt ): void {
 	?>
 <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -70,9 +65,7 @@ function gemfindrb_email_logo_header( string $shopurl, string $shop_logo, string
 </table>
 <?php
 }
-}
 
-if ( ! function_exists( 'gemfindrb_email_dear' ) ) {
 function gemfindrb_email_dear( string $name ): void {
 	?>
 <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin-top:24px;border-collapse:collapse;">
@@ -83,9 +76,7 @@ function gemfindrb_email_dear( string $name ): void {
 </table>
 <?php
 }
-}
 
-if ( ! function_exists( 'gemfindrb_email_intro' ) ) {
 function gemfindrb_email_intro( string $text, bool $allow_html = false ): void {
 	?>
 <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:20px 0;border-collapse:collapse;">
@@ -95,9 +86,7 @@ function gemfindrb_email_intro( string $text, bool $allow_html = false ): void {
 </table>
 <?php
 }
-}
 
-if ( ! function_exists( 'gemfindrb_email_section_heading' ) ) {
 function gemfindrb_email_section_heading( string $title ): void {
 	?>
 <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin-top:24px;">
@@ -107,12 +96,10 @@ function gemfindrb_email_section_heading( string $title ): void {
 </td></tr></table>
 <?php
 }
-}
 
 /**
  * @param list<array{label:string,value:string,html?:bool}> $rows
  */
-if ( ! function_exists( 'gemfindrb_email_info_table' ) ) {
 function gemfindrb_email_info_table( array $rows ): void {
 	if ( $rows === [] ) {
 		return;
@@ -137,9 +124,7 @@ function gemfindrb_email_info_table( array $rows ): void {
 </td></tr></table>
 <?php
 }
-}
 
-if ( ! function_exists( 'gemfindrb_email_view_button' ) ) {
 function gemfindrb_email_view_button( string $url, string $label = 'View This Item' ): void {
 	if ( $url === '' ) {
 		return;
@@ -150,5 +135,4 @@ function gemfindrb_email_view_button( string $url, string $label = 'View This It
 <a href="<?php echo esc_url( $url ); ?>" style="display:inline-block;background-color:#3498db;color:#ffffff;text-decoration:none;padding:12px 24px;font-size:14px;font-weight:bold;font-family:Arial,Helvetica,sans-serif;border-radius:4px;"><?php echo esc_html( $label ); ?></a>
 </td></tr></table>
 <?php
-}
 }

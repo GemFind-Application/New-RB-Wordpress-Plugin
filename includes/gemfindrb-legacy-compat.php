@@ -86,27 +86,6 @@ function GEMFINDRB_migrate_legacy_option_to_tables(): void {
 add_action( 'plugins_loaded', 'GEMFINDRB_migrate_legacy_option_to_tables', 4 );
 
 /**
- * Legacy shortcode alias [gemfind_ring_builder].
- */
-function gemfindRB_register_legacy_shortcode(): void {
-	if ( shortcode_exists( 'gemfindRB_ring_builder' ) && ! shortcode_exists( 'gemfind_ring_builder' ) ) {
-		add_shortcode(
-			'gemfind_ring_builder',
-			static function ( $atts = [] ) {
-				$atts = is_array( $atts ) ? $atts : [];
-				$parts = [];
-				foreach ( $atts as $k => $v ) {
-					$parts[] = sanitize_key( (string) $k ) . '="' . esc_attr( (string) $v ) . '"';
-				}
-				$attr_str = implode( ' ', $parts );
-				return do_shortcode( '[gemfindRB_ring_builder' . ( $attr_str !== '' ? ' ' . $attr_str : '' ) . ']' );
-			}
-		);
-	}
-}
-add_action( 'init', 'gemfindRB_register_legacy_shortcode', 11 );
-
-/**
  * Map legacy page option keys to gemfindRB_* keys.
  */
 function gemfindRB_migrate_legacy_page_options(): void {

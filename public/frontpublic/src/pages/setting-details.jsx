@@ -143,22 +143,13 @@ const SettingPage = ({ formSetting, settingNavigationData, isLabGrown, shopUrl, 
     try {
       if (!productDetails) return;
 
-      let userIp = "";
-      try {
-        const ipResponse = await fetch("https://geolocation-db.com/json/");
-        const ipData = await ipResponse.json();
-        userIp = ipData?.IPv4 || "";
-      } catch (_ipErr) {
-        userIp = "";
-      }
-
       const productPrice = productDetails.fltPrice ?? productDetails.cost ?? "";
       const trackingParams = new URLSearchParams({
         RetailerID: String(configAppData?.dealerid || ""),
         VendorID: String(productDetails?.retailerInfo?.retailerID || ""),
         GFInventoryID: String(currentSettingId || ""),
         URL: window.origin,
-        UserIPAddress: userIp,
+        UserIPAddress: "",
         price: String(productPrice),
       });
       const trackingUrl = `${resolveJcApiBase()}/ProductTracking?${trackingParams.toString()}`;

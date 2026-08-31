@@ -212,7 +212,7 @@ final class GEMFINDRB_Shortcode {
 
 		$v1_toast_dedup_patch = "(function(){if(window.__gemfindrbToastDeduped)return;window.__gemfindrbToastDeduped=true;function pruneContainers(){var all=[].slice.call(document.querySelectorAll('.Toastify__toast-container'));if(all.length<2)return;var pref=all.filter(function(el){return el.className.indexOf('bottom-center')>=0;});var keep=pref.length?pref[pref.length-1]:all[all.length-1];all.forEach(function(el){if(el!==keep&&el.parentNode)el.parentNode.removeChild(el);});}function pruneToasts(){var all=[].slice.call(document.querySelectorAll('.Toastify__toast'));for(var i=1;i<all.length;i++){if(all[i].parentNode)all[i].parentNode.removeChild(all[i]);}}function run(){pruneContainers();pruneToasts();}run();if(document.body){try{new MutationObserver(run).observe(document.body,{childList:true,subtree:true});}catch(e){}}})();";
 
-		$v1_mount_patch = "(function(){if(window.__gemfindrbV1MountPatched)return;window.__gemfindrbV1MountPatched=true;var rb=document.getElementById('ringbuilder-root');if(rb&&!document.getElementById('root')){var m=document.createElement('div');m.id='root';m.className='gemfind-v1-root';rb.appendChild(m);}window.__gemfindRbV1ApiBase=function(){var c=window.gemfindRBConfig||{};return c.restUrl?String(c.restUrl).replace(/\\/$/,''):'https://ringbuilderdev.gemfind.us/api/ringbuilder';};window.__gemfindRbV1JcBase=function(){var c=window.gemfindRBConfig||{};return c.jcProxyUrl?String(c.jcProxyUrl).replace(/\\/$/,''):'https://api.jewelcloud.com/api/RingBuilder';};window.__gemfindRbV1ShapeIcon=function(f){var c=window.gemfindRBConfig||{},b=String(c.shapeIconBaseUrl||c.imageBaseUrl||'').replace(/\\/$/,'');return b&&f?b+'/'+f:'';};window.__gemfindRbV1Asset=function(f){var c=window.gemfindRBConfig||{},b=String(c.imageBaseUrl||'').replace(/\\/$/,'');return b&&f?b+'/'+f:'';};window.__gemfindRbRelaxSettingDiamondFilters=function(){try{return sessionStorage.getItem('gemfindrb_relax_setting_diamond')==='1'}catch(e){return!!window.__gemfindrbRelaxSettingDiamond}};window.__gemfindRbEnableRelaxSettingDiamondFilters=function(){window.__gemfindrbRelaxSettingDiamond=true;try{sessionStorage.setItem('gemfindrb_relax_setting_diamond','1')}catch(e){}};window.__gemfindRbClearRelaxSettingDiamondFilters=function(){window.__gemfindrbRelaxSettingDiamond=false;try{sessionStorage.removeItem('gemfindrb_relax_setting_diamond')}catch(e){}};})();";
+		$v1_mount_patch = "(function(){if(window.__gemfindrbV1MountPatched)return;window.__gemfindrbV1MountPatched=true;var rb=document.getElementById('ringbuilder-root');if(rb&&!document.getElementById('root')){var m=document.createElement('div');m.id='root';m.className='gemfind-v1-root';rb.appendChild(m);}window.__gemfindRbV1ApiBase=function(){var c=window.gemfindRBConfig||{};return c.restUrl?String(c.restUrl).replace(/\\/$/,''):'';};window.__gemfindRbV1JcBase=function(){var c=window.gemfindRBConfig||{};return c.jcProxyUrl?String(c.jcProxyUrl).replace(/\\/$/,''):'https://api.jewelcloud.com/api/RingBuilder';};window.__gemfindRbV1ShapeIcon=function(f){var c=window.gemfindRBConfig||{},b=String(c.shapeIconBaseUrl||c.imageBaseUrl||'').replace(/\\/$/,'');return b&&f?b+'/'+f:'';};window.__gemfindRbV1Asset=function(f){var c=window.gemfindRBConfig||{},b=String(c.imageBaseUrl||'').replace(/\\/$/,'');return b&&f?b+'/'+f:'';};window.__gemfindRbRelaxSettingDiamondFilters=function(){try{return sessionStorage.getItem('gemfindrb_relax_setting_diamond')==='1'}catch(e){return!!window.__gemfindrbRelaxSettingDiamond}};window.__gemfindRbEnableRelaxSettingDiamondFilters=function(){window.__gemfindrbRelaxSettingDiamond=true;try{sessionStorage.setItem('gemfindrb_relax_setting_diamond','1')}catch(e){}};window.__gemfindRbClearRelaxSettingDiamondFilters=function(){window.__gemfindrbRelaxSettingDiamond=false;try{sessionStorage.removeItem('gemfindrb_relax_setting_diamond')}catch(e){}};})();";
 
 		// Runtime safety net for global noUiSlider (standalone enqueue). Bundled copies are patched at build time.
 		$noui_safe_range_patch = "(function(){if(window.__gemfindrbNoUiRangeSafe)return;window.__gemfindrbNoUiRangeSafe=true;function sanitize(opts){if(!opts||typeof opts!=='object')return opts;var r=opts.range;if(!r||typeof r!=='object')return opts;var min=r.min,max=r.max;if(min!==max)return opts;var step=Number(opts.step);if(!isFinite(step)||step<=0)step=1;var nextRange={};for(var k in r){if(Object.prototype.hasOwnProperty.call(r,k))nextRange[k]=r[k];}nextRange.max=Number(min)+step;var out={};for(var ok in opts){if(Object.prototype.hasOwnProperty.call(opts,ok))out[ok]=opts[ok];}out.range=nextRange;return out;}function wrap(api){if(!api||api.__gemfindRangeSafe)return;if(typeof api.create==='function'){var c=api.create.bind(api);api.create=function(el,opts){return c(el,sanitize(opts||{}));};}if(typeof api.updateOptions==='function'){var u=api.updateOptions.bind(api);api.updateOptions=function(opts,fire){return u(sanitize(opts||{}),fire);};}api.__gemfindRangeSafe=true;}wrap(window.noUiSlider);var n=0,t=setInterval(function(){wrap(window.noUiSlider);if(++n>50)clearInterval(t);},50);})();";
@@ -226,6 +226,15 @@ final class GEMFINDRB_Shortcode {
 			if ( file_exists( $css_file ) ) {
 				$ver = $asset_ver . '.' . (string) filemtime( $css_file );
 				$v1_deps = [];
+				self::enqueue_google_font(
+					'gemfindrb-font-lato',
+					'https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap',
+					$asset_ver
+				);
+				$v1_deps[] = 'gemfindrb-font-lato';
+				if ( self::enqueue_v1_fontawesome( $asset_ver ) ) {
+					$v1_deps[] = 'gemfindrb-fontawesome-v1';
+				}
 				$override_css = GEMFINDRB_PATH . 'assets/css/gemfindrb-wp-overrides.css';
 				if ( is_readable( $override_css ) ) {
 					wp_enqueue_style(
@@ -237,6 +246,12 @@ final class GEMFINDRB_Shortcode {
 					$v1_deps[] = 'gemfindrb-wp-overrides-v1';
 				}
 				wp_enqueue_style( 'gemfindrb-frontend-v1', $build_url . 'css/frontend-v1.css', $v1_deps, $ver );
+				if ( in_array( 'gemfindrb-fontawesome-v1', $v1_deps, true ) ) {
+					wp_add_inline_style(
+						'gemfindrb-frontend-v1',
+						'#root .fa,#root .fas,#root .far,#root .fal,#root [class*="fa-"],#ringbuilder-root .fa,#ringbuilder-root .fas,#ringbuilder-root .far,#ringbuilder-root .fal,#ringbuilder-root [class*="fa-"]{font-family:"Font Awesome 5 Free"!important;font-style:normal}#root .fab,#ringbuilder-root .fab{font-family:"Font Awesome 5 Brands"!important;font-weight:400!important}#root .fas,#root .fa,#root .table-sort::before,#root .table-sort::after,#ringbuilder-root .fas,#ringbuilder-root .fa{font-weight:900!important}#root .far,#ringbuilder-root .far{font-weight:400!important}'
+					);
+				}
 			}
 
 			if ( file_exists( $js_file ) ) {
@@ -279,6 +294,13 @@ final class GEMFINDRB_Shortcode {
 			$override_css = GEMFINDRB_PATH . 'assets/css/gemfindrb-wp-overrides.css';
 			$ver          = file_exists( $js_file ) ? $asset_ver . '.' . (string) filemtime( $js_file ) : $asset_ver;
 
+			self::enqueue_v2_google_fonts( $asset_ver );
+			$frontend_deps = [
+				'gemfindrb-font-manrope',
+				'gemfindrb-font-libre-baskerville',
+				'gemfindrb-font-inter',
+			];
+
 			if ( is_readable( $override_css ) ) {
 				wp_enqueue_style(
 					'gemfindrb-wp-overrides',
@@ -286,10 +308,10 @@ final class GEMFINDRB_Shortcode {
 					[],
 					$asset_ver . '.' . (string) filemtime( $override_css )
 				);
+				$frontend_deps[] = 'gemfindrb-wp-overrides';
 			}
 
 			if ( file_exists( $css_file ) ) {
-				$frontend_deps = is_readable( $override_css ) ? [ 'gemfindrb-wp-overrides' ] : [];
 				wp_enqueue_style( 'gemfindrb-frontend', $build_url . 'frontend.css', $frontend_deps, $ver );
 			}
 
@@ -318,5 +340,51 @@ final class GEMFINDRB_Shortcode {
 			wp_enqueue_style( 'gemfindrb-dynamic' );
 			wp_add_inline_style( 'gemfindrb-dynamic', wp_strip_all_tags( $dynamic_css ) );
 		}
+	}
+
+	/**
+	 * Google Fonts stylesheet (Guideline 10 exception: GPL-compatible webfont CDNs).
+	 */
+	private static function enqueue_google_font( string $handle, string $url, string $asset_ver ): void {
+		wp_enqueue_style( $handle, $url, [], $asset_ver );
+	}
+
+	/**
+	 * Default v2 storefront families previously imported from CSS.
+	 */
+	private static function enqueue_v2_google_fonts( string $asset_ver ): void {
+		self::enqueue_google_font(
+			'gemfindrb-font-manrope',
+			'https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap',
+			$asset_ver
+		);
+		self::enqueue_google_font(
+			'gemfindrb-font-libre-baskerville',
+			'https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&display=swap',
+			$asset_ver
+		);
+		self::enqueue_google_font(
+			'gemfindrb-font-inter',
+			'https://fonts.googleapis.com/css2?family=Inter:wght@700&display=swap',
+			$asset_ver
+		);
+	}
+
+	/**
+	 * Bundled Font Awesome for classic v1 (no CDN).
+	 */
+	private static function enqueue_v1_fontawesome( string $asset_ver ): bool {
+		$css = GEMFINDRB_PATH . 'assets/vendor/fontawesome/all.min.css';
+		if ( ! is_readable( $css ) ) {
+			return false;
+		}
+
+		wp_enqueue_style(
+			'gemfindrb-fontawesome-v1',
+			GEMFINDRB_URL . 'assets/vendor/fontawesome/all.min.css',
+			[],
+			$asset_ver . '.' . (string) filemtime( $css )
+		);
+		return true;
 	}
 }
