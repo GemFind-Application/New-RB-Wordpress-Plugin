@@ -2,13 +2,13 @@
 Contributors: gemfind
 Tags: jewelry, diamonds, woocommerce, ecommerce, engagement
 Requires at least: 6.3
-Tested up to: 7.0
+Tested up to: 7.1
 Requires PHP: 8.1
 Stable tag: 1.0.0
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Embed the GemFind Ring Builder engagement-ring tool on your WordPress site with a shortcode, admin settings, JewelCloud inventory, and optional WooCommerce cart.
+Embed GemFind Ring Builder on WordPress with a shortcode, JewelCloud inventory, admin settings, and optional WooCommerce cart.
 
 == Description ==
 
@@ -85,7 +85,7 @@ Source folders in that repository:
 3. `npm install` and `npm run install:all`
 4. `npm run build` (admin, then v2, then v1)
 
-The WordPress.org ZIP is produced with `npm run package`, which copies runtime PHP, vendor, compiled assets, and `readme.txt` only — it does not copy React source or `node_modules`.
+The WordPress.org ZIP is produced with `npm run package`, which copies runtime PHP, vendor, compiled assets, and `readme.txt` only. Under `public/` it includes only the v2 build (`public/frontpublic/build/`) and the v1 build (`public/static/`). It does not copy React source, `node_modules`, or other `public/` files.
 
 == Frequently Asked Questions ==
 
@@ -120,25 +120,23 @@ This plugin connects to third-party and external services. JewelCloud is **requi
 
 = 1. JewelCloud API (api.jewelcloud.com) =
 
-* **What it is and what it's used for.** JewelCloud is GemFind Digital Solutions' jewelry inventory platform. The plugin loads live catalog data for ring settings and diamonds: filters, search results, mounting lists, detail pages, navigation, dealer authentication, jewelry video URLs, and JC options. Browser requests are proxied through the WordPress REST API (`gemfind-ring-builder/v1/jcProxy/*` and `/jcVideoProxy`) to avoid CORS issues. PHP also calls `https://api.jewelcloud.com` directly for activation defaults, email detail lookups, and server-side diamond/setting resolution. Ring Builder endpoints used include: `AccountAuthentication`, `GetNavigation`, `GetRBNavigation`, `GetFilters`, `GetMountingList`, `GetMountingDetail`, `GetStyleSetting`, `GetDiamondFilter`, `GetColorDiamondFilter`, `GetDiamond`, `GetColorDiamond`, `GetShapeByColorFilter`, `GetDiamondDetail`, `GetDiamondsJCOptions`, `GetInitialFilter`, `ProductTracking`, and `api/jewelry/GetVideoUrl`.
+* **What it is and what it's used for.** JewelCloud is GemFind Digital Solutions' jewelry inventory platform. The plugin loads live catalog data for ring settings and diamonds: filters, search results, mounting lists, detail pages, navigation, dealer authentication, jewelry video URLs, and JC options. Browser requests are proxied through the WordPress REST API (`gemfind-ring-builder/v1/jcProxy/*` and `/jcVideoProxy`) to avoid CORS issues. PHP also calls `https://api.jewelcloud.com` directly for activation defaults, email detail lookups, and server-side diamond/setting resolution. Endpoints used include: `AccountAuthentication`, `GetNavigation`, `GetRBNavigation`, `GetFilters`, `GetMountingList`, `GetMountingDetail`, `GetStyleSetting`, `GetDiamondFilter`, `GetColorDiamondFilter`, `GetDiamond`, `GetColorDiamond`, `GetShapeByColorFilter`, `GetDiamondDetail`, `GetDiamondsJCOptions`, `GetInitialFilter`, `ProductTracking`, and `api/jewelry/GetVideoUrl`.
 * **What data is sent and when.** The merchant's JewelCloud Dealer ID (saved in plugin settings) is sent on every call. Filter and search query parameters (shape, carat range, metal, colour, clarity, etc.) are sent when the storefront loads or the visitor changes filters. Setting IDs and diamond inventory IDs are sent when a visitor opens a detail page, requests a video URL, or uses WooCommerce add-to-cart. If the merchant enables AccountAuthentication, the configured dealer password is also sent once during plugin initialisation. The plugin does not intentionally send visitor name, email, or phone number to JewelCloud inventory APIs.
-* **Terms of service.** https://gemfind.com/pages/terms-of-service
-* **Privacy policy (JewelCloud).** https://www.jewelcloud.com/policies/privacy-policy
-* **Privacy policy (GemFind).** https://gemfind.com/pages/privacy-policy
+* **Terms of service.** https://gemfind.com/pages/terms-of-service — please refer to GemFind for Terms of Service, as JewelCloud is operated by GemFind Digital Solutions.
+* **Privacy policy.** https://www.jewelcloud.com/policies/privacy-policy
 
 JewelCloud is operated by GemFind Digital Solutions. GemFind's Terms of Service define the GemFind Network as including `www.jewelcloud.com`. Use the GemFind Terms link above for contractual terms; use the JewelCloud privacy policy link above for JewelCloud data-handling practices.
 
 = 2. JewelCloud diamond and product view tracking (apps-api.jewelcloud.com) =
 
-* **What it is and what it's used for.** GemFind/JewelCloud analytics endpoints that record when a visitor views a diamond detail page or a ring setting detail page in the storefront (v1 and v2). This is part of the JewelCloud inventory service, not a third-party advertising pixel.
-* **What data is sent and when.** Dealer ID, vendor/retailer ID, diamond or setting inventory ID, the site's origin URL, and price. The plugin does **not** look up or send the visitor's IP address. Diamond views are sent as a GET to `https://apps-api.jewelcloud.com/api/DiamondLink/DiamondTracking`. Setting views are sent through the WordPress `jcProxy` to JewelCloud `ProductTracking` (`https://api.jewelcloud.com/api/RingBuilder/ProductTracking`). Sent once per detail page load after details are loaded.
-* **Terms of service.** https://gemfind.com/pages/terms-of-service
-* **Privacy policy (JewelCloud).** https://www.jewelcloud.com/policies/privacy-policy
-* **Privacy policy (GemFind).** https://gemfind.com/pages/privacy-policy
+* **What it is and what it's used for.** GemFind/JewelCloud analytics endpoints that record when a visitor views a diamond detail page or a ring setting detail page in the storefront (v1 and v2).
+* **What data is sent and when.** Dealer ID, vendor/retailer ID, diamond or setting inventory ID, the site's origin URL, and price. Diamond views are sent as a GET to `https://apps-api.jewelcloud.com/api/DiamondLink/DiamondTracking`. Setting views are sent through the WordPress `jcProxy` to JewelCloud `ProductTracking` (`https://api.jewelcloud.com/api/RingBuilder/ProductTracking`). Sent once per detail page load after details are loaded. The plugin does not look up or send the visitor's IP address.
+* **Terms of service.** https://gemfind.com/pages/terms-of-service — please refer to GemFind for Terms of Service, as JewelCloud is operated by GemFind Digital Solutions.
+* **Privacy policy.** https://www.jewelcloud.com/policies/privacy-policy
 
 = 3. Facebook (facebook.com) =
 
-* **What it is and what it's used for.** Optional Facebook Share and Like links on diamond and setting detail pages when the merchant enables "Show Facebook Share" or "Show Facebook Like" in plugin settings. The storefront opens `facebook.com/sharer/sharer.php` or `facebook.com/plugins/like.php` in a new tab. No Facebook SDK is loaded.
+* **What it is and what it's used for.** Optional Facebook Share and Like on diamond and setting detail pages when the merchant enables "Show Facebook Share" or "Show Facebook Like" in plugin settings. The storefront opens `facebook.com/sharer/sharer.php` or `facebook.com/plugins/like.php` in a new tab. No Facebook SDK is loaded.
 * **What data is sent and when.** The current page URL is passed in the share/like link when the visitor clicks. Sent only when the related setting is enabled and the visitor clicks Share or Like. The plugin does not send visitor form data to Facebook.
 * **Terms of service.** https://www.facebook.com/terms.php
 * **Privacy policy.** https://www.facebook.com/privacy/policy
@@ -191,8 +189,8 @@ Use of GemFind Ring Builder (including the optional Camweara try-on integration)
 Sites using this plugin should disclose in their privacy policy that:
 
 * Visitor ring and diamond search and inventory requests are processed through the JewelCloud API (`api.jewelcloud.com`), operated by GemFind Digital Solutions.
-* When a visitor views a diamond or setting detail page, the storefront may send a tracking ping to JewelCloud (`apps-api.jewelcloud.com` and/or `api.jewelcloud.com` ProductTracking) with dealer ID, inventory ID, site URL, and price. Visitor IP addresses are not collected or sent.
-* Email addresses and messages submitted through Drop a Hint, Email a Friend, Schedule a Viewing, or Request More Info are sent to the jeweler's configured admin email address (or the WordPress site admin email if none is set). They are not sent to GemFind unless the merchant adds that address. Mail is sent using either the WordPress mailer or the SMTP credentials saved in the plugin.
+* When a visitor views a diamond or setting detail page, the storefront may send a tracking ping to JewelCloud (`apps-api.jewelcloud.com` and/or `api.jewelcloud.com` ProductTracking) with dealer ID, inventory ID, site URL, and price.
+* Email addresses and messages submitted through Drop a Hint, Email a Friend, Schedule a Viewing, or Request More Info are sent to the jeweler's configured admin email address using either the WordPress mailer or the SMTP credentials saved in the plugin.
 * If the merchant configures a reCAPTCHA Site Key, Google reCAPTCHA collects browser and device signals on protected forms.
 * If the merchant enables Facebook Share or Like, Meta/Facebook may receive the page URL when the visitor clicks those links.
 * If visitors use social share icons, Pinterest or Twitter/X may receive the page URL per their policies (see "External services" #6 above).
@@ -205,5 +203,6 @@ Sites using this plugin should disclose in their privacy policy that:
 
 = 1.0.0 =
 * Initial 1.0.0 release for WordPress.org Plugin Directory.
-* WordPress.org review: documented all external services (JewelCloud API and tracking, Facebook, Google reCAPTCHA, Camweara, Pinterest/Twitter share links, Google Fonts, and YouTube/Vimeo jewelry videos) with working terms and privacy policy links.
+* WordPress.org review: completed External services documentation with verified Terms/Privacy links for JewelCloud, Facebook, Google reCAPTCHA, Camweara, Pinterest/Twitter share links, Google Fonts, and YouTube/Vimeo.
+* Expanded JewelCloud API endpoint list and clarified GemFind as the legal operator of JewelCloud.
 * Ring Builder storefront with settings browse, diamond search, complete-ring flow, and optional WooCommerce cart.

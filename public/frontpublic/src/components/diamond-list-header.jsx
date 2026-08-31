@@ -17,7 +17,7 @@ const DiamondListHeader = ({ className = "", propWidth, propAlignSelf }) => {
     >
       <div className="div79">
         <div className="div80">
-          <img className="image-icon5" alt="" src="/image@2x.png" />
+          <img className="image-icon5" alt="" src="/image-2x.png" />
           <div className="name3">
             <b className="princess-1001-carath4">Princess 10.01 CARATH</b>
             <b className="b26">$363,440</b>

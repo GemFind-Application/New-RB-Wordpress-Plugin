@@ -33,8 +33,8 @@ if ( $role === 'sender' ) {
 	gemfindrb_email_section_heading( 'Gift Information:' );
 	gemfindrb_email_partial_hint_gift( get_defined_vars() );
 	gemfindrb_email_view_button( (string) ( $ring_url ?? '' ) );
-	$footer = '<p>' . sprintf( 'This message was sent to %s', esc_html( (string) ( $hint_Recipient_email ?? '' ) ) ) . '</p>';
-	gemfindrb_email_layout_close( $footer );
+	$gemfindrb_footer = '<p>' . sprintf( 'This message was sent to %s', esc_html( (string) ( $hint_Recipient_email ?? '' ) ) ) . '</p>';
+	gemfindrb_email_layout_close( $gemfindrb_footer );
 	return;
 }
 

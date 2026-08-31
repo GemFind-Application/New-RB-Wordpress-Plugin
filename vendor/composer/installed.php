@@ -1,6 +1,6 @@
 <?php return array(
     'root' => array(
-        'name' => 'gemfind/gemfind-dl-wordpress-plugin',
+        'name' => 'gemfind/gemfind-ring-builder',
         'pretty_version' => '1.0.0+no-version-set',
         'version' => '1.0.0.0',
         'reference' => null,
@@ -37,7 +37,7 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
-        'gemfind/gemfind-dl-wordpress-plugin' => array(
+        'gemfind/gemfind-ring-builder' => array(
             'pretty_version' => '1.0.0+no-version-set',
             'version' => '1.0.0.0',
             'reference' => null,

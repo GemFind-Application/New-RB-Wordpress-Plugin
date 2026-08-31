@@ -105,28 +105,24 @@ final class GEMFINDRB_Shortcode {
 		$nonce    = wp_create_nonce( 'wp_rest' );
 		$basename = self::canonical_ringbuilder_basename();
 
+		$root_id = $use_v1 ? 'ringbuilder-root' : 'gemfindrb-root';
 		ob_start();
-		?>
-		<div class="gemfind-app-wrapper gemfind-ring-builder-scope<?php echo $use_v1 ? ' gemfind-app-wrapper--v1' : ''; ?>">
-			<?php if ( $use_v1 ) : ?>
-				<input type="hidden" id="shop_domain" value="<?php echo esc_attr( $shop ); ?>" />
-			<?php endif; ?>
-			<?php if ( ! $use_v1 ) : ?>
-			<div id="GemFind" class="gemfind-ring-builder-scope">
-			<?php endif; ?>
-				<div id="<?php echo $use_v1 ? 'ringbuilder-root' : 'gemfindrb-root'; ?>"
-					 class="gemfind-root"
-					 data-shop="<?php echo esc_attr( $shop ); ?>"
-					 data-version="<?php echo esc_attr( $version ); ?>"
-					 data-rest-url="<?php echo esc_attr( $rest_url ); ?>"
-					 data-nonce="<?php echo esc_attr( $nonce ); ?>"
-					 data-router-basename="<?php echo esc_attr( $basename ); ?>"
-				></div>
-			<?php if ( ! $use_v1 ) : ?>
-			</div>
-			<?php endif; ?>
-		</div>
-		<?php
+		echo '<div class="gemfind-app-wrapper gemfind-ring-builder-scope' . ( $use_v1 ? ' gemfind-app-wrapper--v1' : '' ) . '">';
+		if ( $use_v1 ) {
+			echo '<input type="hidden" id="shop_domain" value="' . esc_attr( $shop ) . '" />';
+		} else {
+			echo '<div id="GemFind" class="gemfind-ring-builder-scope">';
+		}
+		echo '<div id="' . esc_attr( $root_id ) . '" class="gemfind-root"';
+		echo ' data-shop="' . esc_attr( $shop ) . '"';
+		echo ' data-version="' . esc_attr( $version ) . '"';
+		echo ' data-rest-url="' . esc_attr( $rest_url ) . '"';
+		echo ' data-nonce="' . esc_attr( $nonce ) . '"';
+		echo ' data-router-basename="' . esc_attr( $basename ) . '"></div>';
+		if ( ! $use_v1 ) {
+			echo '</div>';
+		}
+		echo '</div>';
 		return (string) ob_get_clean();
 	}
 
@@ -336,7 +332,7 @@ final class GEMFINDRB_Shortcode {
 
 		$dynamic_css = GEMFINDRB_CSS::get_dynamic_styles( $shop );
 		if ( $dynamic_css !== '' ) {
-			wp_register_style( 'gemfindrb-dynamic', false );
+			wp_register_style( 'gemfindrb-dynamic', false, [], GEMFINDRB_VERSION );
 			wp_enqueue_style( 'gemfindrb-dynamic' );
 			wp_add_inline_style( 'gemfindrb-dynamic', wp_strip_all_tags( $dynamic_css ) );
 		}

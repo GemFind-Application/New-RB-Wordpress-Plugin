@@ -77,7 +77,8 @@ final class GEMFINDRB_API {
 		$this->route( 'GET',  '/customer/check-registration', 'handle_check_registration', 'is_storefront_or_admin' );
 		$this->route( 'POST', '/customer/register',           'handle_register_customer',  'is_storefront_nonce_valid' );
 
-		// Cart JSON APIs
+		// Cart JSON APIs — write routes that create/update plugin-owned WooCommerce
+		// products. permission_callback is more than a REST nonce (see can_add_to_cart).
 		$this->route_with_legacy_api_alias( 'POST', '/addToCart', 'handle_add_to_cart', 'can_add_to_cart' );
 		$this->route_with_legacy_api_alias( 'POST', '/addRing',   'handle_add_ring',    'can_add_to_cart' );
 
@@ -85,7 +86,7 @@ final class GEMFINDRB_API {
 			[
 				'methods'             => [ 'GET', 'POST' ],
 				'callback'            => [ $this, 'handle_cartadd_diamond' ],
-				'permission_callback' => [ $this, 'is_storefront_or_admin' ],
+				'permission_callback' => [ $this, 'can_add_to_cart' ],
 			],
 		] );
 
@@ -93,7 +94,7 @@ final class GEMFINDRB_API {
 			[
 				'methods'             => [ 'GET', 'POST' ],
 				'callback'            => [ $this, 'handle_cartadd_setting' ],
-				'permission_callback' => [ $this, 'is_storefront_or_admin' ],
+				'permission_callback' => [ $this, 'can_add_to_cart' ],
 			],
 		] );
 
@@ -101,7 +102,7 @@ final class GEMFINDRB_API {
 			[
 				'methods'             => [ 'GET', 'POST' ],
 				'callback'            => [ $this, 'handle_complete_purchase' ],
-				'permission_callback' => [ $this, 'is_storefront_or_admin' ],
+				'permission_callback' => [ $this, 'can_add_to_cart' ],
 			],
 		] );
 
@@ -236,13 +237,106 @@ final class GEMFINDRB_API {
 		return $this->is_admin_auth() || $this->is_storefront_nonce_valid();
 	}
 
+	/**
+	 * Permission for storefront cart writes that create or update WooCommerce products.
+	 *
+	 * Shoppers are typically logged-out, so `edit_products` cannot be required.
+	 * A wp_rest nonce alone is not enough for this write: WooCommerce must be
+	 * active, the request must name a JewelCloud diamond/setting id, the shop
+	 * host must match this site, and unauthenticated callers are rate-limited.
+	 * Handlers only upsert products tagged `_gemfindrb_product_type`.
+	 */
 	public function can_add_to_cart( WP_REST_Request $request ): bool {
-		if ( ! $this->is_storefront_nonce_valid() || ! function_exists( 'wc_get_product' ) ) {
+		if ( ! class_exists( 'WooCommerce' ) || ! function_exists( 'wc_get_product' ) ) {
 			return false;
 		}
+
+		$can_manage_store = current_user_can( 'manage_woocommerce' ) || current_user_can( 'manage_options' );
+		if ( ! $can_manage_store && ! $this->is_storefront_nonce_valid() ) {
+			return false;
+		}
+
+		if ( $this->cart_request_catalog_id( $request ) === '' ) {
+			return false;
+		}
+
+		if ( ! $this->cart_request_shop_matches( $request ) ) {
+			return false;
+		}
+
+		if ( ! $can_manage_store && ! $this->check_add_to_cart_rate_limit() ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	private function cart_request_catalog_id( WP_REST_Request $request ): string {
 		$body = $this->body( $request );
-		$id   = sanitize_text_field( (string) ( $body['diamond_id'] ?? $body['setting_id'] ?? '' ) );
-		return $id !== '';
+		$candidates = [
+			$body['diamond_id'] ?? '',
+			$body['setting_id'] ?? '',
+			$body['settingId'] ?? '',
+			$request->get_param( 'diamond_id' ),
+			$request->get_param( 'setting_id' ),
+		];
+		foreach ( $candidates as $id ) {
+			$id = sanitize_text_field( (string) $id );
+			if ( $id !== '' ) {
+				return $id;
+			}
+		}
+		return '';
+	}
+
+	private function normalize_shop_host( string $host ): string {
+		$host = strtolower( trim( $host ) );
+		if ( str_contains( $host, '://' ) ) {
+			$parsed = wp_parse_url( $host, PHP_URL_HOST );
+			if ( is_string( $parsed ) && $parsed !== '' ) {
+				$host = $parsed;
+			}
+		}
+		$host = preg_replace( '/:\d+$/', '', $host ) ?? $host;
+		if ( str_starts_with( $host, 'www.' ) ) {
+			$host = substr( $host, 4 );
+		}
+		return $host;
+	}
+
+	private function cart_request_shop_matches( WP_REST_Request $request ): bool {
+		$body = $this->body( $request );
+		$raw  = (string) (
+			$body['shop_domain']
+			?? $body['shop']
+			?? $request->get_param( 'shop' )
+			?? $request->get_param( 'shopDomain' )
+			?? ''
+		);
+		$raw = sanitize_text_field( $raw );
+		if ( $raw === '' ) {
+			return true;
+		}
+		return $this->normalize_shop_host( $raw ) === $this->normalize_shop_host( gemfindRB_shop_key() );
+	}
+
+	private function check_add_to_cart_rate_limit(): bool {
+		$ip = isset( $_SERVER['REMOTE_ADDR'] )
+			? sanitize_text_field( wp_unslash( (string) $_SERVER['REMOTE_ADDR'] ) )
+			: '';
+		if ( $ip === '' ) {
+			return true;
+		}
+
+		$key   = 'gemfindRB_atc_' . md5( $ip );
+		$count = (int) get_transient( $key );
+		if ( $count >= 30 ) {
+			return false;
+		}
+
+		set_transient( $key, $count + 1, 5 * MINUTE_IN_SECONDS );
+
+		return true;
 	}
 
 	private function shop( WP_REST_Request $req ): string {

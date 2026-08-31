@@ -6,7 +6,7 @@ require_once __DIR__ . '/email-partials.php';
 /** @var string $role */
 $title = __( 'Request For More Info', 'gemfind-ring-builder' );
 gemfindrb_email_layout_open( $title, compact( 'shopurl', 'shop_logo', 'shop_logo_alt' ) );
-$view_url = (string) ( $complete_ring_url ?? $ring_url ?? '' );
+$gemfindrb_view_url = (string) ( $complete_ring_url ?? $ring_url ?? '' );
 
 if ( $role === 'sender' ) {
 	gemfindrb_email_dear( (string) ( $name ?? '' ) );
@@ -23,7 +23,7 @@ if ( $role === 'sender' ) {
 	);
 	gemfindrb_email_partial_ring_specs( get_defined_vars() );
 	gemfindrb_email_partial_diamond_specs( get_defined_vars() );
-	gemfindrb_email_view_button( $view_url );
+	gemfindrb_email_view_button( $gemfindrb_view_url );
 } else {
 	gemfindrb_email_dear( (string) ( $vendorName ?? $retailername ?? '' ) );
 	gemfindrb_email_intro( '<strong>NOTICE:</strong> This is notification that one of your diamonds received interest from a consumer of the retail jeweler below, please DO NOT CONTACT the retailer, they will contact you if they need additional information about this diamond.', true );
@@ -40,7 +40,7 @@ if ( $role === 'sender' ) {
 	);
 	gemfindrb_email_partial_ring_specs( get_defined_vars() );
 	gemfindrb_email_partial_diamond_specs( get_defined_vars() );
-	gemfindrb_email_view_button( $view_url );
+	gemfindrb_email_view_button( $gemfindrb_view_url );
 }
 
 gemfindrb_email_layout_close();

@@ -47,9 +47,15 @@ final class GEMFINDRB_Public_Routes {
 		}
 
 		$target = rest_url( 'gemfind-ring-builder/v1/' . $api_tail );
-		$query  = isset( $_SERVER['QUERY_STRING'] ) ? (string) $_SERVER['QUERY_STRING'] : '';
-		if ( $query !== '' ) {
-			$target .= ( str_contains( $target, '?' ) ? '&' : '?' ) . $query;
+		if ( isset( $_SERVER['QUERY_STRING'] ) ) {
+			$raw_query = sanitize_text_field( wp_unslash( (string) $_SERVER['QUERY_STRING'] ) );
+			wp_parse_str( $raw_query, $query_args );
+			if ( $query_args !== [] ) {
+				$target = add_query_arg( $query_args, $target );
+			}
+		}
+		if ( ! str_contains( $target, '_wpnonce=' ) ) {
+			$target = add_query_arg( '_wpnonce', wp_create_nonce( 'wp_rest' ), $target );
 		}
 
 		wp_safe_redirect( $target, 307 );

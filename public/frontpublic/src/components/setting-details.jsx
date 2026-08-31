@@ -29,7 +29,7 @@ const SettingDetails = ({ className = "" }) => {
               <img
                 className="filter-opened-child2"
                 alt=""
-                src="/group-461@2x.png"
+                src="/group-461-2x.png"
               />
               <img
                 className="filter-opened-child3"

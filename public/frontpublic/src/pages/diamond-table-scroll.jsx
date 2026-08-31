@@ -45,7 +45,7 @@ const DiamondTableScroll = () => {
                     <b className="i">i</b>
                   </div>
                   <div className="div">
-                    <Shape group46="/group-46@2x.png" round="Round" />
+                    <Shape group46="/group-46-2x.png" round="Round" />
                     <Shape
                       group46="/group-59.svg"
                       round="Oval"

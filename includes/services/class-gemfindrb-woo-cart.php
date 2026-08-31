@@ -51,7 +51,11 @@ final class GEMFINDRB_Woo_Cart {
 	 * @param array<string,mixed> $options
 	 */
 	public static function get_add_to_cart_url_for_ring( array $ring, string $setting_id, array $options = [] ): string|WP_Error {
-		$title = (string) ( $ring['mainHeader'] ?? $ring['settingName'] ?? sprintf( __( 'Ring Setting %s', 'gemfind-ring-builder' ), $setting_id ) );
+		$title = (string) ( $ring['mainHeader'] ?? $ring['settingName'] ?? sprintf(
+			/* translators: %s: ring setting ID */
+			__( 'Ring Setting %s', 'gemfind-ring-builder' ),
+			$setting_id
+		) );
 		$line  = self::ring_meta_line( $ring, $options );
 
 		return self::build_cart_url(
@@ -76,7 +80,11 @@ final class GEMFINDRB_Woo_Cart {
 		$ring_prepared = self::prepare_cart_product(
 			self::TYPE_RING,
 			self::normalize_sku( 'R-' . $setting_id ),
-			(string) ( $ring['mainHeader'] ?? $ring['settingName'] ?? sprintf( __( 'Ring Setting %s', 'gemfind-ring-builder' ), $setting_id ) ),
+			(string) ( $ring['mainHeader'] ?? $ring['settingName'] ?? sprintf(
+				/* translators: %s: ring setting ID */
+				__( 'Ring Setting %s', 'gemfind-ring-builder' ),
+				$setting_id
+			) ),
 			self::parse_price( $ring ),
 			self::ring_meta_line( $ring, $options ),
 			$ring
@@ -168,14 +176,22 @@ final class GEMFINDRB_Woo_Cart {
 
 		$product_id = function_exists( 'wc_get_product_id_by_sku' ) ? (int) wc_get_product_id_by_sku( $sku ) : 0;
 		$image_url  = self::resolve_payload_image_url( $type, $payload );
-		if ( $product_id > 0 ) {
-			$product = wc_get_product( $product_id );
-			if ( ! $product instanceof WC_Product ) {
-				return new WP_Error( 'gemfindRB_product_missing', __( 'Could not load cart product.', 'gemfind-ring-builder' ), [ 'status' => 500 ] );
+		$product    = $product_id > 0 ? wc_get_product( $product_id ) : false;
+
+		// Never mutate a merchant catalog product that happens to share this SKU.
+		if ( $product instanceof WC_Product && (string) $product->get_meta( '_gemfindrb_product_type' ) === '' ) {
+			$sku        = self::normalize_sku( 'GFRB-' . $sku );
+			$product_id = function_exists( 'wc_get_product_id_by_sku' ) ? (int) wc_get_product_id_by_sku( $sku ) : 0;
+			$product    = $product_id > 0 ? wc_get_product( $product_id ) : false;
+			if ( $product instanceof WC_Product && (string) $product->get_meta( '_gemfindrb_product_type' ) === '' ) {
+				return new WP_Error( 'gemfindRB_sku_conflict', __( 'Could not create cart product.', 'gemfind-ring-builder' ), [ 'status' => 409 ] );
 			}
+		}
+
+		if ( $product instanceof WC_Product ) {
 			$product->set_name( $title );
 			$product->set_regular_price( (string) $price );
-			$product->set_catalog_visibility( 'visible' );
+			$product->set_catalog_visibility( 'hidden' );
 			$product->update_meta_data( '_gemfindrb_product_type', $type );
 			self::sync_product_featured_image( $product, $image_url, $sku );
 			$product->save();
@@ -184,7 +200,7 @@ final class GEMFINDRB_Woo_Cart {
 			$product->set_name( $title );
 			$product->set_sku( $sku );
 			$product->set_regular_price( (string) $price );
-			$product->set_catalog_visibility( 'visible' );
+			$product->set_catalog_visibility( 'hidden' );
 			$product->set_manage_stock( false );
 			$product->set_stock_status( 'instock' );
 			$product->set_status( 'publish' );
@@ -370,7 +386,11 @@ final class GEMFINDRB_Woo_Cart {
 		if ( ! empty( $diamond['mainHeader'] ) ) {
 			return (string) $diamond['mainHeader'];
 		}
-		return sprintf( __( 'Diamond %s', 'gemfind-ring-builder' ), $diamond_id );
+		return sprintf(
+			/* translators: %s: diamond stock ID */
+			__( 'Diamond %s', 'gemfind-ring-builder' ),
+			$diamond_id
+		);
 	}
 
 	/**

@@ -5,6 +5,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+// Custom plugin tables have no WP_Query equivalent.
+// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
+
 class GEMFINDRB_DB {
 
 	private static bool $schema_checked = false;
@@ -80,8 +83,10 @@ class GEMFINDRB_DB {
 
 		foreach ( $optional_columns as $column => $definition ) {
 			if ( ! self::column_exists( $table, $column ) ) {
-				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- controlled column names.
-				$wpdb->query( "ALTER TABLE `{$table}` ADD COLUMN `{$column}` {$definition}" );
+				$table_sql = esc_sql( $table );
+				$col_sql   = esc_sql( $column );
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- identifiers escaped with esc_sql.
+				$wpdb->query( "ALTER TABLE `{$table_sql}` ADD COLUMN `{$col_sql}` {$definition}" );
 			}
 		}
 
@@ -99,8 +104,10 @@ class GEMFINDRB_DB {
 		];
 		foreach ( $customer_cols as $column => $definition ) {
 			if ( ! self::column_exists( $cust_table, $column ) ) {
-				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-				$wpdb->query( "ALTER TABLE `{$cust_table}` ADD COLUMN `{$column}` {$definition}" );
+				$cust_sql = esc_sql( $cust_table );
+				$col_sql  = esc_sql( $column );
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- identifiers escaped with esc_sql.
+				$wpdb->query( "ALTER TABLE `{$cust_sql}` ADD COLUMN `{$col_sql}` {$definition}" );
 			}
 		}
 

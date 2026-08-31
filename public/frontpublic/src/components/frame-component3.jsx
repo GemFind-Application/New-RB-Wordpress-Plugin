@@ -5,16 +5,16 @@ const FrameComponent3 = ({ className = "" }) => {
   return (
     <div className={`image-parent ${className}`}>
       <div className="image11">
-        <img className="image-10-icon2" alt="" src="/image-92@2x.png" />
+        <img className="image-10-icon2" alt="" src="/image-92-2x.png" />
       </div>
       <div className="image-gallery1">
         <div className="gallery-items">
           <img className="gallery-items-child" alt="" src="/action-icon.svg" />
         </div>
-        <img className="image-icon" alt="" src="/image@2x.png" />
-        <img className="image-icon" alt="" src="/image@2x.png" />
-        <img className="image-icon" alt="" src="/image@2x.png" />
-        <img className="image-icon" alt="" src="/image@2x.png" />
+        <img className="image-icon" alt="" src="/image-2x.png" />
+        <img className="image-icon" alt="" src="/image-2x.png" />
+        <img className="image-icon" alt="" src="/image-2x.png" />
+        <img className="image-icon" alt="" src="/image-2x.png" />
         <div className="gallery-items">
           <img
             className="gallery-items-item"

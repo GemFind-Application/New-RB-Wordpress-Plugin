@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit318db2795b9e54c79b30a50ddf9d3bbb
+class ComposerStaticInitGemfindRB100
 {
     public static $files = array (
         '72243e5536b63e298acb6476f01f1aff' => __DIR__ . '/..' . '/thecodingmachine/safe/lib/special_cases.php',
@@ -443,9 +443,9 @@ class ComposerStaticInit318db2795b9e54c79b30a50ddf9d3bbb
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit318db2795b9e54c79b30a50ddf9d3bbb::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit318db2795b9e54c79b30a50ddf9d3bbb::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit318db2795b9e54c79b30a50ddf9d3bbb::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitGemfindRB100::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitGemfindRB100::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitGemfindRB100::$classMap;
 
         }, null, ClassLoader::class);
     }

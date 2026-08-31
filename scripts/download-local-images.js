@@ -39,7 +39,7 @@ const ASSETS = [
   ["/images/emerald.png", "emerald.png"],
   ["/images/heart.png", "heart.png"],
   ["/images/princess.png", "princess.png"],
-  ["/images/image-9@2x.png", "image-9@2x.png"],
+  ["/images/image-9-2x.png", "image-9-2x.png"],
 ];
 
 function fetchUrl(url) {
