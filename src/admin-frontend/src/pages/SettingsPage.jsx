@@ -277,8 +277,17 @@ export default function SettingsPage() {
                   />
                 </Field>
               )}
-              <Field label="Shop Logo URL">
-                <input className="wpdl-input" name="shop_logo" value={form.shop_logo || ""} onChange={onChange} />
+              <Field
+                label="Shop Logo URL"
+                help="Direct URL to your logo image. It is shown in the header of every Ring Builder email (drop a hint, email a friend, request info, schedule viewing). Leave blank to send emails without a logo."
+              >
+                <input
+                  className="wpdl-input"
+                  name="shop_logo"
+                  value={form.shop_logo || ""}
+                  onChange={onChange}
+                  placeholder="https://example.com/logo.png"
+                />
               </Field>
               <Field label="Announcement Text (List Page)">
                 <textarea

@@ -7,6 +7,7 @@ require_once __DIR__ . '/email-partials.php';
 $title = __( 'Schedule Viewing Notification', 'gemfind-ring-builder' );
 gemfindrb_email_layout_open( $title, compact( 'shopurl', 'shop_logo', 'shop_logo_alt' ) );
 $gemfindrb_item_url = (string) ( $diamondurl ?? $diamond_url ?? '' );
+$gemfindrb_specs_heading = 'The Diamond Specifications are:';
 
 $gemfindrb_appt_rows = [
 	[ 'label' => 'Contact Name:', 'value' => (string) ( $name ?? '' ) ],
@@ -28,15 +29,18 @@ if ( $role === 'sender' ) {
 	gemfindrb_email_intro( '<strong>Disclaimer : </strong>Not all diamonds are in stock. A sales representative will inform you of alternative options.', true );
 	gemfindrb_email_section_heading( 'Appointment Calendar' );
 	gemfindrb_email_info_table( $gemfindrb_appt_rows );
-	gemfindrb_email_partial_diamond_specs( get_defined_vars() );
+	gemfindrb_email_partial_diamond_specs( get_defined_vars(), $gemfindrb_specs_heading );
 	gemfindrb_email_view_button( $gemfindrb_item_url );
+	gemfindrb_email_regards( (string) ( $storeName ?? '' ) );
 } else {
 	gemfindrb_email_dear( (string) ( $retailername ?? '' ) );
-	gemfindrb_email_intro( sprintf( 'A customer has requested an appointment to view Diamond#:%s', (string) ( $diamond_id ?? '' ) ) );
-	gemfindrb_email_section_heading( 'Appointment Calendar' );
+	gemfindrb_email_intro( 'The following appointment has been scheduled through your website' );
+	gemfindrb_email_section_heading( 'Appointment Calendar:' );
 	gemfindrb_email_info_table( $gemfindrb_appt_rows );
-	gemfindrb_email_partial_diamond_specs( get_defined_vars() );
+	gemfindrb_email_partial_diamond_specs( get_defined_vars(), $gemfindrb_specs_heading, true );
+	gemfindrb_email_partial_vendor_info( $diamondVendorInfo ?? null );
 	gemfindrb_email_view_button( $gemfindrb_item_url );
+	gemfindrb_email_regards( (string) ( $storeName ?? '' ) );
 }
 
 gemfindrb_email_layout_close();

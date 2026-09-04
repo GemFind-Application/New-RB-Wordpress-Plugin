@@ -31,14 +31,18 @@ if ( $role === 'sender' ) {
 	gemfindrb_email_partial_ring_specs( get_defined_vars() );
 	gemfindrb_email_partial_diamond_specs( get_defined_vars() );
 	gemfindrb_email_view_button( $gemfindrb_view_url );
+	gemfindrb_email_regards( (string) ( $storeName ?? '' ) );
 } else {
 	gemfindrb_email_dear( (string) ( $retailername ?? '' ) );
-	gemfindrb_email_intro( sprintf( 'A customer has requested an appointment to view Complete Ring Setting#:%s', (string) ( $setting_id ?? '' ) ) );
-	gemfindrb_email_section_heading( 'Appointment Calendar' );
+	gemfindrb_email_intro( 'The following appointment has been scheduled through your website' );
+	gemfindrb_email_section_heading( 'Appointment Calendar:' );
 	gemfindrb_email_info_table( $gemfindrb_appt_rows );
 	gemfindrb_email_partial_ring_specs( get_defined_vars() );
-	gemfindrb_email_partial_diamond_specs( get_defined_vars() );
+	gemfindrb_email_partial_vendor_info( $settingVendorInfo ?? null, 'Setting Vendor Information' );
+	gemfindrb_email_partial_diamond_specs( get_defined_vars(), 'The Diamond Specifications are:', true );
+	gemfindrb_email_partial_vendor_info( $diamondVendorInfo ?? null, 'Diamond Vendor Information' );
 	gemfindrb_email_view_button( $gemfindrb_view_url );
+	gemfindrb_email_regards( (string) ( $storeName ?? '' ) );
 }
 
 gemfindrb_email_layout_close();

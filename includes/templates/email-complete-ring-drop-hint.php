@@ -38,8 +38,13 @@ if ( $role === 'sender' ) {
 	gemfindrb_email_section_heading( 'Gift Information:' );
 	gemfindrb_email_partial_hint_gift( get_defined_vars() );
 	gemfindrb_email_partial_ring_specs( get_defined_vars() );
-	gemfindrb_email_partial_diamond_specs( get_defined_vars() );
+	gemfindrb_email_partial_vendor_info( $settingVendorInfo ?? null, 'Setting Vendor Information' );
+	gemfindrb_email_partial_diamond_specs( get_defined_vars(), 'Diamond Specifications are:', true );
+	gemfindrb_email_partial_vendor_info( $diamondVendorInfo ?? null, 'Diamond Vendor Information' );
 	gemfindrb_email_view_button( $gemfindrb_view_url );
+	$gemfindrb_footer = '<p>' . sprintf( 'This message was sent to %s', esc_html( (string) ( $hint_Recipient_email ?? '' ) ) ) . '</p>';
+	gemfindrb_email_layout_close( $gemfindrb_footer );
+	return;
 }
 
 gemfindrb_email_layout_close();

@@ -59,27 +59,62 @@ function gemfindrb_email_filter_empty_rows( array $rows ): array {
 /**
  * @param array<string,mixed> $ctx
  */
-function gemfindrb_email_partial_diamond_specs( array $ctx ): void {
+function gemfindrb_email_partial_diamond_specs( array $ctx, string $heading = 'Diamond Specifications are:', bool $with_certificate_link = false ): void {
 	$diamond_url = (string) ( $ctx['diamond_url'] ?? $ctx['diamondurl'] ?? '' );
 	$diamond_id  = (string) ( $ctx['diamond_id'] ?? '' );
 	$id_cell     = $diamond_id;
 	if ( $diamond_url !== '' && $diamond_id !== '' ) {
 		$id_cell = '<a href="' . esc_url( $diamond_url ) . '">' . esc_html( $diamond_id ) . '</a>';
 	}
-	gemfindrb_email_section_heading( 'Diamond Specifications are:' );
+
+	$rows = [
+		[ 'label' => 'Diamond #:', 'value' => $id_cell, 'html' => true ],
+		[ 'label' => 'Size:', 'value' => (string) ( $ctx['size'] ?? '' ) ],
+		[ 'label' => 'Cut:', 'value' => (string) ( $ctx['cut'] ?? '' ) ],
+		[ 'label' => 'Color:', 'value' => (string) ( $ctx['color'] ?? '' ) ],
+		[ 'label' => 'Clarity:', 'value' => (string) ( $ctx['clarity'] ?? '' ) ],
+		[ 'label' => 'Depth:', 'value' => (string) ( $ctx['depth'] ?? '' ) ],
+		[ 'label' => 'Table:', 'value' => (string) ( $ctx['table'] ?? '' ) ],
+		[ 'label' => 'Measurements:', 'value' => (string) ( $ctx['measurment'] ?? $ctx['measurement'] ?? '' ) ],
+		[ 'label' => 'Certificate:', 'value' => (string) ( $ctx['certificate'] ?? '' ) ],
+	];
+
+	// Certificate link is a retailer/admin-only row, matching the shared GemFind templates.
+	$certificate_url = (string) ( $ctx['certificateUrl'] ?? '' );
+	if ( $with_certificate_link && $certificate_url !== '' ) {
+		$rows[] = [
+			'label' => 'Certificate Link:',
+			'value' => '<a href="' . esc_url( $certificate_url ) . '">Click Here</a>',
+			'html'  => true,
+		];
+	}
+
+	$rows[] = [ 'label' => 'Price:', 'value' => (string) ( $ctx['price'] ?? '' ) ];
+
+	gemfindrb_email_section_heading( $heading );
+	gemfindrb_email_info_table( gemfindrb_email_filter_empty_rows( $rows ) );
+}
+
+/**
+ * Vendor Information block shown on retailer/admin notifications only.
+ *
+ * @param array<string,mixed>|null $vendor Built by GEMFINDRB_Email::vendor_info().
+ */
+function gemfindrb_email_partial_vendor_info( ?array $vendor, string $heading = 'Vendor Information' ): void {
+	if ( empty( $vendor['hasData'] ) ) {
+		return;
+	}
+	gemfindrb_email_section_heading( $heading );
 	gemfindrb_email_info_table(
 		gemfindrb_email_filter_empty_rows(
 			[
-				[ 'label' => 'Diamond #:', 'value' => $id_cell, 'html' => true ],
-				[ 'label' => 'Size:', 'value' => (string) ( $ctx['size'] ?? '' ) ],
-				[ 'label' => 'Cut:', 'value' => (string) ( $ctx['cut'] ?? '' ) ],
-				[ 'label' => 'Color:', 'value' => (string) ( $ctx['color'] ?? '' ) ],
-				[ 'label' => 'Clarity:', 'value' => (string) ( $ctx['clarity'] ?? '' ) ],
-				[ 'label' => 'Depth:', 'value' => (string) ( $ctx['depth'] ?? '' ) ],
-				[ 'label' => 'Table:', 'value' => (string) ( $ctx['table'] ?? '' ) ],
-				[ 'label' => 'Measurements:', 'value' => (string) ( $ctx['measurment'] ?? $ctx['measurement'] ?? '' ) ],
-				[ 'label' => 'Certificate:', 'value' => (string) ( $ctx['certificate'] ?? '' ) ],
-				[ 'label' => 'Price:', 'value' => (string) ( $ctx['price'] ?? '' ) ],
+				[ 'label' => 'Vendor Name:', 'value' => (string) ( $vendor['name'] ?? '' ) ],
+				[ 'label' => 'Vendor Company:', 'value' => (string) ( $vendor['company'] ?? '' ) ],
+				[ 'label' => 'Vendor Contact Number:', 'value' => (string) ( $vendor['contactNo'] ?? '' ) ],
+				[ 'label' => 'Vendor Email:', 'value' => (string) ( $vendor['email'] ?? '' ) ],
+				[ 'label' => 'Vendor Lot No:', 'value' => (string) ( $vendor['lotNo'] ?? '' ) ],
+				[ 'label' => 'Vendor Stock No:', 'value' => (string) ( $vendor['stockNo'] ?? '' ) ],
+				[ 'label' => 'Wholesale Price:', 'value' => (string) ( $vendor['wholesalePrice'] ?? '' ) ],
 			]
 		)
 	);

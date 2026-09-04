@@ -345,6 +345,7 @@ final class GEMFINDRB_Email {
 				'shop_key'          => $shop,
 				'ring'              => $ringData,
 				'diamond'           => $diamond,
+				'diamondVendorInfo' => self::vendor_info( $diamond ),
 				'complete_ring_url' => (string) ( $data['complete_ring_url'] ?? '' ),
 				'diamond_url'       => (string) ( $data['diamond_url'] ?? $data['diamondurl'] ?? '' ),
 				'price_rb'          => self::format_ring_price( $ringData ),
@@ -656,6 +657,8 @@ final class GEMFINDRB_Email {
 				'shopurl'      => $shopurl,
 				'shop_logo'    => $shop_logo,
 				'shop_logo_alt'=> $shop_logo_alt,
+				'storeName'    => self::store_name( $cfg, $shop_logo_alt ),
+				'settingVendorInfo' => self::vendor_info( $ringData ),
 				'retailername' => $vendor_name,
 				'vendorName'   => $vendor_name,
 				'name'         => (string) ( $data['name'] ?? $data['senderName'] ?? '' ),
@@ -708,6 +711,8 @@ final class GEMFINDRB_Email {
 				'shopurl'      => $shopurl,
 				'shop_logo'    => $shop_logo,
 				'shop_logo_alt'=> $shop_logo_alt,
+				'storeName'    => self::store_name( $cfg, $shop_logo_alt ),
+				'diamondVendorInfo' => self::vendor_info( $diamond ),
 				'retailername' => $vendor_name,
 				'vendorName'   => $vendor_name,
 				'name'         => (string) ( $data['senderName'] ?? $data['name'] ?? '' ),
@@ -754,7 +759,62 @@ final class GEMFINDRB_Email {
 			'measurment'  => $measurement,
 			'measurement' => $measurement,
 			'certificate' => (string) ( $diamond['certificate'] ?? '' ),
+			'certificateUrl' => (string) ( $diamond['certificateUrl'] ?? '' ),
 		];
+	}
+
+	/**
+	 * Vendor details for the retailer-only "Vendor Information" email block.
+	 * Reads the raw JewelCloud payload, which uses varying key spellings per endpoint.
+	 *
+	 * @param array<string,mixed> $item Ring or diamond payload.
+	 * @return array<string,mixed>
+	 */
+	public static function vendor_info( array $item ): array {
+		$pick = static function ( array $keys ) use ( $item ): string {
+			foreach ( $keys as $key ) {
+				if ( ! isset( $item[ $key ] ) || is_array( $item[ $key ] ) ) {
+					continue;
+				}
+				$value = trim( (string) $item[ $key ] );
+				if ( $value !== '' ) {
+					return $value;
+				}
+			}
+			return '';
+		};
+
+		$vendor = [
+			'name'           => $pick( [ 'vendorName', 'VendorName', 'vendor_name' ] ),
+			'company'        => $pick( [ 'vendorCompany', 'vendorCompanyName', 'VendorCompany', 'vendor_company' ] ),
+			'contactNo'      => $pick( [ 'vendorContactNo', 'vendorContact', 'vendorPhone', 'VendorContactNo', 'vendor_contact_no' ] ),
+			'email'          => $pick( [ 'vendorEmail', 'VendorEmail', 'vendor_email' ] ),
+			'lotNo'          => $pick( [ 'vendorLotNo', 'lotNo', 'lotNumber', 'LotNo', 'vendor_lot_no' ] ),
+			'stockNo'        => $pick( [ 'vendorStockNo', 'stockNo', 'stockNumber', 'StockNo', 'vendor_stock_no' ] ),
+			'wholesalePrice' => $pick( [ 'wholesalePrice', 'vendorWholesalePrice', 'WholesalePrice', 'wholesale_price' ] ),
+		];
+
+		$vendor['hasData'] = false;
+		foreach ( $vendor as $key => $value ) {
+			if ( $key !== 'hasData' && $value !== '' ) {
+				$vendor['hasData'] = true;
+				break;
+			}
+		}
+
+		return $vendor;
+	}
+
+	/**
+	 * Store name used for email sign-offs.
+	 */
+	private static function store_name( ?object $cfg, string $fallback ): string {
+		$name = is_object( $cfg ) ? trim( (string) ( $cfg->shop_title ?? '' ) ) : '';
+		if ( $name !== '' ) {
+			return $name;
+		}
+		$blog_name = trim( (string) get_bloginfo( 'name' ) );
+		return $blog_name !== '' ? $blog_name : $fallback;
 	}
 
 	/**

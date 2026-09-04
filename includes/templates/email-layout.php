@@ -136,3 +136,19 @@ function gemfindrb_email_view_button( string $url, string $label = 'View This It
 </td></tr></table>
 <?php
 }
+
+/**
+ * Closing sign-off used by retailer notifications and appointment confirmations.
+ */
+function gemfindrb_email_regards( string $store_name ): void {
+	?>
+<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:24px 0 0;border-collapse:collapse;">
+<tr><td style="font-size:14px;color:#000;font-family:Arial,Helvetica,sans-serif;">
+<p style="margin:0 0 5px;">Regards,</p>
+<?php if ( $store_name !== '' ) : ?>
+<p style="margin:0;"><?php echo esc_html( $store_name ); ?></p>
+<?php endif; ?>
+</td></tr>
+</table>
+<?php
+}
