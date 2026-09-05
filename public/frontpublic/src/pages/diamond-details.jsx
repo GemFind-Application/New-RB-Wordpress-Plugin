@@ -569,13 +569,11 @@ const DiamondPage = ({ formSetting, configAppData, additionOptionSetting, shopUr
                         <div className="button52" onClick={() => selectSetting(diamondDetail)}>
                           <b className="select-363440">Add Your Setting</b>
                         </div>}
-                      {(() => {
-                        return Number(configAppData?.buySingleDiamond) === 1;
-                      })() && (
-                          <div className="button52" onClick={() => addToCart(diamondDetail)}>
-                            <b className="select-363440">Add To Cart</b>
-                          </div>
-                        )}
+                      {utils.canBuySingleDiamond(configAppData, diamondDetail) && (
+                        <div className="button52" onClick={() => addToCart(diamondDetail)}>
+                          <b className="select-363440">Add To Cart</b>
+                        </div>
+                      )}
                       {utils.isDisplayTryOnEnabled(configAppData) &&
                         <div className="button52" onClick={() => showVirtualTryOnIframe(diamondDetail.shape, diamondDetail.caratWeight)}>
                           <b className="select-363440">Virtual Try On </b>

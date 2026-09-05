@@ -339,7 +339,7 @@ final class GEMFINDRB_JewelCloud {
 				: self::JC_BASE . 'GetMountingDetail?';
 		}
 
-		foreach ( [ 'display_tryon', 'show_filter_info', 'enable_sticky_header', 'enable_hint', 'enable_email_friend', 'enable_schedule_viewing', 'enable_more_info', 'enable_print', 'enable_admin_notification', 'show_powered_by', 'show_copyright' ] as $bool_key ) {
+		foreach ( [ 'display_tryon', 'show_filter_info', 'enable_hint', 'enable_email_friend', 'enable_schedule_viewing', 'enable_more_info', 'enable_print', 'enable_admin_notification', 'show_powered_by', 'buySingleDiamond' ] as $bool_key ) {
 			if ( array_key_exists( $bool_key, $arr ) ) {
 				$arr[ $bool_key ] = ( (int) $arr[ $bool_key ] === 1 ) ? '1' : '0';
 			}

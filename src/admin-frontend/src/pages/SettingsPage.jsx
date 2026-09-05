@@ -50,12 +50,10 @@ const FEATURE_TOGGLES = [
   { key: "enable_more_info", label: "Request More Info" },
   { key: "enable_print", label: "Print Diamond" },
   { key: "enable_admin_notification", label: "Admin Email Notification" },
-  { key: "enable_sticky_header", label: "Sticky Header" },
   { key: "show_powered_by", label: "Show 'Powered by GemFind' on the storefront (opt-in)" },
   { key: "show_filter_info", label: "Show Filter Info" },
   { key: "display_tryon", label: "Enable Virtual Try-On" },
   { key: "buySingleDiamond", label: "Buy Single Diamond" },
-  { key: "show_copyright", label: "Show Copyright Notice" },
 ];
 
 function boolVal(v) {

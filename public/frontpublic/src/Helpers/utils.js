@@ -82,6 +82,27 @@ function isDisplayTryOnEnabled(config) {
   return flag === true || flag === 1 || flag === '1' || flag === 'true';
 }
 
+/** Admin toggle: Buy Single Diamond in plugin settings. */
+function isBuySingleDiamondEnabled(config) {
+  if (!config) {
+    return false;
+  }
+  const flag = config.buySingleDiamond;
+  return flag === true || flag === 1 || flag === '1' || flag === 'true';
+}
+
+/**
+ * Add To Cart on a single diamond needs the admin toggle AND the stone itself to be
+ * sellable (JewelCloud dsEcommerce). v1 gates on both; keep v2 in parity.
+ */
+function canBuySingleDiamond(config, diamond) {
+  if (!isBuySingleDiamondEnabled(config) || !diamond) {
+    return false;
+  }
+  const flag = diamond.dsEcommerce;
+  return flag === true || flag === 1 || flag === '1' || flag === 'true';
+}
+
 function getProductTryOnFlag(product) {
   if (!product) {
     return undefined;
@@ -258,6 +279,8 @@ const utils = {
   getskuForVirtualTryOn,
   getTryOnOverrideCssUrl,
   isDisplayTryOnEnabled,
+  isBuySingleDiamondEnabled,
+  canBuySingleDiamond,
   isProductTryOnEnabled,
   canShowSettingVirtualTryOn,
   getListProductTryOnSku,

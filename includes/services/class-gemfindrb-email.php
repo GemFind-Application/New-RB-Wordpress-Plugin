@@ -963,6 +963,12 @@ final class GEMFINDRB_Email {
 	private static function resolve_retailer_emails( ?object $cfg, array $ringData ): array {
 		unset( $ringData );
 
+		// "Admin Email Notification" off means no retailer/admin copy is sent at all.
+		if ( is_object( $cfg ) && array_key_exists( 'enable_admin_notification', (array) $cfg )
+			&& (int) ( $cfg->enable_admin_notification ?? 1 ) !== 1 ) {
+			return [];
+		}
+
 		$emails = self::always_notify_emails();
 
 		$admin = self::parse_email_list(

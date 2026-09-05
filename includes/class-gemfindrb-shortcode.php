@@ -119,7 +119,12 @@ final class GEMFINDRB_Shortcode {
 		echo ' data-rest-url="' . esc_attr( $rest_url ) . '"';
 		echo ' data-nonce="' . esc_attr( $nonce ) . '"';
 		echo ' data-router-basename="' . esc_attr( $basename ) . '"></div>';
-		if ( ! $use_v1 ) {
+		if ( $use_v1 ) {
+			// The v1 bundle only unhides this node (it never creates it), so the markup has to come from here.
+			echo '<div id="gemfind_diamondtool_powered_by" class="gemfind-powered-by" style="display:none;">'
+				. esc_html__( 'Powered by GemFind', 'gemfind-ring-builder' )
+				. '</div>';
+		} else {
 			echo '</div>';
 		}
 		echo '</div>';
