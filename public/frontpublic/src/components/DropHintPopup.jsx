@@ -46,8 +46,7 @@ if(settingId&&settingId!==""&&diamondId&&diamondId!=""){
   formDataValue.diamondurl = diamondurl;
 }
 if(configAppData.site_key&&configAppData.site_key!==""){
-  formDataValue['captcha-response']='',
-  formDataValue['secret-key']=configAppData.secret_key
+  formDataValue['captcha-response']='';
 }
 const recaptcha = useRef();
   const [formData, setFormData] = useState(formDataValue)

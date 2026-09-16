@@ -10,13 +10,13 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function gemfindRB_default_css_row(): array {
 	return [
-		'link'                          => '#836a5d',
-		'hover'                         => '#836a5d',
-		'header'                        => '#f8f4f2',
-		'button'                        => '#836a5d',
-		'slider'                        => '#836a5d',
+		'link'                          => '#000000',
+		'hover'                         => '#CCCCCC',
+		'header'                        => '#333333',
+		'button'                        => '#FF5722',
+		'slider'                        => '#4CAF50',
 		'background'                    => '#262523',
-		'backgroundText'                => '#262523',
+		'backgroundText'                => '#4CAF50',
 		'nav_active_background_color'   => '#836a5d',
 		'nav_active_text_color'         => '#ffffff',
 		'nav_inactive_background_color' => '#f8f4f2',

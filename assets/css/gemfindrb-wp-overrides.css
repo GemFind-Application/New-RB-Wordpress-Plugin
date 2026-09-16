@@ -105,3 +105,36 @@ body .modal.show .modal-dialog.modal-lg .modal-body .modal__video-style {
 	min-height: 500px;
 	border: 0;
 }
+
+/* v1 “Powered by GemFind” — keep attribution in-layout (CRA used .gf-powered_by + inline styles) */
+.gemfind-app-wrapper--v1 .gemfind-powered-by-wrap,
+.gemfind-app-wrapper--v1 .gf-tool-container.gemfind-powered-by-wrap {
+	width: 100%;
+	box-sizing: border-box;
+	clear: both;
+}
+
+.gemfind-app-wrapper--v1 #gemfind_diamondtool_powered_by.gf-powered_by,
+.gemfind-app-wrapper--v1 #gemfind_diamondtool_powered_by.gemfind-powered-by {
+	display: none;
+	text-align: right;
+	margin-right: 7%;
+	margin-bottom: 15px;
+	color: #000;
+	font-family: Lato, sans-serif;
+	font-size: 14px;
+	line-height: 1.4;
+}
+
+.gemfind-app-wrapper--v1 #gemfind_diamondtool_powered_by a {
+	color: inherit;
+	text-decoration: none;
+}
+
+@media (max-width: 991px) {
+	.gemfind-app-wrapper--v1 #gemfind_diamondtool_powered_by.gf-powered_by,
+	.gemfind-app-wrapper--v1 #gemfind_diamondtool_powered_by.gemfind-powered-by {
+		text-align: center !important;
+		margin-right: 0;
+	}
+}

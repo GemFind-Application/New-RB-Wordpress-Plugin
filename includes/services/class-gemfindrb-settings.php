@@ -79,7 +79,45 @@ class GEMFINDRB_Settings {
 		}
 		$arr = (array) $cfg;
 		unset( $arr['dealerpassword'], $arr['smtp_json'] );
-		return $arr;
+		return self::scrub_admin_only_fields( $arr );
+	}
+
+	/**
+	 * Remove credentials and reCAPTCHA secrets from storefront payloads.
+	 * Admins keep secret_key so the settings form can still populate.
+	 *
+	 * @param array<string,mixed> $data
+	 * @return array<string,mixed>
+	 */
+	public static function scrub_admin_only_fields( array $data ): array {
+		unset( $data['dealerpassword'], $data['smtp_json'] );
+		if ( current_user_can( 'manage_options' ) ) {
+			return $data;
+		}
+		unset(
+			$data['secret_key'],
+			$data['admin_email_address'],
+			$data['from_email_address']
+		);
+		return $data;
+	}
+
+	public static function sanitize_hex_colour_value( mixed $v ): string {
+		$s = trim( (string) ( $v ?? '' ) );
+		if ( $s === '' ) {
+			return '';
+		}
+		$hex = sanitize_hex_color( $s );
+		if ( is_string( $hex ) && $hex !== '' ) {
+			return $hex;
+		}
+		if ( $s[0] !== '#' ) {
+			$hex = sanitize_hex_color( '#' . $s );
+			if ( is_string( $hex ) && $hex !== '' ) {
+				return $hex;
+			}
+		}
+		return '';
 	}
 
 	public static function save_css_configuration( array $data, string $shop ): bool {
@@ -87,21 +125,20 @@ class GEMFINDRB_Settings {
 		$prev     = $existing ? (array) $existing : [];
 
 		$sanitize_colour = static function ( mixed $v ): string {
-			$s = trim( (string) ( $v ?? '' ) );
-			if ( $s === '' ) {
-				return '';
-			}
-			$hex = sanitize_hex_color( $s );
-			return $hex ?: $s;
+			return self::sanitize_hex_colour_value( $v );
 		};
 
 		$pick = static function ( string $db_key, array $aliases ) use ( $data, $prev, $sanitize_colour ): string {
 			foreach ( $aliases as $alias ) {
 				if ( array_key_exists( $alias, $data ) && (string) $data[ $alias ] !== '' ) {
-					return $sanitize_colour( $data[ $alias ] );
+					$sanitized = $sanitize_colour( $data[ $alias ] );
+					if ( $sanitized !== '' ) {
+						return $sanitized;
+					}
 				}
 			}
-			return (string) ( $prev[ $db_key ] ?? '' );
+			$previous = self::sanitize_hex_colour_value( $prev[ $db_key ] ?? '' );
+			return $previous;
 		};
 
 		$row = [
@@ -143,26 +180,27 @@ class GEMFINDRB_Settings {
 	 */
 	public static function format_css_for_admin( array $row ): array {
 		$set_default = $row['set_default_view'] ?? '1';
+		$hex         = static fn( mixed $v ): string => self::sanitize_hex_colour_value( $v );
 		return [
-			'link'                          => (string) ( $row['link'] ?? '' ),
-			'hover'                         => (string) ( $row['hover'] ?? '' ),
-			'header'                        => (string) ( $row['header'] ?? '' ),
-			'button'                        => (string) ( $row['button'] ?? '' ),
-			'slider'                        => (string) ( $row['slider'] ?? '' ),
-			'background'                    => (string) ( $row['background'] ?? '' ),
-			'backgroundText'                => (string) ( $row['backgroundText'] ?? '' ),
-			'nav_active_background_color'   => (string) ( $row['nav_active_background_color'] ?? '' ),
-			'nav_active_text_color'         => (string) ( $row['nav_active_text_color'] ?? '' ),
-			'nav_inactive_background_color' => (string) ( $row['nav_inactive_background_color'] ?? '' ),
-			'nav_inactive_text_color'       => (string) ( $row['nav_inactive_text_color'] ?? '' ),
+			'link'                          => $hex( $row['link'] ?? '' ),
+			'hover'                         => $hex( $row['hover'] ?? '' ),
+			'header'                        => $hex( $row['header'] ?? '' ),
+			'button'                        => $hex( $row['button'] ?? '' ),
+			'slider'                        => $hex( $row['slider'] ?? '' ),
+			'background'                    => $hex( $row['background'] ?? '' ),
+			'backgroundText'                => $hex( $row['backgroundText'] ?? '' ),
+			'nav_active_background_color'   => $hex( $row['nav_active_background_color'] ?? '' ),
+			'nav_active_text_color'         => $hex( $row['nav_active_text_color'] ?? '' ),
+			'nav_inactive_background_color' => $hex( $row['nav_inactive_background_color'] ?? '' ),
+			'nav_inactive_text_color'       => $hex( $row['nav_inactive_text_color'] ?? '' ),
 			'selected_theme'                => (string) ( $row['selected_theme'] ?? 'default' ),
 			'set_default_view'              => (string) $set_default,
-			'link_color'                    => (string) ( $row['link'] ?? '' ),
-			'hover_effect'                  => (string) ( $row['hover'] ?? '' ),
-			'column_header_accent'          => (string) ( $row['header'] ?? '' ),
-			'call_to_action_button'         => (string) ( $row['button'] ?? '' ),
-			'slider_effect'                 => (string) ( $row['slider'] ?? '' ),
-			'background_text_color'         => (string) ( $row['backgroundText'] ?? '' ),
+			'link_color'                    => $hex( $row['link'] ?? '' ),
+			'hover_effect'                  => $hex( $row['hover'] ?? '' ),
+			'column_header_accent'          => $hex( $row['header'] ?? '' ),
+			'call_to_action_button'         => $hex( $row['button'] ?? '' ),
+			'slider_effect'                 => $hex( $row['slider'] ?? '' ),
+			'background_text_color'         => $hex( $row['backgroundText'] ?? '' ),
 			'view_type'                     => ( (string) $set_default === '1' ) ? 'default' : 'current',
 		];
 	}

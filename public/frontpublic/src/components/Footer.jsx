@@ -1,4 +1,5 @@
 import React from 'react'
+import './pagination-panel.css'
 
 function isPoweredByEnabled(configAppData) {
     const value = configAppData?.show_powered_by;
@@ -10,7 +11,7 @@ function Footer({ configAppData }) {
         return null;
     }
     return (
-        <div className="pagination7">
+        <div className="pagination7 gemfind-powered-by-footer">
             <div className="gemfind-app-store5">
                 Powered by GemFind
             </div>

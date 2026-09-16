@@ -26,7 +26,7 @@ const Diamond = ({ isLabGrown, setIsLabGrown, onCompareContainerClick, compareDi
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(12);
   const [totalProducts, setTotalProducts] = useState(0);
-  const [isGridView, setIsGridView] = useState(configAppData.default_viewmode === 'grid' ? true : false);
+  const [isGridView, setIsGridView] = useState(configAppData.default_view === 'grid' ? true : false);
   const [diamond, setDiamond] = useState([]);
   const [filterData, setFilterData] = useState(null);
   const [diamondNavigation, setDiamondNavigation] = useState([]);
@@ -94,15 +94,18 @@ const Diamond = ({ isLabGrown, setIsLabGrown, onCompareContainerClick, compareDi
     const checkMobile = () => {
       const mobile = window.innerWidth < 768;
       setIsMobile(mobile);
-      // Force grid view on mobile
       if (mobile) {
+        // Force grid view on mobile
         setIsGridView(true);
+      } else {
+        // Revert to admin-configured default view on desktop
+        setIsGridView(configAppData.default_view === 'grid');
       }
     };
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+  }, [configAppData.default_view]);
   
   function useQuery() {
     return new URLSearchParams(useLocation().search);

@@ -24,8 +24,12 @@ for (const rel of files) {
   if (src.includes("cannot be equal")) {
     console.error("FAIL:", rel, "still contains equal-range throw");
     failed = true;
-  } else if (!src.includes("__gfStep") && rel.includes("nouislider")) {
-    console.error("FAIL:", rel, "missing coerce guard (__gfStep)");
+  } else if (
+    rel.includes("nouislider") &&
+    !src.includes("__gfStep") &&
+    !src.includes("hasNoSize")
+  ) {
+    console.error("FAIL:", rel, "missing coerce guard (__gfStep) or noUiSlider 15 hasNoSize");
     failed = true;
   } else {
     console.log("OK:", rel);

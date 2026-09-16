@@ -36,7 +36,7 @@ export function dbRowToAdminColors(row = {}) {
     call_to_action_button: row.call_to_action_button || row.button || "#FF5722",
     slider_effect: row.slider_effect || row.slider || "#4CAF50",
     background: row.background || "#262523",
-    background_text_color: row.background_text_color || row.backgroundText || "#262523",
+    background_text_color: row.background_text_color || row.backgroundText || "#4CAF50",
     nav_active_background_color:
       row.nav_active_background_color || DEFAULT_THEME_COLORS.navActiveBackgroundColor,
     nav_inactive_background_color:
