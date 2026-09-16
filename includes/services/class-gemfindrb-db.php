@@ -79,6 +79,7 @@ class GEMFINDRB_DB {
 			'recaptcha_version'          => "varchar(10) DEFAULT 'v2'",
 			'price_row_format'           => "varchar(50) DEFAULT 'left'",
 			'tool_version'               => "varchar(50) DEFAULT '2.0'",
+			'enable_jewelcloud_view_tracking' => 'tinyint(1) DEFAULT 0',
 		];
 
 		foreach ( $optional_columns as $column => $definition ) {

@@ -82,6 +82,20 @@ replaceAll(
   "ASC/DESC button active class"
 );
 
+// ASC/DESC toolbar is really a single icon: CSS hides whichever link isn't
+// ".active" (`.grid-view-orderby a{display:none}` / `a.active{display:block}`),
+// so only the currently-active link is ever clickable. Branching on
+// `t.target.id` therefore always matches the one link the visitor could
+// possibly have clicked and just re-confirms the direction already showing —
+// DESC (or ASC) can never be reached because its link is never on screen to
+// click. Toggle off the current `O` state instead of the click target's id,
+// so clicking the one visible icon actually flips direction.
+replaceAll(
+  '"asc"===t.target.id?(A("active"),T("inactive"),n="ASC",I(n)):(A("inactive"),T("active"),n="DESC",I(n))',
+  '"ASC"===O?(A("inactive"),T("active"),n="DESC",I(n)):(A("active"),T("inactive"),n="ASC",I(n))',
+  "ASC/DESC icon toggles off current state, not click target id"
+);
+
 // Default sort: UI showed ASC/Shape but API sent empty OrderBy/OrderType until icon click.
 replaceAll(
   '[Qe,Je]=(0,t.useState)(""),[Ze,et]=(0,t.useState)("")',
@@ -96,6 +110,20 @@ replaceAll(
   "onChange:t=>{e.orderbytype(t.target.value)}",
   "onChange:t=>{e.orderbytype(t.target.value),e.orderType(O)}",
   "dropdown change applies current direction"
+);
+
+// Carrying over the previous field's direction produced a mismatch: e.g.
+// Carat DESC, then switch the dropdown to Price — the request could come
+// back sorted DESC while the ASC/DESC icon still showed ASC (or vice versa),
+// because the JewelCloud API's own default ordering for the new field didn't
+// necessarily agree with the direction we asked to preserve. Simpler and
+// consistent: switching the sort field always resets to ASC, in both the
+// request and the icon, so the icon and the actual results can never
+// disagree right after a field change.
+replaceAll(
+  'onChange:t=>{e.orderbytype(t.target.value),e.orderType(O)}',
+  'onChange:t=>{e.orderbytype(t.target.value),A("active"),T("inactive"),I("ASC"),e.orderType("ASC")}',
+  "dropdown change resets direction to ASC"
 );
 
 // Always refetch when ASC/DESC is clicked (even if direction unchanged).

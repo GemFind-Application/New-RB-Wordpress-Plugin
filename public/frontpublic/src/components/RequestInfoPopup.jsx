@@ -14,8 +14,7 @@ const RequestInfoPopup = ({ onClose ,settingId, isLabSetting ,ringurl,shopurl,di
     shopurl:shopurl,
   }
   if(configAppData.site_key&&configAppData.site_key!==""){
-    formDataValue['captcha-response']='',
-    formDataValue['secret-key']=configAppData.secret_key
+    formDataValue['captcha-response']='';
   }
     if(settingId&&settingId!==""){
       formDataValue.settingid = settingId;

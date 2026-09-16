@@ -20,8 +20,7 @@ const ScheduleViewingPopup = ({ onClose, locations, settingId, isLabSetting, rin
    
   }
   if(configAppData.site_key&&configAppData.site_key!==""){
-    formDataValue['captcha-response']='',
-    formDataValue['secret-key']=configAppData.secret_key
+    formDataValue['captcha-response']='';
   }
   if(settingId&&settingId!==""){
     formDataValue.settingid = settingId;

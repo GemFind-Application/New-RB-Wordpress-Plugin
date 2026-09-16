@@ -109,26 +109,6 @@ const DiamondPage = ({ formSetting, configAppData, additionOptionSetting, shopUr
     setShowVirtualTryOn(true);
     setShowVirtualTryOnUrl(url);
   };
-  const initDiamondTrackingPingback = async (productDetails, currentDiamondId) => {
-    try {
-      if (!productDetails) return;
-
-      const productPrice = productDetails.fltPrice ?? productDetails.cost ?? "";
-
-      const trackingUrl =
-        `https://apps-api.jewelcloud.com/api/DiamondLink/DiamondTracking?RetailerID=${configAppData?.dealerid || ""}` +
-        `&VendorID=${productDetails?.retailerInfo?.retailerID || ""}` +
-        `&DInventoryID=${currentDiamondId || ""}` +
-        `&URL=${encodeURIComponent(window.origin)}` +
-        `&UsersIPAddress=` +
-        `&Price=${encodeURIComponent(productPrice)}`;
-
-      await fetch(trackingUrl, { method: "GET" });
-    } catch (error) {
-      console.error("Error posting diamond tracking pingback:", error);
-    }
-  };
-
   const fetchProductDetails = async (diamondId, isLabGrown) => {
     try {
       setShowLoading(true)
@@ -140,7 +120,6 @@ const DiamondPage = ({ formSetting, configAppData, additionOptionSetting, shopUr
         setIsAllDiamondDetailsLoaded(true);
         setShowLoading(false);
         handleVideoIconClick(diamondIdToShow)
-        initDiamondTrackingPingback(res, diamondId);
 
         if (res.diamondId) {
 

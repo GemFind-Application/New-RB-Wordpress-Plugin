@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { utils } from "../Helpers";
 import Nouislider from "nouislider-react";
-import "nouislider/distribute/nouislider.css";
+import "nouislider/dist/nouislider.css";
 import './MultiRangeSlider.css';
 const MultiRangeSlider = ({ min, max, onChange,value ,isPrice=true,showPercent,step,currencyToShow,currencyPosition,currencyFrom}) => {
 //console.log("value of step=="+step)

@@ -10,7 +10,7 @@ import PopupAlert from './PopupAlert';
 import { debounce } from "lodash";
 import { utils } from '../Helpers';
 import Nouislider from "nouislider-react";
-import "nouislider/distribute/nouislider.css";
+import "nouislider/dist/nouislider.css";
 const imageUrl = `${getImageBaseUrl()}`;
 const FilterOption = ({ label, icon, isActive, onClick ,isCollectionisActive,selectedDiamondShape,filterType}) => (  
   <>

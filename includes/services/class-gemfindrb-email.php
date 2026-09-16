@@ -370,7 +370,8 @@ final class GEMFINDRB_Email {
 		if ( $show_retailer_info === 'true' ) {
 			$cfg_arr['show_retailer'] = true;
 		}
-		unset( $cfg_arr['dealerpassword'], $cfg_arr['smtp_json'], $cfg_arr['admin_email_address'], $cfg_arr['from_email_address'] );
+		$cfg_arr = GEMFINDRB_Settings::scrub_admin_only_fields( $cfg_arr );
+		unset( $cfg_arr['secret_key'] );
 
 		return [
 			'diamond'    => $diamond,

@@ -38,11 +38,6 @@ function gemfindrb_email_layout_close( ?string $footer_html = null ): void {
 	?>
 </td></tr>
 </table>
-<?php if ( $footer_html !== null && $footer_html !== '' ) : ?>
-<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="720" style="max-width:720px;width:100%;margin-top:10px;border-collapse:collapse;">
-<tr><td style="text-align:center;font-size:12px;color:#999999;padding:10px 0;"><?php echo $footer_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td></tr>
-</table>
-<?php endif; ?>
 </td>
 </tr>
 </table>

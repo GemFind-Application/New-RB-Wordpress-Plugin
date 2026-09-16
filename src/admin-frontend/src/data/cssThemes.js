@@ -1,12 +1,12 @@
 /** Default palette — matches Shopify Ring Builder css-configuration.jsx */
 export const DEFAULT_THEME_COLORS = {
-  hoverEffect: "#836a5d",
-  columnHeaderAccent: "#f8f4f2",
-  linkColor: "#836a5d",
-  callToActionButton: "#836a5d",
+  hoverEffect: "#CCCCCC",
+  columnHeaderAccent: "#333333",
+  linkColor: "#000000",
+  callToActionButton: "#FF5722",
   background: "#262523",
-  slider_barmakian: "#836a5d",
-  backgroundText: "#262523",
+  slider_barmakian: "#4CAF50",
+  backgroundText: "#4CAF50",
   navActiveBackgroundColor: "#836a5d",
   navInactiveBackgroundColor: "#f8f4f2",
   navActiveTextColor: "#ffffff",
@@ -14,13 +14,13 @@ export const DEFAULT_THEME_COLORS = {
 };
 
 export const FALLBACK_DB_COLORS = {
-  link: "#999",
-  header: "#000000",
-  button: "#000022",
-  slider: "#828282",
-  hover: "#92cddc",
+  link: "#000000",
+  header: "#333333",
+  button: "#FF5722",
+  slider: "#4CAF50",
+  hover: "#CCCCCC",
   background: "#262523",
-  backgroundText: "#262523",
+  backgroundText: "#4CAF50",
   nav_active_background_color: "#836a5d",
   nav_inactive_background_color: "#f8f4f2",
   nav_active_text_color: "#ffffff",
@@ -249,8 +249,12 @@ export const CSS_THEMES = {
 
 export const V1_COLOR_FIELDS = [
   { key: "link_color", label: "Link Color", themeKey: "linkColor" },
+  { key: "hover_effect", label: "Hover Effect", themeKey: "hoverEffect" },
   { key: "column_header_accent", label: "Column Header Accent", themeKey: "columnHeaderAccent" },
   { key: "call_to_action_button", label: "Call To Action Button", themeKey: "callToActionButton" },
+  { key: "slider_effect", label: "Slider Effect", themeKey: "slider_barmakian" },
+  { key: "background", label: "Background", themeKey: "background" },
+  { key: "background_text_color", label: "Background Text Color", themeKey: "backgroundText" },
 ];
 
 export const COLOR_FIELDS = [

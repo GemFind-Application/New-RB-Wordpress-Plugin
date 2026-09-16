@@ -330,7 +330,7 @@ final class GEMFINDRB_JewelCloud {
 		}
 
 		$arr = (array) $cfg;
-		unset( $arr['dealerpassword'], $arr['smtp_json'], $arr['shop_access_token'] );
+		unset( $arr['dealerpassword'], $arr['smtp_json'], $arr['shop_access_token'], $arr['secret_key'], $arr['admin_email_address'], $arr['from_email_address'] );
 
 		// V1 SettingDetails reads mountinglistapifancy for single-setting fetches (Shopify parity).
 		if ( empty( $arr['mountinglistapifancy'] ) ) {

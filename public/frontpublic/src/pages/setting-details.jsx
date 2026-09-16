@@ -35,7 +35,7 @@ import VideoPopup from "../components/VideoPopup";
 import Settingsbreadcrumb from "../components/Settingsbreadcrumb";
 import { X } from 'lucide-react';
 import '../components/PopupAlert.css';
-import { fetchWrapper, resolveJcApiBase, resolveJcVideoBase } from "../Helpers";
+import { fetchWrapper, resolveJcVideoBase } from "../Helpers";
 const SettingPage = ({ formSetting, settingNavigationData, isLabGrown, shopUrl, configAppData, setIsLabGrown, setShowLoading, setDocumentLoaded }) => {
   const dealerIdShop = useContext(ConfigContext);
   const { settingId } = useParams();
@@ -139,27 +139,6 @@ const SettingPage = ({ formSetting, settingNavigationData, isLabGrown, shopUrl, 
       setError("Failed to fetch video data. Please try again later.");
     }
   };
-  const initProductTrackingPingback = async (productDetails, currentSettingId) => {
-    try {
-      if (!productDetails) return;
-
-      const productPrice = productDetails.fltPrice ?? productDetails.cost ?? "";
-      const trackingParams = new URLSearchParams({
-        RetailerID: String(configAppData?.dealerid || ""),
-        VendorID: String(productDetails?.retailerInfo?.retailerID || ""),
-        GFInventoryID: String(currentSettingId || ""),
-        URL: window.origin,
-        UserIPAddress: "",
-        price: String(productPrice),
-      });
-      const trackingUrl = `${resolveJcApiBase()}/ProductTracking?${trackingParams.toString()}`;
-
-      await fetchWrapper.get(trackingUrl);
-    } catch (error) {
-      console.error("Error posting product tracking pingback:", error);
-    }
-  };
-
   const fetchProductDetails = async (settingId) => {
     try {
       setShowLoading(true)
@@ -236,7 +215,6 @@ const SettingPage = ({ formSetting, settingNavigationData, isLabGrown, shopUrl, 
           setUniqueDiamondShape(allDiamondShape);
         }
         setShowLoading(false);
-        initProductTrackingPingback(res, settingId);
       } else {
         navigate("/settings");
       }
