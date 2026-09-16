@@ -29,7 +29,6 @@ final class GEMFINDRB_API {
 		'GetStyleSetting',
 		'GetDiamondsJCOptions',
 		'GetInitialFilter',
-		'ProductTracking',
 	];
 
 	public function register_routes(): void {
@@ -382,10 +381,7 @@ final class GEMFINDRB_API {
 
 	public function handle_reactconfig( WP_REST_Request $req ): WP_REST_Response {
 		$shop = $this->shop( $req );
-		$data = GEMFINDRB_JewelCloud::get_react_config( $shop );
-		if ( ! $this->is_admin_auth() ) {
-			unset( $data['dealerpassword'], $data['admin_email_address'], $data['from_email_address'], $data['smtp_json'] );
-		}
+		$data = GEMFINDRB_Settings::scrub_admin_only_fields( GEMFINDRB_JewelCloud::get_react_config( $shop ) );
 		return new WP_REST_Response( [ 'data' => $data ], 200 );
 	}
 
@@ -439,9 +435,6 @@ final class GEMFINDRB_API {
 
 	public function handle_get_shop_configuration( WP_REST_Request $req ): WP_REST_Response {
 		$data = GEMFINDRB_Settings::get_shop_configuration( $this->shop( $req ) );
-		if ( ! $this->is_admin_auth() ) {
-			unset( $data['dealerpassword'], $data['smtp_json'], $data['admin_email_address'], $data['from_email_address'] );
-		}
 		return $this->success( $data );
 	}
 

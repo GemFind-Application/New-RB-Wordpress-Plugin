@@ -12,7 +12,10 @@ final class GEMFINDRB_CSS {
 
 		$pick = static function ( ?object $row, string $prop ): string {
 			if ( $row && isset( $row->$prop ) && (string) $row->$prop !== '' ) {
-				return (string) $row->$prop;
+				$hex = GEMFINDRB_Settings::sanitize_hex_colour_value( $row->$prop );
+				if ( $hex !== '' ) {
+					return $hex;
+				}
 			}
 			return function_exists( 'gemfindRB_css_colour_fallback' )
 				? gemfindRB_css_colour_fallback( $prop )
