@@ -1,7 +1,8 @@
 node_modules/
-public/frontpublic/node_modules/
+public/frontpublic/build/
 src/admin-frontend/node_modules/
 src/rb-version-1-frontend/node_modules/
+src/rb-version-2-frontend/node_modules/
 .DS_Store
 Thumbs.db
 New-RB-Wordpress-Plugin-main.zip

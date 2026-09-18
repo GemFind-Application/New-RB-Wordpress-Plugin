@@ -7,9 +7,7 @@ const postcss = require(path.join(
   __dirname,
   "..",
   "..",
-  "..",
-  "public",
-  "frontpublic",
+  "rb-version-2-frontend",
   "node_modules",
   "postcss"
 ));
@@ -17,9 +15,7 @@ const prefixSelector = require(path.join(
   __dirname,
   "..",
   "..",
-  "..",
-  "public",
-  "frontpublic",
+  "rb-version-2-frontend",
   "node_modules",
   "postcss-prefix-selector"
 ));
