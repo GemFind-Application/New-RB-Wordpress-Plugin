@@ -4,7 +4,7 @@ Tags: jewelry, diamonds, woocommerce, ecommerce, engagement
 Requires at least: 6.3
 Tested up to: 7.1
 Requires PHP: 8.1
-Stable tag: 1.0.0
+Stable tag: 1.0.2
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -74,7 +74,7 @@ https://github.com/GemFind-Application/New-RB-Wordpress-Plugin
 Source folders in that repository:
 
 * `src/admin-frontend/` — admin UI
-* `public/frontpublic/src/` — storefront v2
+* `src/rb-version-2-frontend/` — storefront v2
 * `src/rb-version-1-frontend/` — storefront v1 (when present)
 * `scripts/` — `npm run build` orchestration
 
@@ -194,7 +194,7 @@ Sites using this plugin should disclose in their privacy policy that:
 == Changelog ==
 
 = 1.0.2 =
-* Removed the JewelCloud diamond/setting view-tracking pingback (`DiamondTracking`, `ProductTracking`). The plugin no longer sends a view-analytics ping when a visitor opens a detail page. See `TRACKING-REMOVED.md` in the plugin folder for a record of what was removed.
+* Removed the JewelCloud diamond/setting view-tracking pingback (`DiamondTracking`, `ProductTracking`). The plugin no longer sends a view-analytics ping when a visitor opens a detail page.
 
 = 1.0.1 =
 * JewelCloud view tracking is required for the inventory service, always on for v2 detail pages, with merchant guidance in Settings and the readme (no on/off control).

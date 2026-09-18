@@ -18,7 +18,9 @@ function wrapInIIFE() {
 
 export default defineConfig({
   build: {
-    outDir: "build",
+    // Output must land in public/frontpublic/build — that's the path
+    // includes/class-gemfindrb-shortcode.php enqueues the built assets from.
+    outDir: "../../public/frontpublic/build",
     emptyOutDir: true,
     chunkSizeWarningLimit: 1600,
     sourcemap: false,
