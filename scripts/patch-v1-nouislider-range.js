@@ -29,7 +29,7 @@ const targets = [
 
 const pkgFiles = [
   path.join(root, "src/rb-version-1-frontend/package.json"),
-  path.join(root, "public/frontpublic/package.json"),
+  path.join(root, "src/rb-version-2-frontend/package.json"),
 ];
 
 const FROM =

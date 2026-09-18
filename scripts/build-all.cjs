@@ -26,7 +26,7 @@ const TARGETS = {
   },
   v2: {
     label: "Storefront v2 (React)",
-    cwd: path.join(pluginRoot, "public", "frontpublic"),
+    cwd: path.join(pluginRoot, "src", "rb-version-2-frontend"),
     npmScript: "build",
     outputs: [
       "public/frontpublic/build/assets/frontend.js",

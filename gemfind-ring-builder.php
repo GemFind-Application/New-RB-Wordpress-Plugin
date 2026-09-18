@@ -3,7 +3,7 @@
  * Plugin Name:  GemFind Ring Builder
  * Plugin URI:   https://gemfind.com/
  * Description:  Full-featured Ring Builder tool powered by GemFind. React frontend, REST API backend, admin settings, emails, and WooCommerce cart integration.
- * Version:      1.0.0
+ * Version:      1.0.2
  * Requires at least: 6.3
  * Requires PHP: 8.1
  * Author:       GemFind
