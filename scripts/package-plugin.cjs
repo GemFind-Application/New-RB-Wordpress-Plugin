@@ -13,7 +13,13 @@ const { spawnSync } = require("child_process");
 
 const pluginRoot = path.join(__dirname, "..");
 const pluginName = "gemfind-ring-builder";
-const version = "1.0.0";
+const version = (fs
+  .readFileSync(path.join(pluginRoot, "gemfind-ring-builder.php"), "utf8")
+  .match(/^\s*\*\s*Version:\s*(\S+)/m) || [])[1];
+if (!version) {
+  throw new Error("Could not read Version: from gemfind-ring-builder.php header");
+}
+const isWindows = process.platform === "win32";
 const maxMb = 10;
 const staging = path.join(require("os").tmpdir(), `${pluginName}-dist`);
 const root = path.join(staging, pluginName);
@@ -144,6 +150,20 @@ function assertRuntimeFiles() {
 }
 
 function createPosixZip(sourceDir, destinationZip) {
+  if (!isWindows) {
+    // macOS / Linux: Info-ZIP always writes forward-slash entry names.
+    if (fs.existsSync(destinationZip)) {
+      fs.rmSync(destinationZip, { force: true });
+    }
+    const result = spawnSync("zip", ["-r", "-q", "-X", destinationZip, path.basename(sourceDir)], {
+      cwd: path.dirname(sourceDir),
+      encoding: "utf8",
+    });
+    if (result.status !== 0) {
+      throw new Error(`ZIP creation failed:\n${result.stdout || ""}\n${result.stderr || ""}`);
+    }
+    return;
+  }
   const ps = `
 $ErrorActionPreference = 'Stop'
 Add-Type -AssemblyName System.IO.Compression
@@ -174,40 +194,57 @@ try {
   }
 }
 
-function assertPosixZip(zipFile) {
-  const check = spawnSync(
-    "powershell",
-    [
-      "-NoProfile",
-      "-Command",
-      `
+function listZipEntries(zipFile) {
+  const result = isWindows
+    ? spawnSync(
+        "powershell",
+        [
+          "-NoProfile",
+          "-Command",
+          `
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 $z = [System.IO.Compression.ZipFile]::OpenRead('${zipFile.replace(/'/g, "''")}')
-$names = @($z.Entries | ForEach-Object { $_.FullName })
+$z.Entries | ForEach-Object { $_.FullName }
 $z.Dispose()
-$main = @($names | Where-Object { $_ -eq 'gemfind-ring-builder/gemfind-ring-builder.php' })
-$bs = @($names | Where-Object { $_ -like '*\\*' }).Count
-$nm = @($names | Where-Object { $_ -like '*node_modules*' }).Count
-$pubBad = @($names | Where-Object {
-  $_ -like 'gemfind-ring-builder/public/*' -and
-  $_ -notlike 'gemfind-ring-builder/public/frontpublic/build/*' -and
-  $_ -notlike 'gemfind-ring-builder/public/static/*'
-}).Count
-$pubSrc = @($names | Where-Object { $_ -like 'gemfind-ring-builder/public/frontpublic/src*' }).Count
-if ($main.Count -lt 1) { throw 'Main plugin file entry missing (forward-slash path).' }
-if ($bs -gt 0) { throw "ZIP still has $bs backslash paths." }
-if ($nm -gt 0) { throw "ZIP still has $nm node_modules files." }
-if ($pubSrc -gt 0) { throw 'ZIP still has public/frontpublic/src.' }
-if ($pubBad -gt 0) { throw "ZIP public/ has $pubBad files outside v1 static / v2 build." }
-Write-Output ("OK entries=" + $names.Count + " main=gemfind-ring-builder/gemfind-ring-builder.php")
 `,
-    ],
-    { encoding: "utf8" }
-  );
-  if (check.status !== 0) {
-    throw new Error(`ZIP validation failed:\n${check.stdout}\n${check.stderr}`);
+        ],
+        { encoding: "utf8", maxBuffer: 64 * 1024 * 1024 }
+      )
+    : spawnSync("unzip", ["-Z1", zipFile], { encoding: "utf8", maxBuffer: 64 * 1024 * 1024 });
+  if (result.status !== 0) {
+    throw new Error(`Could not list ZIP entries:\n${result.stdout || ""}\n${result.stderr || ""}`);
   }
-  console.log(String(check.stdout || "").trim());
+  return String(result.stdout)
+    .split(/\r?\n/)
+    .filter(Boolean)
+    .filter((name) => !name.endsWith("/"));
+}
+
+function assertPosixZip(zipFile) {
+  const names = listZipEntries(zipFile);
+  const prefix = `${pluginName}/`;
+  const problems = [];
+  if (!names.includes(`${prefix}gemfind-ring-builder.php`)) {
+    problems.push("Main plugin file entry missing (forward-slash path).");
+  }
+  const bs = names.filter((n) => n.includes("\\")).length;
+  if (bs) problems.push(`ZIP still has ${bs} backslash paths.`);
+  const nm = names.filter((n) => n.includes("node_modules")).length;
+  if (nm) problems.push(`ZIP still has ${nm} node_modules files.`);
+  if (names.some((n) => n.startsWith(`${prefix}public/frontpublic/src`))) {
+    problems.push("ZIP still has public/frontpublic/src.");
+  }
+  const pubBad = names.filter(
+    (n) =>
+      n.startsWith(`${prefix}public/`) &&
+      !n.startsWith(`${prefix}public/frontpublic/build/`) &&
+      !n.startsWith(`${prefix}public/static/`)
+  ).length;
+  if (pubBad) problems.push(`ZIP public/ has ${pubBad} files outside v1 static / v2 build.`);
+  if (problems.length) {
+    throw new Error(`ZIP validation failed:\n  - ${problems.join("\n  - ")}`);
+  }
+  console.log(`OK entries=${names.length} main=${prefix}gemfind-ring-builder.php`);
 }
 
 function main() {

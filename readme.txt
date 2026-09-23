@@ -4,7 +4,7 @@ Tags: jewelry, diamonds, woocommerce, ecommerce, engagement
 Requires at least: 6.3
 Tested up to: 7.1
 Requires PHP: 8.1
-Stable tag: 1.0.2
+Stable tag: 1.0.3
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -193,9 +193,11 @@ Sites using this plugin should disclose in their privacy policy that:
 
 == Changelog ==
 
+= 1.0.3 =
+* Classic v1 no longer loads the Luma-Icons webfont from `db.onlinewebfonts.com`; its four icons now use the bundled Font Awesome 5 Free (no remote asset calls).
+
 = 1.0.2 =
 * Removed the JewelCloud diamond/setting view-tracking pingback (`DiamondTracking`, `ProductTracking`). The plugin no longer sends a view-analytics ping when a visitor opens a detail page.
-* Classic v1 no longer loads the Luma-Icons webfont from `db.onlinewebfonts.com`; its four icons now use the bundled Font Awesome 5 Free (no remote asset calls).
 
 = 1.0.1 =
 * JewelCloud view tracking is required for the inventory service, always on for v2 detail pages, with merchant guidance in Settings and the readme (no on/off control).
