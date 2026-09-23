@@ -53,7 +53,7 @@
     "preview": "vite preview"
   },
   "overrides": {
-    "nouislider": "15.8.1"
+    "nouislider": "$nouislider"
   },
   "eslintConfig": {
     "root": true
