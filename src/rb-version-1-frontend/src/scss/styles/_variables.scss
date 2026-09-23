@@ -1,0 +1,42 @@
+// $primaryColor: red;
+$black: #000;
+$white: #fff;
+$gray: #797979;
+$light-gray: #fafafa;
+$aqua: #92cddc;
+$slider-color: #828282;
+$border-color: #f7f7f7;
+$yellow: #c9a63a;
+$pink: #ff8080;
+$product-border: #e8e8e8;
+$pagination-active: #454748;
+$icon-color: #949494;
+$red: #e60023;
+$sky-blue: #1d9bf0;
+$blue: #1877f2;
+
+// Dynamic theme colors from CSS custom properties
+$link-color: var(--link);
+$header-color: var(--header);
+$button-color: var(--button);
+$slider-color: var(--slider);
+$hover-color: var(--hover);
+$background-color: var(--background);
+$background-text-color: var(--background-text);
+
+$grid-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1400px
+);
+
+// fonts
+
+// $latobold: 'latobold';
+// $latoblack: 'latoblack';
+// $latoregular: 'latoregular';
+
+// font-family: 'Lato', sans-serif ;

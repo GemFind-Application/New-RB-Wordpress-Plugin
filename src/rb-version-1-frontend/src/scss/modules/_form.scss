@@ -1,0 +1,523 @@
+.contact-prefrtence {
+    // margin-top: 20px;
+    span {
+        font-size: 15px;
+    }
+    .pref_container {
+        label {
+            .MuiFormControlLabel-label {
+                font-size: 15px;
+            }
+        }
+    }
+}
+
+// Scoped to tool containers to prevent leaking MUI styles to host page.
+.tool-container .MuiInputBase-root fieldset,
+.gf-tool-container .MuiInputBase-root fieldset {
+    border-width: 1px !important;
+    border-color: #6c757d !important;
+}
+
+.tool-container .MuiInputBase-root fieldset legend,
+.gf-tool-container .MuiInputBase-root fieldset legend {
+    font-size: 15px;
+    visibility: visible;
+    max-width: fit-content;
+    height: 20px !important;
+}
+
+.tool-container .MuiInputBase-root fieldset legend span,
+.gf-tool-container .MuiInputBase-root fieldset legend span {
+    opacity: 1;
+    font-size: 12px;
+}
+
+// ===========================================================================
+// Lead-capture popups
+// (Drop a hint / Request more info / E-mail a friend / Schedule a viewing)
+//
+// These modals are portaled to <body>, outside .tool-container, so:
+//   * every rule below is scoped to .react-responsive-modal-root, which also
+//     lifts specificity above whatever the merchant's theme sets on inputs;
+//   * no font-family is declared anywhere here — the storefront font is
+//     inherited from <body> (see utils/fontLoader.js).
+// ===========================================================================
+.react-responsive-modal-root {
+    --gf-ink: #14161a;
+    --gf-ink-soft: #5d636d;
+    --gf-hairline: #e4e6ea;
+    --gf-field-border: #cbcfd6;
+    --gf-field-hover: #9aa0a9;
+    // Focus is neutral ink, not a tint — it stays legible on top of whatever
+    // brand colour getCssStyle returns for --button.
+    --gf-focus: #14161a;
+    --gf-danger: #d92d20;
+
+    // -- Shell ------------------------------------------------------------
+    .popup-form,
+    .popup-form-small,
+    .popup-form-extra-small {
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+        border-radius: 0;
+        box-shadow: 0 20px 52px rgba(16, 18, 22, 0.22), 0 2px 6px rgba(16, 18, 22, 0.06);
+        text-align: left;
+    }
+
+    > div > ._loading_overlay_wrapper {
+        flex: 0 0 auto;
+    }
+
+    // -- Form body --------------------------------------------------------
+    .Diamond-form,
+    .Diamond-form--small,
+    .Diamond-form--xx-small {
+        display: flex;
+        flex-direction: column;
+        flex: 1 1 auto;
+        min-height: 0;
+        text-align: left;
+
+        // Header: title + supporting line, separated from the fields by a
+        // hairline so the scrolling area reads as its own surface.
+        .requested-form {
+            flex: 0 0 auto;
+            margin: 0;
+            padding: 24px 60px 18px 24px;
+            border-bottom: 1px solid var(--gf-hairline);
+
+            h2 {
+                margin: 0;
+                font-size: 21px;
+                font-weight: 600;
+                line-height: 1.25;
+                letter-spacing: -0.01em;
+                color: var(--gf-ink);
+                text-transform: none;
+            }
+
+            p {
+                margin: 6px 0 0;
+                font-size: 14px;
+                line-height: 1.5;
+                color: var(--gf-ink-soft);
+            }
+
+            @include media-breakpoint-up(md) {
+                padding: 28px 64px 20px 30px;
+            }
+        }
+
+        form {
+            flex: 1 1 auto;
+            min-height: 0;
+            overflow-y: auto;
+            overscroll-behavior: contain;
+            padding: 22px 24px 24px;
+            scrollbar-width: thin;
+            scrollbar-color: #cfd3d9 transparent;
+
+            &::-webkit-scrollbar {
+                width: 6px;
+            }
+            &::-webkit-scrollbar-track {
+                background-color: transparent;
+            }
+            &::-webkit-scrollbar-thumb {
+                background-color: #cfd3d9;
+            }
+            &:hover::-webkit-scrollbar-thumb {
+                background-color: #b3b9c1;
+            }
+
+            @include media-breakpoint-up(md) {
+                padding: 24px 30px 28px;
+            }
+        }
+
+        // Fields stack on a single rhythm; errors are pulled back up so they
+        // hug the field they belong to.
+        .form-field {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .form-field > .MuiFormControl-root,
+        .form-field > .MuiInputBase-root {
+            width: 100%;
+            margin: 0;
+        }
+
+        .form-field > .form-error {
+            margin: -10px 0 0;
+        }
+
+        .form-error {
+            color: var(--gf-danger);
+            font-size: 12.5px;
+            line-height: 1.4;
+            margin: 6px 0 0;
+        }
+
+        // -- Inputs -------------------------------------------------------
+        .MuiOutlinedInput-root {
+            border-radius: 0;
+            background-color: #fff;
+
+            fieldset {
+                border-width: 1px !important;
+                border-color: var(--gf-field-border) !important;
+                border-radius: 0;
+                transition: border-color 0.16s ease;
+                top: -4px;
+            }
+
+            &:hover fieldset {
+                border-color: var(--gf-field-hover) !important;
+            }
+
+            // Every TextField carries MUI's `focused` prop, so .Mui-focused is
+            // always on — real focus has to come from :focus-within.
+            //
+            // Focus is the border alone, never an outer ring: the fieldset is
+            // absolutely positioned 4px above the input box, so a box-shadow
+            // ring lands misaligned and its band shows through the label notch.
+            &:focus-within {
+                fieldset {
+                    border-width: 2px !important;
+                    border-color: var(--gf-focus) !important;
+                }
+
+                fieldset legend span {
+                    color: var(--gf-focus);
+                }
+            }
+        }
+
+        // The floating label is suppressed; the notch legend carries the label
+        // text permanently, which keeps every field the same height whether or
+        // not it holds a value.
+        .MuiInputLabel-root {
+            display: none !important;
+        }
+
+        .MuiOutlinedInput-root fieldset legend {
+            visibility: visible;
+            max-width: fit-content !important;
+            height: 17px !important;
+            padding: 0 5px;
+            color: var(--gf-ink-soft);
+        }
+
+        .MuiOutlinedInput-root fieldset legend span {
+            opacity: 1;
+            font-size: 11.5px;
+            letter-spacing: 0.01em;
+            color: var(--gf-ink-soft);
+            transition: color 0.16s ease;
+        }
+
+        input.MuiOutlinedInput-input,
+        .MuiSelect-select.MuiSelect-select {
+            box-sizing: content-box;
+            height: 21px !important;
+            min-height: 21px;
+            padding: 17px 14px 9px !important;
+            font-size: 14px !important;
+            line-height: 21px;
+            color: var(--gf-ink);
+            background-color: transparent;
+            border: 0;
+            box-shadow: none !important;
+        }
+
+        .MuiInputBase-multiline {
+            padding: 17px 14px 11px !important;
+        }
+
+        textarea.MuiOutlinedInput-input {
+            height: auto !important;
+            padding: 0 !important;
+            font-size: 14px !important;
+            line-height: 1.5;
+            color: var(--gf-ink);
+            border: 0;
+            resize: none;
+            box-shadow: none !important;
+        }
+
+        // -- Date fields --------------------------------------------------
+        // UsDateField swaps the native date input for react-datepicker (US
+        // MM/DD/YYYY everywhere, instead of the visitor's browser locale). Its
+        // wrapper is inline-block by default and would collapse the field.
+        .react-datepicker-wrapper {
+            display: block;
+            width: 100%;
+        }
+
+        .gf-date-field {
+            width: 100%;
+
+            .MuiOutlinedInput-root {
+                padding-right: 12px;
+                cursor: pointer;
+            }
+
+            input.MuiOutlinedInput-input {
+                flex: 1 1 auto;
+                min-width: 0;
+                width: auto;
+                cursor: pointer;
+
+                &::placeholder {
+                    color: var(--gf-field-hover);
+                    opacity: 1;
+                }
+            }
+
+            // The input's padding is top-heavy (it clears the legend notch), so
+            // the icon needs the same nudge to sit on the text's centre line.
+            .gf-date-icon {
+                flex: 0 0 auto;
+                margin-top: 4px;
+                color: var(--gf-ink-soft);
+            }
+        }
+
+        // -- Contact preference radios ------------------------------------
+        .contact-prefrtence {
+            > span {
+                display: block;
+                margin-bottom: 2px;
+                font-size: 13px;
+                color: var(--gf-ink-soft);
+            }
+
+            .MuiFormGroup-root {
+                flex-direction: row;
+                gap: 8px;
+            }
+
+            .MuiFormControlLabel-root {
+                margin: 0 16px 0 0;
+            }
+
+            .MuiFormControlLabel-label {
+                font-size: 14px;
+                color: var(--gf-ink);
+            }
+
+            .MuiRadio-root {
+                padding: 6px;
+                color: var(--gf-field-hover);
+
+                &.Mui-checked {
+                    color: var(--gf-ink);
+                }
+            }
+        }
+
+        // -- Footer: reCAPTCHA on the left, primary action on the right ----
+        .prefrence-action:not(.action) {
+            margin-top: 4px;
+            padding-top: 20px;
+            border-top: 1px solid var(--gf-hairline);
+        }
+
+        .prefrence-action.action {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 14px;
+            margin: 0;
+        }
+
+        .gf-grecaptcha {
+            flex: 0 1 auto;
+            min-width: 0;
+        }
+
+        .prefrence-action.action .btn {
+            margin: 0 0 0 auto;
+        }
+    }
+}
+
+// Primary action inside any popup (the modal lives outside .tool-container, so
+// the tool's own .btn rules do not reach it). Colours come from getCssStyle via
+// the --button / --hover custom properties that cssTheme.js sets on :root —
+// same contract the rest of the app uses.
+.react-responsive-modal-root .btn {
+    display: inline-block;
+    margin: 0;
+    padding: 13px 28px;
+    border: 1px solid var(--button, #14161a);
+    border-radius: 0;
+    background-color: var(--button, #14161a);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    line-height: 1.2;
+    text-transform: none;
+    min-width: inherit !important;
+    min-height: inherit !important;
+    cursor: pointer;
+    transition: background-color 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+
+    &:hover {
+        background-color: var(--hover, #3a3f47);
+        border-color: var(--hover, #3a3f47);
+        color: #fff;
+        box-shadow: 0 6px 16px rgba(16, 18, 22, 0.16);
+        transform: translateY(-1px);
+    }
+
+    &:active {
+        transform: translateY(0);
+        box-shadow: none;
+    }
+
+    &:focus-visible {
+        outline: 2px solid var(--button, #14161a);
+        outline-offset: 2px;
+    }
+}
+
+.react-responsive-modal-root .prefrence-action .preference-btn {
+    font-size: 14px;
+    padding: 13px 28px;
+}
+
+// ===========================================================================
+// Date picker calendar (UsDateField)
+//
+// react-datepicker portals the calendar to #gf-datepicker-portal on <body> so
+// it escapes the modal's scrolling form — which means these rules sit at the
+// top level, outside .react-responsive-modal-root, and cannot use its --gf-*
+// custom properties. The vendor stylesheet hardcodes a font-family; it is
+// reset to inherit so the merchant's storefront font carries through.
+// ===========================================================================
+#gf-datepicker-portal .react-datepicker-popper,
+.react-datepicker-popper.gf-datepicker-popper {
+    z-index: 100000;
+    padding: 6px 0;
+
+    .react-datepicker {
+        border: 1px solid #cbcfd6;
+        border-radius: 0;
+        box-shadow: 0 12px 32px rgba(16, 18, 22, 0.18);
+        background-color: #fff;
+        font-family: inherit;
+        font-size: 13px;
+        color: #14161a;
+    }
+
+    .react-datepicker__header {
+        padding-top: 12px;
+        border-bottom: 1px solid #e4e6ea;
+        border-radius: 0;
+        background-color: #fff;
+    }
+
+    .react-datepicker__current-month {
+        margin-bottom: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #14161a;
+    }
+
+    .react-datepicker__day-name {
+        width: 32px;
+        line-height: 26px;
+        font-size: 11.5px;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        color: #5d636d;
+        text-transform: uppercase;
+    }
+
+    .react-datepicker__day {
+        width: 32px;
+        line-height: 30px;
+        margin: 1px;
+        border-radius: 0;
+        color: #14161a;
+
+        &:hover {
+            border-radius: 0;
+            background-color: #f0f1f3;
+        }
+    }
+
+    .react-datepicker__day--today {
+        font-weight: 600;
+        box-shadow: inset 0 0 0 1px #cbcfd6;
+    }
+
+    .react-datepicker__day--outside-month {
+        color: #9aa0a9;
+    }
+
+    .react-datepicker__day--disabled {
+        color: #c3c7cd;
+        cursor: not-allowed;
+
+        &:hover {
+            background-color: transparent;
+        }
+    }
+
+    // Only a real selection gets the solid fill. react-datepicker also marks a
+    // "pre-selected" day (today, before the shopper picks anything) — that one
+    // stays a soft highlight so an empty field never looks already answered.
+    .react-datepicker__day--selected {
+        border-radius: 0;
+        background-color: #14161a;
+        color: #fff;
+        font-weight: 600;
+
+        &:hover {
+            background-color: #14161a;
+        }
+    }
+
+    .react-datepicker__day--keyboard-selected:not(.react-datepicker__day--selected) {
+        border-radius: 0;
+        background-color: #f0f1f3;
+        color: #14161a;
+
+        &:hover {
+            background-color: #e4e6ea;
+        }
+    }
+
+    .react-datepicker__navigation {
+        top: 12px;
+    }
+
+    .react-datepicker__navigation-icon::before {
+        border-color: #5d636d;
+        border-width: 2px 2px 0 0;
+    }
+
+    .react-datepicker__navigation:hover .react-datepicker__navigation-icon::before {
+        border-color: #14161a;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .react-responsive-modal-root .btn,
+    .react-responsive-modal-root .MuiOutlinedInput-root,
+    .react-responsive-modal-root .MuiOutlinedInput-root fieldset,
+    .react-responsive-modal-root .react-responsive-modal-closeButton {
+        transition: none;
+    }
+
+    .react-responsive-modal-root .btn:hover {
+        transform: none;
+    }
+}

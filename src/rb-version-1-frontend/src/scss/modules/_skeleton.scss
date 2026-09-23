@@ -1,0 +1,139 @@
+
+@keyframes react-loading-skeleton {
+    100% {
+        transform: translateX(100%);
+    }
+  }
+  
+  .react-loading-skeleton {
+    margin-top: 20px;
+    --base-color: #ebebeb;
+    --highlight-color: #f5f5f5;
+    --animation-duration: 1.5s;
+    --animation-direction: normal;
+    --pseudo-element-display: block; /* Enable animation */
+  
+    background-color: var(--base-color);
+  
+    width: 100%;
+    border-radius: 0;
+    display: inline-flex;
+    line-height: 1;
+  
+    position: relative;
+    overflow: hidden;
+    z-index: 1; /* Necessary for overflow: hidden to work correctly in Safari */
+  }
+  
+  .react-loading-skeleton::after {
+    content: ' ';
+    display: var(--pseudo-element-display);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-image: linear-gradient(
+        90deg,
+        var(--base-color),
+        var(--highlight-color),
+        var(--base-color)
+    );
+    transform: translateX(-100%);
+  
+    animation-name: react-loading-skeleton;
+    animation-direction: var(--animation-direction);
+    animation-duration: var(--animation-duration);
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+  }
+  
+  .Skeleton-type span{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+  }
+  .Skeleton-type span .react-loading-skeleton{
+    margin-top: 10px;
+    margin-right: 10px  ;
+    flex: 1 0 25%;
+    @include media-breakpoint-up(lg){
+        flex: 1 0 10%;
+    }
+  }
+  .div-inner{
+    display: block;
+      margin-top: 20px;
+      @include media-breakpoint-up(lg){
+        display: flex;
+        justify-content: space-between;
+      }
+      .div-skelton-inner{
+        width: 100%;
+        background-color: $light-gray;
+        padding: 15px;         
+        border: 1px solid #ddd;
+        @include media-breakpoint-up(lg){
+          width: 49%;
+        }
+      }
+  }
+  .Skeleton-settings{
+     display: block;
+      margin-top: 20px;
+      @include media-breakpoint-up(lg){
+        display: flex;
+        justify-content: space-between;
+      }
+      .skeleton-div{
+          width: 100%;
+          background-color: $light-gray;
+          padding: 15px;         
+          border: 1px solid #ddd;
+          @include media-breakpoint-up(lg){
+            width: 49%;
+          }
+      }
+      h4.div-left{
+        //   float: left;
+      }
+      .div-right-price{
+        .react-loading-skeleton{
+            margin-top: 0;
+        }
+      }
+      .div-right{  
+          span{
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+          }
+          .react-loading-skeleton{
+            margin-top: 10px;
+            margin-right: 10px  ;
+            flex: 1 0 25%;
+            @include media-breakpoint-up(lg){
+                flex: 1 0 10%;
+            }
+          }      
+    }
+  }
+  
+  .s_gridview{
+      margin: 30px 0 0;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;  
+      align-items: center;
+      .Skeleton__lists{
+        border: 1px solid #ddd;
+        flex: 100%;
+        margin: 10px;
+        text-align: center;
+        padding: 0px 0 25px 0;
+        @include media-breakpoint-up(sm){
+          flex: 1 0 20%;
+        }
+      }
+  }

@@ -1,0 +1,163 @@
+.product-list-viewdata {
+    margin: 10px 0;
+    .table {
+        overflow-x: scroll;
+        @include media-breakpoint-up(lg) {
+            overflow-x: inherit;
+        }
+        thead {
+            background-color: $black;
+            tr {
+                .table-sort {
+                    &::before {
+                        position: absolute;
+                        top: 7px;
+                        margin-left: 4px;
+                        font-family: "Font Awesome 5 Free";
+                        font-weight: 900;
+                        content: "\f0d8";
+                        right: 6px;
+                        font-size: 12px;
+                    }
+                    &::after {
+                        content: "\f0d7";
+                        top: 14px;
+                        font-family: "Font Awesome 5 Free";
+                        font-weight: 900;
+                        right: 6px;
+                        position: absolute;
+                        font-size: 12px;
+                    }
+                    @media (max-width: 1100px) {
+                        &::before {
+                          display: none;
+                        }
+                        &::after {
+                          display: none;
+                        }
+                    }
+                }
+                th {
+                    color: #ffffff;
+                    font-size: 8px;
+                    font-weight: normal;
+                    font-family: "Lato", sans-serif;
+                    position: relative;
+                    text-align: center;
+                    background-color: var(--header);
+                    // padding-right: 17px !important;
+                    padding: 5px 4px !important;
+                    text-wrap: nowrap;
+                    @include media-breakpoint-up(lg) {
+                        font-size: 14px;
+                        padding: 8px !important;
+                    }
+                }
+            }
+        }
+        tbody {
+            background-color: #fafafa;
+            .selected_row {
+                background-color: #d2d0d0;
+            }
+            tr {
+                &:hover {
+                    background-color: var(--hover);
+                    cursor: pointer;
+                    td {
+                        color: $white;
+                        background-color: var(--hover);
+                        a {
+                            color: $white;
+                        }
+                    }
+                }
+            }
+            th {
+                border-bottom: none;
+                box-shadow: none;
+                border-right: 1px solid #ddd;
+                text-align: center;
+                vertical-align: middle;
+            }
+            td {
+                color: $black;
+                font-size: 8px;
+                font-weight: normal;
+                font-family: "Lato", sans-serif;
+                border-bottom: none;
+                box-shadow: none;
+                border-right: 1px solid #ddd;
+                text-align: center;
+                vertical-align: middle;
+                padding: 5px !important;
+                @include media-breakpoint-up(lg) {
+                    font-size: 14px;
+                    padding: 8px !important;
+                }
+                a {
+                    color: $black;
+                }
+                &:nth-child(2) {
+                    min-width: auto;
+                    // text-align: inherit;
+                    @include media-breakpoint-up(lg) {
+                        // min-width: 90px;
+                    }
+                    span {
+                        float: right;
+                    }
+                }
+                //   &:last-child{
+                //       border-right: none;
+                //   }
+            }
+        }
+    }
+}
+
+// th#Depth, th#TableMeasure, th#Polish, th#Symmetry, th#Measurements,  th#inhouse, th#dia_video{
+//   display: none;
+// @include media-breakpoint-up(lg) {
+//    display: block;}
+// }
+// td.Depthcol,td.TableMeasurecol, td.Polishcol, td.Symmetrycol,td.Measurementscol,td.inhousecol, td.dia_videocol{
+//   display: none;
+// @include media-breakpoint-up(lg) {
+//    display: block;
+// } }
+
+.product-list-viewdata .table tbody td.Cutcol {
+    display:flex;
+    align-items: center;
+    gap: 0 10px;
+    flex-wrap: wrap;
+    .shape-name {
+        margin-left: 20px;
+        @media (max-width: 991.98px) {
+          display: none;
+        }
+    }
+}
+
+.product-list-viewdata .table tbody td.Cutcol span {
+    float: none;
+    // margin-left: 30px;
+}
+.product-list-viewdata .table tbody td.Sizecol{
+    min-width: auto;
+    text-align: center;
+}
+
+.product-list-viewdata .table tbody td:nth-child(2) span {
+    float: none;
+    margin-left: 24px;
+}
+
+.gf-table-responsive.table {
+    width: calc(100% + 22px);
+    margin-left: -8px;
+}
+.tool-container .product-list-viewdata .table-responsive-sm {
+    overflow-x: visible;
+}
