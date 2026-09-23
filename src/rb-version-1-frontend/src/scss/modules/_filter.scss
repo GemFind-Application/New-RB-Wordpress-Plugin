@@ -1,0 +1,47 @@
+.filter-container{
+    display: block;
+    justify-content: space-between;
+    @include media-breakpoint-up(lg) {
+        display: flex; 
+        flex-direction: column;
+    }
+    .filter-bg{
+        display: flex;
+        gap: 0px;
+        align-items: center;
+        width: 100%;
+        background-color: $light-gray;
+        padding: 15px;
+        flex-direction: column;
+        // margin-bottom: 20px;
+        // @include media-breakpoint-up(lg) {
+        //     width: 49%;
+        // }
+        @include media-breakpoint-up(md) {
+            gap: 40px;
+            flex-direction: row;
+        }
+        .rangeSlider {
+            width: 100%;
+            @include media-breakpoint-up(md) {
+                width: 45%;
+            }
+        }
+        .setting_shapes {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            @include media-breakpoint-up(md) {
+                flex-direction: row;
+            }
+            ul {
+                width: 100%;
+                flex-wrap: wrap;
+                @include media-breakpoint-up(md) {
+                    flex-wrap: nowrap;
+                }
+            }
+        }
+    }
+}

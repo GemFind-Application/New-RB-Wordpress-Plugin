@@ -1,0 +1,139 @@
+// WordPress plugin styles for the classic (v1) storefront.
+// These used to be appended to the prebuilt frontend-v1.css by scripts/patch-v1-filter-popup.js and
+// scripts/patch-v1-vendor-info.js; they now live in source. Loaded last in style.scss.
+
+// ── Filter info popups (modal: "popup_Modal gf-rb-v1-filter-modal") ─────────────────────────────
+.react-responsive-modal-modal.gf-rb-v1-filter-modal {
+    max-width: 600px;
+    width: 100%;
+    padding: 30px;
+    box-sizing: border-box;
+    background-color: #fff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    position: relative;
+
+    .react-responsive-modal-closeButton {
+        top: 0;
+        right: 0;
+        background-color: #836a5d !important;
+        border: none;
+        padding: 4px;
+        margin: 0;
+        line-height: 1;
+
+        svg path {
+            fill: #fff !important;
+        }
+
+        &:hover {
+            background-color: #6d574c !important;
+        }
+    }
+}
+
+.gf-rb-v1-filter-popup__text {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    line-height: 1.56;
+    text-align: left;
+    color: #262523;
+    font-family: Lato, sans-serif;
+}
+
+.gf-rb-v1-filter-popup__shape-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.gf-rb-v1-filter-popup__shape-item {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1 1 15%;
+    margin: 10px;
+    padding: 0;
+    text-align: center;
+
+    &::before,
+    &::marker {
+        content: none;
+        display: none;
+    }
+}
+
+.gf-rb-v1-filter-popup__shape-icon,
+.popup-Dimond-Sketch {
+    display: block;
+}
+
+.gf-rb-v1-filter-popup__shape-icon img,
+.popup-Dimond-Sketch img {
+    width: auto !important;
+    height: 45px !important;
+    object-fit: contain;
+    margin: 0;
+    display: block;
+}
+
+.gf-rb-v1-filter-popup__shape-label {
+    display: block;
+    text-transform: capitalize;
+    font-size: 14px;
+    color: #b9a9a1;
+    margin-top: 4px;
+}
+
+// ── Vendor information modal (after dealer password) ─────────────────────────────────────────────
+// The idle react-overlay-loader wrapper kept height:100% + a dark background inside the fixed-height
+// modal and covered the vendor list; only show it while the spinner is actually present.
+.react-responsive-modal-root .popup_diamond-product {
+    background: #fff;
+    position: relative;
+    overflow-y: auto;
+    box-sizing: border-box;
+    text-align: left;
+
+    > ._loading_overlay_wrapper {
+        background: transparent !important;
+        height: 0 !important;
+        width: 0 !important;
+        overflow: hidden !important;
+        pointer-events: none !important;
+        position: absolute !important;
+        inset: 0;
+        z-index: 9;
+    }
+
+    > ._loading_overlay_wrapper:has(.react-overlay-loader-spinner) {
+        background-color: #000c !important;
+        height: 100% !important;
+        width: 100% !important;
+        overflow: visible !important;
+        pointer-events: auto !important;
+    }
+}
+
+.gf-rb-v1-vendor-info {
+    padding: 10px 0 20px;
+    max-height: 100%;
+    overflow-y: auto;
+    box-sizing: border-box;
+
+    .diamond-information {
+        display: block;
+        width: 100%;
+
+        ul {
+            margin: 0;
+            padding: 0;
+            overflow: auto;
+            max-height: 560px;
+        }
+    }
+}

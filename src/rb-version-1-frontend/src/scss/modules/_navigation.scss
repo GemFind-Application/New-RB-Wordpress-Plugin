@@ -1,0 +1,138 @@
+.diamond-filter{
+    background-color: var(--header);
+    margin: 20px 0;     
+    display: block;
+    @include media-breakpoint-up(lg) {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .navigation_filter_left {
+        .n_filter_left{
+                display: block;
+                @include media-breakpoint-up(lg) {
+                    display: flex;
+                }
+                    li{
+                        display: flex;
+                        align-items: center;
+                        // margin-right: 10px;
+                        &.active{
+                            background-color: transparent;
+                            a{
+                               
+                                color: $black;
+                            }
+                            span{
+                                i{
+                                    color: $black;
+                                }
+                            }
+                        }
+                        &:hover{
+                            a{
+                                // background-color: var(--hover);
+                                color: $black;
+                            }
+                            span{
+                                // background-color: var(--hover);
+                                i{
+                                    color: $black;
+                                }
+                                
+                            }
+                        }
+                        span{
+                            height: 100%;
+                            display: flex;
+                            align-items: center;
+                            padding-right: 15px;
+                            cursor: pointer;
+                            i{
+                                color: var(--background-text);   
+                            }
+                        }
+                        a.active{
+                            background-color: var(--hover);
+                            color: $black; 
+                        }
+                        a{
+                            color: var(--background-text);   
+                            display: block;
+                            padding: 15px 15px 15px 15px;  
+                            margin-right: 0; 
+                            font-family: 'Lato', sans-serif ; 
+                            font-size: 18px;
+                            line-height: normal;  
+                            @include media-breakpoint-up(lg) {
+                                margin-right: 0;
+                            }
+                            span{
+                                margin-left: 8px;
+                            }
+                        }
+                    }             
+            }
+        }
+        .save-reset-filter{ 
+            // display: flex;
+            // justify-content: space-between;   
+            border-top: 1px solid #ddd;
+            @include media-breakpoint-up(lg) {
+                border-top: none;
+            }
+            .navigation_right{
+               display: flex;
+               justify-content: center;
+               @include media-breakpoint-up(lg) {
+                justify-content: flex-end;
+               }
+                li{
+                    position: relative;
+                    a{
+                        color: var(--background-text);   
+                        display: block;
+                        padding: 15px;  
+                        margin-right: 15px; 
+                        font-family: 'Lato', sans-serif ; 
+                        font-size: 18px;
+                        line-height: normal;  
+                        &:hover{
+                            color: var(--hover);
+                        }              
+                    }
+                    .save-icon{
+                    &::before{
+                        position: absolute;
+                        left: -7px;
+                        top: 19px;
+                        height: 20px;
+                        width: 20px;
+                        font-family: "Font Awesome 5 Free";
+                        font-weight: 900;
+                        content: "\f063";
+                        font-size: 16px;
+                    }
+                }
+                .reset-icon{
+                    &::before{
+                        position: absolute;
+                        left: -7px;
+                        top: 19px;
+                        height: 20px;
+                        width: 20px;
+                        font-family: "Font Awesome 5 Free";
+                        font-weight: 900;
+                        content: "\f3e5";
+                        font-size: 16px;
+                    }
+                }
+                }
+            }
+    }
+}
+.save-reset-filter{
+    // justify-content: flex-end;
+    justify-content: space-between;
+    border-radius: 3px;
+}

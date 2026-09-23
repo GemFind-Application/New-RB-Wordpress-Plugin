@@ -1,0 +1,366 @@
+.rangeSlider {
+    .slider {
+        display: block;
+        margin-bottom: 10px;
+        @include media-breakpoint-up(lg) {}
+        // @include media-breakpoint-up(lg) {
+        //     display: flex;
+        // }
+        .f_heading {
+            float: none;
+            align-self: center;
+            @include media-breakpoint-up(lg) {
+                float: left;
+            }
+        }
+        .MuiSlider-rail {
+            height: 11px;
+            border-radius: 5px;
+            border: 1px solid #847c7ca6;
+            background-color: TRANSPARENT;
+        }
+        .MuiSlider-track {
+            height: 10px;
+            background-color: $slider-color;
+        }
+        .MuiSlider-thumb {
+            height: 23px;
+            width: 23px;
+            background-color: $slider-color;
+        }
+        .MuiSlider-valueLabel {
+            display: none;
+        }
+        .MuiSlider-active {
+            height: 35px;
+            width: 35px;
+            top: -1px;
+        }
+        .MuiSlider-root {
+            padding: 7px 0;
+            width: 98%;
+            margin: 0 auto;
+            @include media-breakpoint-up(lg) {
+                width: 82%;
+            }
+        }
+        .MuiSlider-mark {
+            width: 6px;
+            height: 11px;
+            position: absolute;
+            border-radius: 1px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+        }
+    }
+    input[type="text" i] {
+        width: 140px;
+        /* margin-top: 30px; */
+        border: 1px solid $slider-color;
+        height: 24px;
+        line-height: 24px;
+        padding: 0 8px;
+        text-align: right;
+        border-radius: 100px;
+        color: $gray;
+    }
+    .input-left {
+        text-align: left !important;
+    }
+    .input-value-pr {
+        width: 100%;
+        margin-left: auto;
+        margin-right: 0;
+        display: flex;
+        justify-content: space-between;
+        @include media-breakpoint-up(lg) {
+            width: 88%;
+        }
+        .icon {
+            position: absolute;
+            right: 10px !important;
+        }
+    }
+    .input-value {
+        // position: relative;
+        width: 100%;
+        margin-left: auto;
+        margin-right: 0;
+        display: flex;
+        justify-content: space-between;
+        @include media-breakpoint-up(lg) {
+            width: 88%;
+        }
+        .icon-left {
+            position: absolute;
+            left: 10px;
+        }
+        .icon-right {
+            position: absolute;
+            right: 5px;
+        }
+    }
+    .input-value-left {
+        float: none;
+        position: relative;
+        @include media-breakpoint-up(lg) {
+            float: left;
+        }
+    }
+    .input-value-right {
+        float: none;
+        position: relative;
+        @include media-breakpoint-up(lg) {
+            float: right;
+        }
+    }
+}
+
+.cut-rangeslider .MuiSlider-rail {
+    border-radius: 0 !important;
+}
+
+.slider__diamond {
+    display: block;
+    @include media-breakpoint-up(lg) {
+        display: flex;
+        justify-content: space-between;
+    }
+    .slider-div {
+        width: 100%;
+        @include media-breakpoint-up(lg) {
+            width: 48%;
+        }
+    }
+}
+
+.ui-sliders {
+    margin-top: 0;
+    margin-bottom: 0;
+    @include media-breakpoint-up(lg) {
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+    .input-value {
+        padding-right: 20px;
+        width: 100%;
+        margin-bottom: 20px;
+        @include media-breakpoint-up(lg) {
+            width: 87%;
+            margin-bottom: 0;
+        }
+    }
+    .dia-input-value {
+        padding-right: 0;
+        width: 100%;
+        @include media-breakpoint-up(lg) {
+            width: 76%;
+        }
+    }
+}
+
+.range-slider_diamond {
+    margin-bottom: 8px;
+    @include media-breakpoint-up(lg) {
+        margin-bottom: 0;
+    }
+    div:empty {
+        display: block !important;
+    }
+    .slider {
+        display: flex;
+        flex-direction: column;
+        // align-items: center;
+        // justify-content: center;
+        @include media-breakpoint-up(lg) {
+            display: flex;
+            flex-direction: row;
+        }
+    }
+    .dia_heading {
+        width: 100%;
+        @include media-breakpoint-up(lg) {
+            width: 10%;
+        }
+    }
+    .diamond-ui-slider {
+        width: 96%;
+        height: 45px;
+        @include media-breakpoint-up(lg) {
+            width: 88%;
+            height: 60px;
+        }
+    }
+    .noUi-value-sub {
+        color: $black;
+        font-size: 10px;
+        padding: 0 2px;
+        @include media-breakpoint-up(lg) {
+            font-size: 12px;
+            padding: 0 3px;
+        }
+    }
+    .noUi-value.noUi-value-horizontal.noUi-value-large {
+        color: $black;
+        font-size: 12px;
+        margin-top: 8px;
+    }
+    .noUi-horizontal {
+        height: 11px;
+    }
+    .noUi-connect {
+        background: var(--slider);
+    }
+    .noUi-horizontal .noUi-handle {
+        box-shadow: none;
+        width: 23px;
+        height: 23px;
+        right: -17px;
+        top: -6px;
+        border-radius: 50%;
+        background-color: var(--slider);
+        border: none;
+        z-index: 1;
+        cursor: pointer;
+    }
+    .noUi-handle:before,
+    .noUi-handle:after {
+        content: none;
+    }
+    .noUi-marker.noUi-marker-horizontal.noUi-marker-large:not(:first-child) {
+        background-color: transparent;
+    }
+    .noUi-marker {
+        background: transparent;
+    }
+    .noUi-marker-large {
+        background: transparent;
+    }
+    .noUi-marker-sub {
+        z-index: 0;
+    }
+    // .diamond-small-slider {
+    //     width: 96%;
+    //     height: auto;
+    //     @include media-breakpoint-up(lg) {
+    //         width: 84%;
+    //     }
+    // }
+    .diamond-small-slider {
+        width: 96%;
+        height: auto;
+        margin-top: 20px;
+        @include media-breakpoint-up(md) {
+            margin-top: 40px;
+        }
+        @include media-breakpoint-up(lg) {
+            width: 84%;
+            margin-top: 5px;
+        }
+    }
+}
+
+.advance-slider {
+    margin-top: 20px;
+    .advance-heading {
+        color: #444;
+        cursor: pointer;
+        padding: 10px 0;
+        width: 100%;
+        text-align: left;
+        font-size: 18px;
+        font-weight: 600;
+        .heading {
+            display: flex;
+        }
+        span {
+            margin-right: 10px;
+            i {
+                color: $white;
+                background-color: $gray;
+                height: 25px;
+                width: 25px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+    }
+    .advance-heading-div {
+        color: #444;
+        cursor: pointer;
+        padding: 10px 0;
+        width: 100%;
+        text-align: left;
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 30px;
+        .heading {
+            display: flex;
+        }
+        span {
+            margin-right: 10px;
+            i {
+                color: $white;
+                background-color: $gray;
+                height: 25px;
+                width: 25px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+    }
+    .advance-search-sliders {
+        //margin-top: 30px;
+        .slider__diamond {
+            margin-bottom: 30px;
+        }
+        select {
+            width: 100%;
+            height: 35px;
+            padding: 0 10px;
+            @include media-breakpoint-up(lg) {
+                width: 50%;
+            }
+        }
+    }
+}
+
+.advance-search-sliders {
+    display: none;
+}
+
+.advance-search-sliders.active {
+    display: block;
+}
+
+.advance-heading.active {
+    display: block;
+}
+
+.advance-heading {
+    display: none;
+}
+
+.tool-container .noUi-target .noUi-pips-horizontal,
+.gf-tool-container .noUi-target .noUi-pips-horizontal {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.tool-container .noUi-value-sub,
+.gf-tool-container .noUi-value-sub {
+    color: $black;
+    font-size: 12px;
+    position: initial;
+    width: 100%;
+    transform: none;
+}
+
+.slider__diamond {
+    .range-slider_diamond {
+        margin-bottom: 20px;
+    }
+}

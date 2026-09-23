@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <link rel="icon" href="%PUBLIC_URL%/favicon.jpg" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Diamond Tool React</title>
+    </head>
+    <body>
+        <input type="hidden" id="shop_domain" value="" />
+        <input type="hidden" id="shop_domain_server" value="" />
+        <noscript>You need to enable JavaScript to run this app.</noscript>
+        <div id="root"></div>
+        <div class="gf-tool-container">
+            <div class="tool-container">
+                <span
+                    class="gf-powered_by"
+                    id="gemfind_diamondtool_powered_by"
+                    style="
+                        text-align: right;
+                        display: none;
+                        margin-bottom: 15px;
+                        color: #000;
+                    "
+                >
+                    <a
+                        href="https://gemfind.com/"
+                        target="_blank"
+                        rel="nofollow"
+                        style="
+                            color: inherit;
+                            text-decoration: none;
+                            font-family: 'Lato', sans-serif;
+                        "
+                    >
+                        Powered By GemFind
+                    </a>
+                </span>
+            </div>
+        </div>
+        <script type="text/javascript">
+            var ShopifyDomain = "gemfind-demo-store-18.myshopify.com";
+            document.getElementById("shop_domain").value = ShopifyDomain;
+            var ShopifyServer = "https://https://connector-that-tool-researchers.trycloudflare.com/api";
+            document.getElementById("shop_domain_server").value = ShopifyServer;
+        </script>
+    </body>
+</html>

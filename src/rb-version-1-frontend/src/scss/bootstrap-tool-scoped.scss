@@ -1,0 +1,59 @@
+/**
+ * Bootstrap scoped to .gf-tool-container and .tool-container only.
+ * Prevents .row, dl, ol, ul and other Bootstrap styles from affecting the host page.
+ */
+@import "~bootstrap/scss/mixins/banner";
+@include bsBanner("");
+
+// Configuration (global – used by mixins)
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/variables-dark";
+@import "~bootstrap/scss/maps";
+@import "~bootstrap/scss/mixins";
+@import "~bootstrap/scss/utilities";
+
+// Root variables (global – :root must stay at document level)
+@import "~bootstrap/scss/root";
+
+// All layout, reboot and components – only inside tool container
+.gf-tool-container,
+.tool-container {
+  @import "~bootstrap/scss/reboot";
+  @import "~bootstrap/scss/type";
+  @import "~bootstrap/scss/images";
+  @import "~bootstrap/scss/containers";
+  @import "~bootstrap/scss/grid";
+  @import "~bootstrap/scss/tables";
+  @import "~bootstrap/scss/forms";
+  @import "~bootstrap/scss/buttons";
+  @import "~bootstrap/scss/transitions";
+  @import "~bootstrap/scss/dropdown";
+  @import "~bootstrap/scss/button-group";
+  @import "~bootstrap/scss/nav";
+  @import "~bootstrap/scss/navbar";
+  @import "~bootstrap/scss/card";
+  @import "~bootstrap/scss/accordion";
+  @import "~bootstrap/scss/breadcrumb";
+  @import "~bootstrap/scss/pagination";
+  @import "~bootstrap/scss/badge";
+  @import "~bootstrap/scss/alert";
+  @import "~bootstrap/scss/progress";
+  @import "~bootstrap/scss/list-group";
+  @import "~bootstrap/scss/close";
+  @import "~bootstrap/scss/toasts";
+  @import "~bootstrap/scss/modal";
+  @import "~bootstrap/scss/tooltip";
+  @import "~bootstrap/scss/popover";
+  @import "~bootstrap/scss/carousel";
+  @import "~bootstrap/scss/spinners";
+  @import "~bootstrap/scss/offcanvas";
+  @import "~bootstrap/scss/placeholders";
+  @import "~bootstrap/scss/helpers";
+  @import "~bootstrap/scss/utilities/api";
+}
+
+// Modal is portaled to document.body by react-bootstrap, so it sits outside
+// .tool-container. Include modal and close styles at root so Quick View and other modals render correctly.
+@import "~bootstrap/scss/close";
+@import "~bootstrap/scss/modal";

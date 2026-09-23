@@ -1,0 +1,143 @@
+.breadCumbs {
+    display: flex;
+    border-radius: 3px;
+    overflow: hidden;
+    .breadCumb {
+        flex: 0 1 30.5%;
+        @include media-breakpoint-up(sm) {
+            flex: 0 1 32.5%;
+        }
+        &:first-child {
+            a {
+                border-radius: 5px 0px 0 5px;
+                padding: 17px 35px;
+                @include media-breakpoint-up(sm) {
+                    padding: 15px 0 15px 35px;
+                    justify-content: space-between;
+                }
+                @include media-breakpoint-up(lg) {
+                    padding: 25px 0 25px 64px;
+                }
+            }
+        }
+        .tab-icon {
+            width: 30px;
+            height: 37px;
+            display: inline-block;
+            background: url('../../images/icons-sprite.png');
+            background-repeat: no-repeat;
+        }
+        .finalring-icon {
+            background-position: 0px -60px;
+        }
+        .diamond-icon {
+            background-position: 0px 10px;
+        }
+        .ring-icon {
+            background-position: 0 -24px;
+        }
+        p.subTitle {
+            font-size: 14px;
+            font-weight: 400;
+            color: var(--header);
+            line-height: 20px;
+            font-family: 'Lato', sans-serif;
+        }
+        h2.btitle {
+            font-size: 15px;
+            display: block;
+            font-weight: 400;
+            color: var(--header);
+            line-height: 20px;
+            font-family: 'Lato', sans-serif;
+            @include media-breakpoint-up(md) {
+                font-size: 20px;
+            }
+            @include media-breakpoint-up(lg) {
+                font-size: 24px;
+            }
+        }
+        a {
+            padding: 17px 0 17px 35px;
+            background-color: $light-gray;
+            border: 1px solid $gray;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            @include media-breakpoint-up(sm) {
+                padding: 15px 0 15px 35px;
+                justify-content: space-between;
+            }
+            @include media-breakpoint-up(lg) {
+                padding: 25px 0 25px 64px;
+            }
+            &::before {
+                width: 0;
+                height: 0;
+                border-style: solid;
+                border-width: 36px 0 36px 31px;
+                border-color: transparent transparent transparent $gray;
+                position: absolute;
+                content: "";
+                top: -1px;
+                right: -32px;
+                z-index: 1;
+                @include media-breakpoint-up(lg) {
+                    border-width: 46px 0 46px 31px;
+                }
+            }
+            &::after {
+                position: absolute;
+                content: "";
+                width: 0;
+                height: 0;
+                border-style: solid;
+                border-width: 36px 0 36px 31px;
+                border-color: transparent transparent transparent $light-gray;
+                top: -1px;
+                right: -30px;
+                z-index: 2;
+                @include media-breakpoint-up(lg) {
+                    border-width: 46px 0 46px 31px;
+                }
+            }
+            .breadcumb-title {
+                display: none;
+                @include media-breakpoint-up(sm) {
+                    display: flex;
+                }
+            }
+        }
+    }
+    .active {
+        a {
+            background-color: var(--header);
+            // border: 1px solid $black;
+            &::before {
+                border-color: transparent transparent transparent var(--header);
+            }
+            &::after {
+                border-color: transparent transparent transparent var(--header);
+            }
+            .finalring-icon {
+                background-position: -34px -60px;
+            }
+            .diamond-icon {
+                background-position: -32px 10px;
+            }
+            .ring-icon {
+                background-position: -33px -25px;
+            }
+            p.subTitle {
+                color: var(--background-text);
+            }
+            h2.btitle {
+                color: var(--background-text);
+            }
+            h2.title {
+                color: var(--background-text);
+            }
+        }
+    }
+}
