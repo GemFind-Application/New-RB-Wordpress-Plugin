@@ -15,6 +15,7 @@ import { formatPrice } from "../../../utils/priceUtils";
 import { RB_BASE, jcVideoUrl } from '../../../wp/wpEnv';
 import loader2Gif from '../../../images/loader-2.gif';
 import ringGif from '../../../images/ring.gif';
+import VideoFrame from "../../elements/VideoFrame";
 
 function Preloader(props) {
     return (
@@ -298,6 +299,7 @@ const SettingsProduct = (props) => {
                 <Loader fullPage loading={loaded} />{" "}
             </LoadingOverlay>
             <Modal
+                className="gf-video-modal"
                 show={modalShow}
                 onHide={closehandleModel}
                 size="lg"
@@ -319,18 +321,11 @@ const SettingsProduct = (props) => {
                         </div>
                     ) : null}
                     {getVideo ? (
-                        <iframe
-                            className="modal__video-style"
-                            onLoad={spinner}
-                            width="100%"
-                            height="500"
-                            title="Video"
+                        <VideoFrame
                             src={getVideo}
-                            frameBorder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowFullScreen
+                            onLoad={spinner}
                             style={{ display: getvideoloader === "true" ? "none" : "block" }}
-                        ></iframe>
+                        />
                     ) : getvideoloader === "false" ? (
                         <div style={{ textAlign: "center", padding: "50px" }}>
                             <p>Video not available for this setting.</p>

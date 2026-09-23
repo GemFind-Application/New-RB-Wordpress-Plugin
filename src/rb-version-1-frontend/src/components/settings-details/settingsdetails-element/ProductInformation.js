@@ -1745,13 +1745,13 @@ const ProductInformation = (props) => {
                         center
                         classNames={{
                             overlay: "popup_Overlay",
-                            modal: "popup_product",
+                            modal: "popup_product gf-spec-popup",
                         }}
                     >
                         <div className="popup_content">
                             <div className="diamond-information">
                                 <div className="spacification-info">
-                                    <h2>SETTING DETAILS</h2>
+                                    <h2>Setting Details</h2>
                                 </div>
                                 <ul>
                                     <li>
@@ -1792,7 +1792,7 @@ const ProductInformation = (props) => {
                                     </li>
                                 </ul>
                                 <div className="spacification-info">
-                                    <h2>CAN BE SET WITH</h2>
+                                    <h2>Can Be Set With</h2>
                                 </div>
                                 <ul>
                                     <li>

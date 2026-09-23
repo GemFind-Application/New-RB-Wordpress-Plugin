@@ -900,7 +900,7 @@ const DiamondProductInformation = (props) => {
                         center
                         classNames={{
                             overlay: 'popup_Overlay',
-                            modal: 'popup_diamond-product',
+                            modal: 'popup_diamond-product gf-spec-popup',
                         }}
                     >
                         <div className="popup_content">

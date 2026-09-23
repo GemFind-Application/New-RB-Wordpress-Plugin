@@ -100,6 +100,15 @@ function copyPublicBuilds(destRoot) {
   );
   copyFileRel("public/static/js/frontend-v1.js", destRoot);
   copyFileRel("public/static/css/frontend-v1.css", destRoot);
+  // v1 images written by the source build (src/rb-version-1-frontend, npm run build:v1).
+  const v1Media = path.join(pluginRoot, "public", "static", "media");
+  if (fs.existsSync(v1Media)) {
+    copyDir(v1Media, path.join(destRoot, "public", "static", "media"), "static/media");
+  }
+  const v1License = "public/static/js/frontend-v1.js.LICENSE.txt";
+  if (fs.existsSync(path.join(pluginRoot, v1License))) {
+    copyFileRel(v1License, destRoot);
+  }
   const v1Slider = "public/static/js/nouislider.min.js";
   if (fs.existsSync(path.join(pluginRoot, v1Slider))) {
     copyFileRel(v1Slider, destRoot);

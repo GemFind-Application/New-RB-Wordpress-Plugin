@@ -19,6 +19,8 @@ import {
 import { RB_BASE, jcVideoUrl } from '../../../wp/wpEnv';
 import diamondGif from '../../../images/diamond.gif';
 import spinnerGif from '../../../images/spinner.gif';
+import formatMeasurement from "../../../utils/formatMeasurement";
+import VideoFrame from "../../elements/VideoFrame";
 
 function Preloader(props) {
     return (
@@ -373,6 +375,7 @@ const ListDataTable = (props) => {
                 <Loader fullPage loading={loaded} />{" "}
             </LoadingOverlay>
             <Modal
+                className="gf-video-modal"
                 show={modalShow}
                 onHide={closehandleModel}
                 size="lg"
@@ -398,17 +401,10 @@ const ListDataTable = (props) => {
                         </div>
                     ) : null}
                     {getVideo ? (
-                        <iframe
-                            className="modal__video-style"
-                            onLoad={spinner}
-                            width="100%"
-                            height="500"
-                            title="Video"
+                        <VideoFrame
                             src={getVideo}
-                            frameBorder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowFullScreen
-                        ></iframe>
+                            onLoad={spinner}
+                        />
                     ) : getvideoloader === "false" ? (
                         <div style={{ textAlign: "center", padding: "50px" }}>
                             <p>Video not available for this diamond.</p>
@@ -803,6 +799,7 @@ const ListDataTable = (props) => {
             </div>
             <Modal
                 show={getshow}
+                className="gf-spec-bs-modal"
                 size="lg"
                 aria-labelledby="contained-modal-title-vcenter"
                 centered
@@ -949,7 +946,7 @@ const ListDataTable = (props) => {
                                 <div className="diamonds-info">
                                     <p>
                                         {getMeasurement
-                                            ? getMeasurement
+                                            ? formatMeasurement(getMeasurement)
                                             : "NA"}
                                     </p>
                                 </div>

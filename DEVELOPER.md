@@ -43,7 +43,7 @@ What "building v1" actually does — categories of patches applied to the checke
 - **WordPress path rewriting** (Shopify `/apps/ringbuilder` → WP `/ringbuilder`).
 - **UI bug fixes patched into minified code** (toast dedup, sort direction, default grid/list view, compare-image fallback, gift deadline defaults, video modal centering, vendor-info overlay, advanced filter toggle, filter popup scoping).
 - **noUiSlider safety** (guards against `min === max` throwing, unsafe pip-label lookups, sentinel id math) — reverified after every build via `scripts/smoke-nouislider-range.js`.
-- **Asset/URL localization** (replacing external `ringbuilderdev.gemfind.us` image URLs with local plugin assets).
+- **Asset/URL localization** (replacing external `ringbuilderdev.gemfind.us` image URLs with local plugin assets; swapping the remote Luma-Icons `@font-face` in `frontend-v1.css` for glyphs from the bundled Font Awesome — WP.org disallows loading assets from third-party hosts).
 - **API/cart correctness** (sending `list_type`/`diamond_type` so the API resolves stone type; adding a WP REST nonce to PDF download links; relaxing filters when a setting+cookie combo returns zero results).
 - **Privacy** (removing the Facebook JS SDK, replaced with plain click-out links).
 
