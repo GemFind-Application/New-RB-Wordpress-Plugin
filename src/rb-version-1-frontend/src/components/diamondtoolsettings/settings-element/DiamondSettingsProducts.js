@@ -22,6 +22,7 @@ import {
 import { RB_BASE, jcVideoUrl } from '../../../wp/wpEnv';
 import diamondGif from '../../../images/diamond.gif';
 import spinnerGif from '../../../images/spinner.gif';
+import VideoFrame from "../../elements/VideoFrame";
 
 function Preloader(props) {
     return (
@@ -499,6 +500,7 @@ const DiamondSettingsProducts = (props) => {
     return (
         <>
             <Modal
+                className="gf-video-modal"
                 show={modalShow}
                 size="lg"
                 aria-labelledby="contained-modal-title-vcenter"
@@ -525,17 +527,10 @@ const DiamondSettingsProducts = (props) => {
                             />
                         </div>
                     ) : null}
-                    <iframe
-                        className="modal__video-style"
-                        onLoad={spinner}
-                        width="100%"
-                        height="500"
-                        title="Video"
+                    <VideoFrame
                         src={getVideo}
-                        frameBorder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                    ></iframe>
+                        onLoad={spinner}
+                    />
                 </Modal.Body>
             </Modal>
 

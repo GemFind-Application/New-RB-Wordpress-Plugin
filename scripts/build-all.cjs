@@ -34,14 +34,15 @@ const TARGETS = {
     ],
   },
   v1: {
-    label: "Storefront v1 (classic bundle)",
+    label: "Storefront v1 (classic, React/CRA)",
+    // Real source (copied from Ring-builder-CI-to-Laravel/frontend-version-1, adapted for WordPress).
+    // Its scripts/build.js runs CRA's webpack config and writes straight into public/static/.
     cwd: path.join(pluginRoot, "src", "rb-version-1-frontend"),
     npmScript: "build",
     outputs: [
       "public/static/js/frontend-v1.js",
       "public/static/css/frontend-v1.css",
     ],
-    optionalOutputs: ["public/static/css/frontend-v1.css"],
   },
 };
 
@@ -86,9 +87,7 @@ function runTarget(key) {
     throw new Error(`Source directory missing: ${target.cwd}`);
   }
 
-  if (key !== "v1") {
-    ensureNodeModules(target.cwd, target.label);
-  }
+  ensureNodeModules(target.cwd, target.label);
 
   execSync(`npm run ${target.npmScript}`, {
     cwd: target.cwd,

@@ -3,6 +3,7 @@ import { Modal } from "react-responsive-modal";
 import Nouislider from "nouislider-react";
 import "nouislider/distribute/nouislider.css";
 import Skeleton from "react-loading-skeleton";
+import useDebouncedCallback from "../../../utils/useDebouncedCallback";
 import { useCookies } from "react-cookie";
 
 const TableSlider = (props) => {
@@ -24,37 +25,44 @@ const TableSlider = (props) => {
     //props.callBack(newValue);
   };
   const rangeSelectorprops = (newValue) => {
+    commitTypedRange.cancel();
     setstartValue(Number(newValue[0]));
     setlastValue(Number(newValue[1]));
     props.callBack(newValue);
   };
 
-  const startValueOnChange = (event) => {
-    const intValue = parseInt(event.target.value);
-    if (Number.isInteger(intValue) && intValue >= 0 && intValue <= 100) {
-      setstartValue(event.target.value);
-      let sliderSelection = [];
-      sliderSelection.push(parseInt(event.target.value));
-      sliderSelection.push(lastValue);
-      props.callBack(sliderSelection);
-    } else {
+  // Typed values are only sent once the user pauses, so "20" doesn't trigger a search at "2".
+  const commitTypedRange = useDebouncedCallback(() => {
+    if (startValue === "" || lastValue === "") {
+      return;
+    }
+    const start = Number(startValue);
+    const end = Number(lastValue);
+    if (!(start >= 0 && start <= 100 && end >= 0 && end <= 100)) {
       alert("Please Enter Valid Value");
       return;
     }
+    props.callBack([start, end]);
+  });
+
+  const isNumericInput = (value) => /^\d*\.?\d*$/.test(value);
+
+  const startValueOnChange = (event) => {
+    const value = event.target.value;
+    if (!isNumericInput(value)) {
+      return;
+    }
+    setstartValue(value);
+    commitTypedRange();
   };
 
   const endValueOnChange = (event) => {
-    const intValue = parseInt(event.target.value);
-    if (Number.isInteger(intValue) && intValue >= 0 && intValue <= 100) {
-      setlastValue(event.target.value);
-      let sliderSelection = [];
-      sliderSelection.push(startValue);
-      sliderSelection.push(event.target.value);
-      props.callBack(sliderSelection);
-    } else {
-      alert("Please Enter Valid Value");
+    const value = event.target.value;
+    if (!isNumericInput(value)) {
       return;
     }
+    setlastValue(value);
+    commitTypedRange();
   };
 
   useEffect(() => {
@@ -122,6 +130,7 @@ const TableSlider = (props) => {
               type="text"
               value={startValue}
               onChange={startValueOnChange}
+              onBlur={commitTypedRange.flush}
               className="input-left"
             />
             <span className="icon">%</span>
@@ -131,6 +140,7 @@ const TableSlider = (props) => {
               type="text"
               value={lastValue}
               onChange={endValueOnChange}
+              onBlur={commitTypedRange.flush}
               className="input-left"
             />
             <span className="icon">%</span>

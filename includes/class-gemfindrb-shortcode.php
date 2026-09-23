@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * [gemfindRB_ring_builder] shortcode and frontend asset enqueue.
  *
  * Version 2 (default) → React RB 2.0 in public/frontpublic/build/assets/
- * Version 1 (classic) → legacy React bundle in public/static/ (Shopify version-one parity)
+ * Version 1 (classic) → React bundle in public/static/, built from src/rb-version-1-frontend/
  */
 final class GEMFINDRB_Shortcode {
 
@@ -205,6 +205,9 @@ final class GEMFINDRB_Shortcode {
 			'jcApiUrl'       => $rest_base . '/jcProxy',
 			'jcVideoUrl'     => $rest_base . '/jcVideoProxy',
 			'shopExtension'  => '/ringbuilder',
+			// v1: webpack public path for bundled images (public/static/media/) and the WooCommerce cart page.
+			'v1AssetUrl'     => GEMFINDRB_URL . 'public/static/',
+			'cartUrl'        => function_exists( 'wc_get_cart_url' ) ? wc_get_cart_url() : '',
 			'toolVersion'    => is_object( $cfg ) ? (string) ( $cfg->tool_version ?? GEMFINDRB_Frontend_Version::DEFAULT ) : GEMFINDRB_Frontend_Version::DEFAULT,
 		];
 
@@ -219,33 +222,12 @@ final class GEMFINDRB_Shortcode {
 
 		$xhr_nonce_patch = "(function(){if(window.__gemfindrbXhrPatched||typeof XMLHttpRequest==='undefined')return;window.__gemfindrbXhrPatched=true;var oOpen=XMLHttpRequest.prototype.open,oSet=XMLHttpRequest.prototype.setRequestHeader,oSend=XMLHttpRequest.prototype.send;XMLHttpRequest.prototype.open=function(m,u){this.__gfrbUrl=String(u||'');this.__gfrbHdrs={};return oOpen.apply(this,arguments);};XMLHttpRequest.prototype.setRequestHeader=function(n,v){this.__gfrbHdrs=Object.assign({},this.__gfrbHdrs);this.__gfrbHdrs[String(n).toLowerCase()]=true;return oSet.apply(this,arguments);};XMLHttpRequest.prototype.send=function(b){var u=this.__gfrbUrl||'',c=window.gemfindRBConfig||{},n=c.nonce||'';if(n&&(u.indexOf('/wp-json/gemfind-ring-builder/v1')!==-1||(c.restUrl&&u.indexOf(c.restUrl)!==-1))){if(!this.__gfrbHdrs||!this.__gfrbHdrs['x-wp-nonce'])oSet.call(this,'X-WP-Nonce',n);}return oSend.apply(this,arguments);};})();";
 
-		// Runtime fix for the v1 diamond list sort bug. Traced with a proper JS
-		// parser (not string-guessing): the ASC/DESC icon's click handler updates
-		// one React state variable, but the diamond-list fetch's OrderType query
-		// param is built from a completely different, unrelated state variable
-		// declared in another component — they are two disconnected sources of
-		// truth. Net effect: clicking the icon can visibly flip it while the
-		// actual request (and results) keep using the old direction, or vice
-		// versa. Ringbuilder has no buildable v1 source of its own
-		// (public/static/js/frontend-v1.js is a prebuilt, unowned bundle) to
-		// properly rewire that prop chain, so instead of trusting either
-		// internal variable, this reads the one thing that's always the ground
-		// truth — which link the DOM is actually showing as active — right
-		// before each request fires, and forces OrderType to match what the
-		// visitor can see. Icon and results can then never disagree.
-		$v1_sort_fix_patch = "(function(){if(window.__gemfindrbV1SortFixPatched)return;window.__gemfindrbV1SortFixPatched=true;function defaultDirection(){try{var d=window.initData&&window.initData.data&&window.initData.data[0]&&window.initData.data[0].sorting_order_direction;return String(d||'ASC').toUpperCase()==='DESC'?'DESC':'ASC';}catch(e){return'ASC';}}function hasActiveClass(el){return!!(el&&/(^|\\s)active(\\s|\$)/.test(el.className||''));}function remember(e){var t=e.target&&e.target.closest?e.target.closest('#asc,#desc'):null;if(!t)return;window.__gemfindrbV1SortDirection=t.id==='asc'?'ASC':'DESC';}document.addEventListener('click',remember,true);function currentDirection(){try{var d=document.getElementById('desc');if(hasActiveClass(d))return'DESC';var a=document.getElementById('asc');if(hasActiveClass(a))return'ASC';}catch(e){}return window.__gemfindrbV1SortDirection||defaultDirection();}function fixUrl(u){if(typeof u!=='string'||u.indexOf('OrderType=')===-1)return u;return u.replace(/([?&]OrderType=)(ASC|DESC)/i,'\$1'+currentDirection());}if(typeof window.fetch==='function'){var of=window.fetch.bind(window);window.fetch=function(i,n){if(typeof i==='string'){var fu=fixUrl(i);if(fu!==i)i=fu;}else if(i&&i.url){var fu2=fixUrl(i.url);if(fu2!==i.url)i=new Request(fu2,i);}return of(i,n);};}if(typeof XMLHttpRequest!=='undefined'){var oOpen=XMLHttpRequest.prototype.open;XMLHttpRequest.prototype.open=function(m,u){var args=[].slice.call(arguments);args[1]=fixUrl(u);return oOpen.apply(this,args);};}})();";
-
 		$v1_toast_dedup_patch = "(function(){if(window.__gemfindrbToastDeduped)return;window.__gemfindrbToastDeduped=true;function pruneContainers(){var all=[].slice.call(document.querySelectorAll('.Toastify__toast-container'));if(all.length<2)return;var pref=all.filter(function(el){return el.className.indexOf('bottom-center')>=0;});var keep=pref.length?pref[pref.length-1]:all[all.length-1];all.forEach(function(el){if(el!==keep&&el.parentNode)el.parentNode.removeChild(el);});}function pruneToasts(){var all=[].slice.call(document.querySelectorAll('.Toastify__toast'));for(var i=1;i<all.length;i++){if(all[i].parentNode)all[i].parentNode.removeChild(all[i]);}}function run(){pruneContainers();pruneToasts();}run();if(document.body){try{new MutationObserver(run).observe(document.body,{childList:true,subtree:true});}catch(e){}}})();";
 
-		$v1_mount_patch = "(function(){if(window.__gemfindrbV1MountPatched)return;window.__gemfindrbV1MountPatched=true;var rb=document.getElementById('ringbuilder-root');if(rb&&!document.getElementById('root')){var m=document.createElement('div');m.id='root';m.className='gemfind-v1-root';rb.appendChild(m);}window.__gemfindRbV1ApiBase=function(){var c=window.gemfindRBConfig||{};return c.restUrl?String(c.restUrl).replace(/\\/$/,''):'';};window.__gemfindRbV1JcBase=function(){var c=window.gemfindRBConfig||{};return c.jcProxyUrl?String(c.jcProxyUrl).replace(/\\/$/,''):'https://api.jewelcloud.com/api/RingBuilder';};window.__gemfindRbV1ShapeIcon=function(f){var c=window.gemfindRBConfig||{},b=String(c.shapeIconBaseUrl||c.imageBaseUrl||'').replace(/\\/$/,'');return b&&f?b+'/'+f:'';};window.__gemfindRbV1Asset=function(f){var c=window.gemfindRBConfig||{},b=String(c.imageBaseUrl||'').replace(/\\/$/,'');return b&&f?b+'/'+f:'';};window.__gemfindRbRelaxSettingDiamondFilters=function(){try{return sessionStorage.getItem('gemfindrb_relax_setting_diamond')==='1'}catch(e){return!!window.__gemfindrbRelaxSettingDiamond}};window.__gemfindRbEnableRelaxSettingDiamondFilters=function(){window.__gemfindrbRelaxSettingDiamond=true;try{sessionStorage.setItem('gemfindrb_relax_setting_diamond','1')}catch(e){}};window.__gemfindRbClearRelaxSettingDiamondFilters=function(){window.__gemfindrbRelaxSettingDiamond=false;try{sessionStorage.removeItem('gemfindrb_relax_setting_diamond')}catch(e){}};})();";
-
-		// Runtime safety net for the v1 diamond list "stuck spinner" bug: the bundled
-		// getDiamondProductsData()/getsimilarDiamondProductsData() catch blocks don't
-		// clear the loading flag on a failed fetch (e.g. a per-page/sort re-query that
-		// errors), so react-overlay-loader's full-page spinner never goes away. Fixed
-		// at the source in dl-version-1-frontend for the next rebuild of frontend-v1.js;
-		// this watchdog force-hides a spinner that's been visible unreasonably long so
-		// already-deployed bundles recover without a rebuild.
+		// Runtime safety net for a v1 diamond list "stuck spinner": a failed list re-query used to leave
+		// react-overlay-loader's full-page spinner up. The source now clears the loading flag on error
+		// (src/rb-version-1-frontend); this watchdog still force-hides a spinner that has been visible
+		// unreasonably long.
 		$v1_loader_watchdog_patch = "(function(){if(window.__gemfindrbV1LoaderWatchdog)return;window.__gemfindrbV1LoaderWatchdog=true;var STUCK_MS=9000;function tick(){var now=Date.now();[].slice.call(document.querySelectorAll('._loading_overlay_wrapper')).forEach(function(el){var hasSpinner=!!el.querySelector('.react-overlay-loader-spinner');if(hasSpinner){if(!el.dataset.gfrbSeenAt)el.dataset.gfrbSeenAt=String(now);else if(now-Number(el.dataset.gfrbSeenAt)>STUCK_MS&&el.style.display!=='none'){el.style.display='none';el.dataset.gfrbForced='1';}}else{delete el.dataset.gfrbSeenAt;if(el.dataset.gfrbForced){el.style.display='';delete el.dataset.gfrbForced;}}});}setInterval(tick,1000);})();";
 
 		// Runtime safety net for global noUiSlider (standalone enqueue). Bundled copies are patched at build time.
@@ -303,10 +285,8 @@ final class GEMFINDRB_Shortcode {
 					wp_add_inline_script( 'gemfindrb-nouislider', $noui_safe_range_patch, 'after' );
 				}
 				wp_add_inline_script( 'gemfindrb-frontend-v1', $noui_safe_range_patch, 'before' );
-				wp_add_inline_script( 'gemfindrb-frontend-v1', $v1_mount_patch, 'before' );
 				wp_add_inline_script( 'gemfindrb-frontend-v1', $xhr_nonce_patch, 'before' );
 				wp_add_inline_script( 'gemfindrb-frontend-v1', $fetch_patch, 'before' );
-				wp_add_inline_script( 'gemfindrb-frontend-v1', $v1_sort_fix_patch, 'before' );
 				wp_add_inline_script( 'gemfindrb-frontend-v1', $v1_toast_dedup_patch, 'after' );
 				wp_add_inline_script( 'gemfindrb-frontend-v1', $v1_loader_watchdog_patch, 'after' );
 			} else {
@@ -314,7 +294,7 @@ final class GEMFINDRB_Shortcode {
 					'wp_footer',
 					static function (): void {
 						if ( current_user_can( 'manage_options' ) ) {
-							echo '<!-- GemFind Ring Builder: frontend-v1.js missing. Copy the Version 1 bundle into public/static/js/frontend-v1.js -->';
+							echo '<!-- GemFind Ring Builder: frontend-v1.js missing. Run npm run build:v1 (src/rb-version-1-frontend). -->';
 						}
 					},
 					99

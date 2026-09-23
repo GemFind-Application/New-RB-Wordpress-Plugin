@@ -369,12 +369,32 @@ const DiamondtoolSetting = (props) => {
 
             setProductCount(settingProduct.count);
             if (Number(settingProduct.count) === 0 && settingConstrains(getsettingcookies._shopify_ringsetting)) {
-                // Setting shape/carat has no inventory: relax them for listing and search again.
-                enableSettingFilterRelax();
-                shapeselected("");
-                setCaratmin("");
-                setCaratmax("");
-                setTimeout(() => setSettingRelaxTick((tick) => tick + 1), 0);
+                // Only relax when the setting's shape/carat alone has no inventory. An empty result caused by
+                // the visitor's own filters (e.g. a narrow Polish range) must keep the setting constraints,
+                // otherwise the listing drops the shape while the Shape filter still shows it locked.
+                var probeUrl = `${
+                    gettabname === "fancycolor"
+                        ? window.initData.data[0].diamondlistapifancy
+                        : window.initData.data[0].diamondlistapi
+                }DealerID=${window.initData.data[0].dealerid}&CaratMin=${minCarat}&CaratMax=${maxCarat}&PriceMin=${
+                    getpriceRange[0].minPrice
+                }&PriceMax=${getpriceRange[0].maxPrice}`;
+                if (cookieshape && cookieshape !== "") {
+                    probeUrl += `&Shape=${cookieshape}`;
+                }
+                probeUrl += `&PageNumber=1&PageSize=1`;
+                if (gettabname !== "fancycolor") {
+                    probeUrl += `&IsLabGrown=${labGown}`;
+                }
+                const probe = await fetch(probeUrl).then((r) => r.json()).catch(() => null);
+                if (probe && Number(probe.count) === 0) {
+                    // Setting shape/carat has no inventory: relax them for listing and search again.
+                    enableSettingFilterRelax();
+                    shapeselected("");
+                    setCaratmin("");
+                    setCaratmax("");
+                    setTimeout(() => setSettingRelaxTick((tick) => tick + 1), 0);
+                }
             }
             var totalPages = Math.ceil(settingProduct.count / getselectedpageSize);
             setTotalPage(totalPages);

@@ -163,7 +163,7 @@ Use of GemFind Ring Builder (including the optional Camweara try-on integration)
 
 = 6. Google Fonts (fonts.googleapis.com, fonts.gstatic.com) =
 
-* **What it is and what it's used for.** Webfonts used by the Ring Builder storefront. Default families (Lato for classic v1; Manrope, Libre Baskerville, and Inter for v2) are loaded with WordPress `wp_enqueue_style()`. The v2 storefront may also load a merchant-selected Google Font from the CSS configurator (`font_family` / `theme_font_family`). Font Awesome icons for classic v1 are bundled locally in the plugin (`assets/vendor/fontawesome/`); they are not loaded from a CDN.
+* **What it is and what it's used for.** Webfonts used by the Ring Builder storefront. Default families (Lato for classic v1; Manrope, Libre Baskerville, and Inter for v2) are loaded with WordPress `wp_enqueue_style()`. The v2 storefront may also load a merchant-selected Google Font from the CSS configurator (`font_family` / `theme_font_family`). Font Awesome icons for classic v1 are bundled locally in the plugin (`assets/vendor/fontawesome/`); they are not loaded from a CDN. No other webfont, script, stylesheet, or image is loaded from a remote host.
 * **What data is sent and when.** The visitor's browser requests stylesheet and font files from Google Fonts when a Ring Builder storefront page loads, or when a custom Google Font is applied from settings. Google may receive the visitor's IP address and standard browser request headers. The plugin does not send visitor name, email, or form data to Google Fonts.
 * **Terms of service.** https://policies.google.com/terms
 * **Privacy policy.** https://policies.google.com/privacy
@@ -195,6 +195,7 @@ Sites using this plugin should disclose in their privacy policy that:
 
 = 1.0.2 =
 * Removed the JewelCloud diamond/setting view-tracking pingback (`DiamondTracking`, `ProductTracking`). The plugin no longer sends a view-analytics ping when a visitor opens a detail page.
+* Classic v1 no longer loads the Luma-Icons webfont from `db.onlinewebfonts.com`; its four icons now use the bundled Font Awesome 5 Free (no remote asset calls).
 
 = 1.0.1 =
 * JewelCloud view tracking is required for the inventory service, always on for v2 detail pages, with merchant guidance in Settings and the readme (no on/off control).

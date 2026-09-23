@@ -18,6 +18,7 @@ import { cartService, emailService } from '../../../Services';
 import { formatPrice } from '../../../utils/priceUtils';
 import UsDateField from '../../elements/UsDateField';
 import { shopDomain } from '../../../wp/wpEnv';
+import formatMeasurement from "../../../utils/formatMeasurement";
 
 function formatprice(finalprice) {
     finalprice = finalprice.toString();
@@ -949,17 +950,13 @@ const CompleteRingInfo = (props) => {
                         center
                         classNames={{
                             overlay: 'popup_Overlay',
-                            modal: 'popup_product',
+                            modal: 'popup_product gf-spec-popup',
                         }}
                     >
                         <div className="popup_content">
-                            <p className="popup_pr">
-                                This refer to different type of Metal Type to filter and select the appropriate ring as per your requirements. Look
-                                for a metal type best suit of your chosen ring.
-                            </p>
                             <div className="diamond-information">
                                 <div className="spacification-info">
-                                    <h2>SETTING DETAILS</h2>
+                                    <h2>Setting Details</h2>
                                 </div>
                                 <ul>
                                     <li>
@@ -1001,7 +998,7 @@ const CompleteRingInfo = (props) => {
                                     </li>
                                 </ul>
                                 <div className="spacification-info">
-                                    <h2>CAN BE SET WITH</h2>
+                                    <h2>Can Be Set With</h2>
                                 </div>
                                 <ul>
                                     <li>
@@ -1090,7 +1087,7 @@ const CompleteRingInfo = (props) => {
                         center
                         classNames={{
                             overlay: 'popup_Overlay',
-                            modal: 'popup_diamond-product',
+                            modal: 'popup_diamond-product gf-spec-popup',
                         }}
                     >
                         <div className="popup_content">
@@ -1221,7 +1218,7 @@ const CompleteRingInfo = (props) => {
                                             <p>Measurement</p>
                                         </div>
                                         <div className="diamonds-info">
-                                            <p>{props.diamondDetailsData.measurement ? props.diamondDetailsData.measurement : '-'}</p>
+                                            <p>{props.diamondDetailsData.measurement ? formatMeasurement(props.diamondDetailsData.measurement) : '-'}</p>
                                         </div>
                                     </li>
                                 </ul>

@@ -3,7 +3,7 @@
   "private": true,
   "description": "GemFind Ring Builder WordPress plugin — build orchestration (Diamond Link layout)",
   "scripts": {
-    "install:all": "npm install --prefix src/rb-version-2-frontend && npm install --prefix src/admin-frontend",
+    "install:all": "npm install --prefix src/rb-version-2-frontend && npm install --prefix src/admin-frontend && npm install --legacy-peer-deps --prefix src/rb-version-1-frontend",
     "build": "node scripts/build-all.cjs",
     "build:all": "node scripts/build-all.cjs",
     "build:admin": "node scripts/build-all.cjs admin",

@@ -521,3 +521,390 @@
         transform: none;
     }
 }
+
+// ===========================================================================
+// Ring / Diamond Specification popups + diamond listing "Additional Information"
+// Same shell and tokens as the lead-capture popups above: title header with a
+// hairline, a single scrolling body, and quiet label/value rows instead of the
+// old grey slab headings and zebra stripes.
+//   * .gf-spec-popup     – react-responsive-modal (detail / complete-ring pages).
+//                          Its own class because .popup_product and
+//                          .popup_diamond-product are also used by image popups.
+//   * .gf-spec-bs-modal  – react-bootstrap Modal (listing info icon).
+// ===========================================================================
+@mixin gf-spec-tokens {
+    --gf-ink: #14161a;
+    --gf-ink-soft: #5d636d;
+    --gf-hairline: #e4e6ea;
+}
+
+@mixin gf-spec-shadow {
+    box-shadow: 0 20px 52px rgba(16, 18, 22, 0.22), 0 2px 6px rgba(16, 18, 22, 0.06);
+}
+
+@mixin gf-spec-scrollbar {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: #cfd3d9 transparent;
+
+    &::-webkit-scrollbar {
+        width: 6px;
+    }
+    &::-webkit-scrollbar-track {
+        background-color: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: #cfd3d9;
+    }
+}
+
+@mixin gf-spec-title {
+    margin: 0;
+    font-size: 21px;
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    text-transform: none;
+    color: var(--gf-ink);
+}
+
+// Label / value rows inside .diamond-information
+@mixin gf-spec-rows {
+    .diamond-information {
+        ul,
+        .diamond-spacification-list {
+            height: auto;
+            margin: 0;
+            padding: 0 24px 8px;
+            overflow: visible;
+
+            @include media-breakpoint-up(md) {
+                padding: 0 30px 12px;
+            }
+        }
+
+        ul:last-child {
+            padding-bottom: 22px;
+        }
+
+        ul li {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 16px;
+            float: none;
+            width: 100%;
+            margin: 0;
+            padding: 12px 0;
+            background: none !important;
+            border-bottom: 1px solid var(--gf-hairline);
+
+            &:last-child {
+                border-bottom: 0;
+            }
+
+            div {
+                float: none;
+                width: auto;
+            }
+
+            .diamonds-details-title {
+                flex: 0 1 45%;
+            }
+
+            .diamonds-info {
+                flex: 1 1 auto;
+            }
+
+            div p {
+                margin: 0;
+                font-size: 14px;
+                line-height: 1.45;
+                color: var(--gf-ink-soft);
+                text-align: left;
+            }
+
+            .diamonds-info p {
+                font-weight: 600;
+                color: var(--gf-ink);
+                text-align: right;
+            }
+        }
+    }
+}
+
+.react-responsive-modal-root .gf-spec-popup {
+    display: flex;
+    flex-direction: column;
+    width: calc(100% - 32px);
+    height: auto;
+    max-height: calc(100vh - 32px);
+    margin: 16px auto;
+    padding: 0;
+    border-radius: 0;
+    @include gf-spec-shadow;
+    text-align: left;
+
+    // Keep the close button above the sticky title.
+    .react-responsive-modal-closeButton {
+        z-index: 2;
+    }
+
+    @include media-breakpoint-up(md) {
+        width: 580px;
+        height: auto;
+        max-height: calc(100vh - 48px);
+        margin: 24px auto;
+    }
+
+    .popup_content {
+        flex: 1 1 auto;
+        min-height: 0;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        @include gf-spec-scrollbar;
+    }
+
+    .diamond-information {
+        // Section label ("Can Be Set With")
+        .spacification-info {
+            display: block;
+            width: 100%;
+            margin: 0;
+            padding: 20px 24px 6px;
+            background: transparent;
+
+            h2 {
+                display: block;
+                width: auto !important;
+                margin: 0;
+                font-size: 12px;
+                font-weight: 600;
+                line-height: 1.4;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+                color: var(--gf-ink-soft);
+            }
+
+            @include media-breakpoint-up(md) {
+                padding-left: 30px;
+                padding-right: 30px;
+            }
+        }
+
+        // First heading is the popup title; it stays put while rows scroll.
+        .spacification-info:first-child {
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            margin-bottom: 8px;
+            padding: 24px 60px 18px 24px;
+            background: #fff;
+            border-bottom: 1px solid var(--gf-hairline);
+
+            h2 {
+                @include gf-spec-title;
+            }
+
+            @include media-breakpoint-up(md) {
+                padding: 28px 64px 20px 30px;
+            }
+        }
+    }
+
+    @include gf-spec-rows;
+}
+
+.modal.gf-spec-bs-modal {
+    @include gf-spec-tokens;
+
+    .modal-dialog {
+        width: calc(100% - 32px);
+        max-width: 580px;
+        margin: 16px auto;
+        min-height: calc(100% - 32px);
+
+        @include media-breakpoint-up(md) {
+            margin: 24px auto;
+            min-height: calc(100% - 48px);
+        }
+    }
+
+    .modal-content {
+        max-height: calc(100vh - 32px);
+        overflow: hidden;
+        border: 0;
+        border-radius: 0;
+        @include gf-spec-shadow;
+        text-align: left;
+
+        @include media-breakpoint-up(md) {
+            max-height: calc(100vh - 48px);
+        }
+    }
+
+    .modal-header {
+        flex: 0 0 auto;
+        align-items: flex-start;
+        padding: 24px 20px 18px 24px;
+        border-bottom: 1px solid var(--gf-hairline);
+
+        @include media-breakpoint-up(md) {
+            padding: 28px 24px 20px 30px;
+        }
+    }
+
+    .modal-title {
+        @include gf-spec-title;
+    }
+
+    .btn-close {
+        width: 13px;
+        height: 13px;
+        margin: 2px 0 0 auto;
+        padding: 9px;
+        border-radius: 0;
+        background-size: 13px;
+        opacity: 0.6;
+        transition: opacity 0.18s ease, background-color 0.18s ease;
+
+        &:hover {
+            opacity: 1;
+            background-color: rgba(20, 22, 26, 0.06);
+        }
+        &:focus {
+            box-shadow: none;
+        }
+        &:focus-visible {
+            outline: 2px solid var(--button, #14161a);
+            outline-offset: 2px;
+        }
+    }
+
+    .modal-body {
+        flex: 1 1 auto;
+        min-height: 0;
+        padding: 8px 0 0;
+        text-align: left;
+        @include gf-spec-scrollbar;
+    }
+
+    @include gf-spec-rows;
+}
+
+// ===========================================================================
+// Video popups (react-bootstrap, .gf-video-modal)
+// Ring / diamond videos are square, so the old wide modal-lg with an empty
+// header strip letterboxed them in black bars. Instead: a square frame sized
+// to fit the viewport, no header strip, and a close button floating over the
+// video. !important where inline styles / gemfindrb-wp-overrides.css pin the
+// old 500px heights.
+// ===========================================================================
+body .modal.gf-video-modal {
+    .modal-dialog {
+        width: calc(100% - 32px);
+        max-width: min(620px, calc(100vh - 48px));
+        margin: 16px auto;
+
+        @include media-breakpoint-up(md) {
+            margin: 24px auto;
+        }
+    }
+
+    .modal-content {
+        position: relative;
+        overflow: hidden;
+        border: 0;
+        border-radius: 0;
+        background-color: #fff;
+        @include gf-spec-shadow;
+    }
+
+    .modal-header {
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 3;
+        min-height: 0;
+        padding: 12px;
+        border: 0;
+        background: transparent;
+    }
+
+    .btn-close {
+        box-sizing: content-box;
+        width: 12px;
+        height: 12px;
+        margin: 0;
+        padding: 10px;
+        border-radius: 0;
+        background-color: rgba(255, 255, 255, 0.92);
+        background-size: 12px;
+        box-shadow: 0 2px 8px rgba(16, 18, 22, 0.18);
+        opacity: 1;
+        transition: background-color 0.18s ease, box-shadow 0.18s ease;
+
+        &:hover {
+            background-color: #fff;
+            box-shadow: 0 4px 12px rgba(16, 18, 22, 0.26);
+        }
+        &:focus {
+            box-shadow: 0 2px 8px rgba(16, 18, 22, 0.18);
+        }
+        &:focus-visible {
+            outline: 2px solid var(--button, #14161a);
+            outline-offset: 2px;
+        }
+    }
+
+    .modal-body.gf-rb-video-modal-body {
+        position: relative;
+        width: 100%;
+        min-height: 0 !important;
+        padding: 0;
+        aspect-ratio: 1 / 1;
+        text-align: center;
+    }
+
+    .modal-body .modal__video-style {
+        display: block;
+        width: 100%;
+        height: 100% !important;
+        min-height: 0 !important;
+        border: 0;
+    }
+
+    // Direct video files (see elements/VideoFrame.js): white, not black, around
+    // any non-square clip so it blends with the studio-white footage.
+    .modal-body video.modal__video-style {
+        object-fit: contain;
+        background-color: #fff;
+    }
+
+    // Loader sits over the (hidden or still-loading) iframe, centred in the frame.
+    .modal-dialog .modal-body .gf-rb-video-modal-spinner {
+        position: absolute !important;
+        inset: 0;
+        top: 0 !important;
+        left: 0 !important;
+        z-index: 2;
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        min-height: 0 !important;
+        margin: 0;
+        background-color: #fff;
+    }
+
+    // "Video not available" message (settings list)
+    .gf-rb-video-modal-body > div:not(.gf-rb-video-modal-spinner) {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+    }
+}

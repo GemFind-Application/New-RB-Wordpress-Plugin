@@ -49,6 +49,25 @@
     text-decoration: none;
 }
 
+// Themes commonly underline every a:hover (e.g. `a:hover, a:focus-visible`).
+// The tool's links are tabs, icons and buttons, so keep them undecorated here
+// and in the portaled popups. Links meant to be underlined opt back in below.
+.tool-container,
+.gf-tool-container,
+.react-responsive-modal-root,
+.modal.gf-spec-bs-modal {
+    a:hover,
+    a:focus,
+    a:focus-visible {
+        text-decoration: none;
+    }
+}
+
+.diamond-report-link p a:hover,
+.internam-use p a:hover {
+    text-decoration: underline;
+}
+
 .f_heading {
     font-size: 12px !important;
     font-weight: 500 !important;

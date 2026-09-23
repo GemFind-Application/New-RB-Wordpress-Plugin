@@ -3,6 +3,7 @@ import { Modal } from "react-responsive-modal";
 import Nouislider from "nouislider-react";
 import "nouislider/distribute/nouislider.css";
 import Skeleton from "react-loading-skeleton";
+import useDebouncedCallback from "../../../utils/useDebouncedCallback";
 import { useCookies } from "react-cookie";
 import caratJpg from '../../../images/carat.jpg';
 import { isSettingFilterRelaxed } from "../../../wp/settingFilterRelax";
@@ -25,6 +26,7 @@ const CaratSlider = (props) => {
     const prevTabRef = useRef(props.callbacktab);
 
     const rangeSelectorprops = (newValue) => {
+        commitTypedRange.cancel();
         setstartValue(Number(newValue[0]));
         setlastValue(Number(newValue[1]));
         let sliderSelection = [];
@@ -33,46 +35,38 @@ const CaratSlider = (props) => {
         props.callBack(sliderSelection);
     };
 
-    const startValueOnChange = (event) => {
-        const value = event.target.value;
-        if (value === "") {
-            setstartValue("");
+    // Typed values are only sent once the user pauses, so "20" doesn't trigger a search at "2".
+    const commitTypedRange = useDebouncedCallback(() => {
+        if (startValue === "" || lastValue === "") {
             return;
         }
-        const intValue = parseInt(value, 10);
-        if (Number.isInteger(intValue) && intValue >= 0 && intValue <= 100) {
-            setstartValue(value);
-            if (lastValue === "") {
-                return;
-            }
-            let sliderSelection = [];
-            sliderSelection.push(value);
-            sliderSelection.push(lastValue);
-            props.callBack(sliderSelection);
-        } else {
+        const start = Number(startValue);
+        const end = Number(lastValue);
+        if (!(start >= 0 && start <= 100 && end >= 0 && end <= 100)) {
             alert("Please Enter Valid Value");
+            return;
         }
+        props.callBack([start, end]);
+    });
+
+    const isNumericInput = (value) => /^\d*\.?\d*$/.test(value);
+
+    const startValueOnChange = (event) => {
+        const value = event.target.value;
+        if (!isNumericInput(value)) {
+            return;
+        }
+        setstartValue(value);
+        commitTypedRange();
     };
 
     const endValueOnChange = (event) => {
         const value = event.target.value;
-        if (value === "") {
-            setlastValue("");
+        if (!isNumericInput(value)) {
             return;
         }
-        const intValue = parseInt(value, 10);
-        if (Number.isInteger(intValue) && intValue >= 0 && intValue <= 100) {
-            setlastValue(value);
-            if (startValue === "") {
-                return;
-            }
-            let sliderSelection = [];
-            sliderSelection.push(startValue);
-            sliderSelection.push(value);
-            props.callBack(sliderSelection);
-        } else {
-            alert("Please Enter Valid Value");
-        }
+        setlastValue(value);
+        commitTypedRange();
     };
 
     useEffect(() => {
@@ -212,6 +206,7 @@ const CaratSlider = (props) => {
                             type="text"
                             value={startValue}
                             onChange={startValueOnChange}
+                            onBlur={commitTypedRange.flush}
                         />{" "}
                     </div>
                     <div className="input-value-right">
@@ -219,6 +214,7 @@ const CaratSlider = (props) => {
                             type="text"
                             value={lastValue}
                             onChange={endValueOnChange}
+                            onBlur={commitTypedRange.flush}
                         />
                     </div>
                 </div>
