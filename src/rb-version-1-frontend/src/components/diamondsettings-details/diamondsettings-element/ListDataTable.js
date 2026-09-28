@@ -16,7 +16,7 @@ import {
     registerCompareDiamondType,
     removeCompareDiamondType,
 } from "../../../utils/compareUtils";
-import { RB_BASE, jcVideoUrl } from '../../../wp/wpEnv';
+import { RB_BASE, jcVideoUrl, wpFetch } from '../../../wp/wpEnv';
 import diamondGif from '../../../images/diamond.gif';
 import spinnerGif from '../../../images/spinner.gif';
 import formatMeasurement from "../../../utils/formatMeasurement";
@@ -211,7 +211,7 @@ const ListDataTable = (props) => {
                 var diamondType = "mined";
             }
 
-            const res = await fetch(url);
+            const res = await wpFetch(url);
             const productDetails = await res.json();
             // console.log(productDetails);
             setDiamondID(currentId);
@@ -251,7 +251,7 @@ const ListDataTable = (props) => {
         
         try {
             const videoApiUrl = (window.initData?.data?.[0]?.videoapi || jcVideoUrl()) + `InventoryID=${diamondId}&Type=Diamond`;
-            const res = await fetch(videoApiUrl);
+            const res = await wpFetch(videoApiUrl);
             
             if (!res.ok) {
                 throw new Error(`HTTP error! status: ${res.status}`);

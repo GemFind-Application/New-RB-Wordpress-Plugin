@@ -1,6 +1,4 @@
-// WordPress plugin styles for the classic (v1) storefront.
-// These used to be appended to the prebuilt frontend-v1.css by scripts/patch-v1-filter-popup.js and
-// scripts/patch-v1-vendor-info.js; they now live in source. Loaded last in style.scss.
+// WordPress plugin styles for the classic (v1) storefront. Loaded last in style.scss.
 
 // ── Filter info popups (modal: "popup_Modal gf-rb-v1-filter-modal") ─────────────────────────────
 .react-responsive-modal-modal.gf-rb-v1-filter-modal {

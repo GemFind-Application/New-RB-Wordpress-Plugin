@@ -21,7 +21,7 @@ import { emailService } from "../../../Services";
 import { formatPrice } from "../../../utils/priceUtils";
 import UsDateField from "../../elements/UsDateField";
 import DiamondLoader from "./DiamondLoader";
-import { RB_BASE, jcBase } from '../../../wp/wpEnv';
+import { RB_BASE, jcBase, wpFetch } from '../../../wp/wpEnv';
 import { clearSettingFilterRelax } from "../../../wp/settingFilterRelax";
 
 const ProductInformation = (props) => {
@@ -1454,7 +1454,7 @@ const ProductInformation = (props) => {
                 `DealerID=` +
                 window.initData.data[0].dealerid;
 
-            const res = await fetch(url);
+            const res = await wpFetch(url);
             const acrualRes = await res.json();
             
             var navarray = [];
@@ -2725,6 +2725,7 @@ const ProductInformation = (props) => {
                 <>
                     <iframe
                         id="tryoniframe"
+                        onLoad={() => setLoadedtry(false)}
                         src={getTryonsrc}
                         allow="camera"
                         width={"100%"}

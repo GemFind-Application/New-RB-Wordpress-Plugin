@@ -58,7 +58,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "build": "node scripts/build.js && node ../../scripts/patch-v1-nouislider-range.js"
+    "build": "node scripts/build.js"
   },
   "browserslist": {
     "production": [

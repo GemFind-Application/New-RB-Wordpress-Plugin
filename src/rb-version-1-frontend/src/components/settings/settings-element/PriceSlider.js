@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Modal } from "react-responsive-modal";
-import Nouislider from "nouislider-react";
+import Nouislider from "../../elements/SafeNouislider";
 import "nouislider/distribute/nouislider.css";
 import Skeleton from "react-loading-skeleton";
 

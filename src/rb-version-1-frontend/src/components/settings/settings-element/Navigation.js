@@ -4,7 +4,7 @@ import { LoadingOverlay, Loader } from "react-overlay-loader";
 import { Modal } from "react-responsive-modal";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { RB_BASE, jcBase } from '../../../wp/wpEnv';
+import { RB_BASE, jcBase, wpFetch } from '../../../wp/wpEnv';
 
 const Navigation = (props) => {
     const [cookies, setCookie, removeCookie] = useCookies([
@@ -82,7 +82,7 @@ const Navigation = (props) => {
                 `DealerID=` +
                 window.initData.data[0].dealerid;
 
-            const res = await fetch(url);
+            const res = await wpFetch(url);
             const acrualRes = await res.json();
             setminedsetting(acrualRes[0].navMinedSetting);
             setlabsetting(acrualRes[0].navLabSetting);

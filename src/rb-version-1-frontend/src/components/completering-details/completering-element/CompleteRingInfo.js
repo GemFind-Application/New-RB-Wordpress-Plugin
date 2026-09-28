@@ -885,6 +885,7 @@ const CompleteRingInfo = (props) => {
     return (
         <>
             <ToastContainer
+                limit={1}
                 position="top-center"
                 autoClose={5000}
                 hideProgressBar={false}
@@ -1773,6 +1774,7 @@ const CompleteRingInfo = (props) => {
                 <>
                     <iframe
                         id="tryoniframe"
+                        onLoad={() => setLoaded(false)}
                         src={getTryonsrc}
                         allow="camera"
                         width={'100%'}

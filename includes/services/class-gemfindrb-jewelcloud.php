@@ -355,6 +355,14 @@ final class GEMFINDRB_JewelCloud {
 		$arr['jc_api_url'] = $rest_base . '/jcProxy';
 		$arr['videoapi']    = $rest_base . '/jcVideoProxy?';
 
+		// The storefront calls these endpoint URLs from the browser; point them at jcProxy
+		// (the stored values stay direct JewelCloud URLs for server-side use).
+		foreach ( $arr as $key => $val ) {
+			if ( is_string( $val ) && $val !== '' ) {
+				$arr[ $key ] = self::to_proxy_url( $val, $arr['jc_api_url'] );
+			}
+		}
+
 		// V1 classic bundle gates "Advance Search" on this flag (not navAdvanced from GetNavigation).
 		$dealer_id = trim( (string) ( $arr['dealerid'] ?? '' ) );
 		$nav       = self::get_dealer_navigation_row( $dealer_id );
@@ -365,6 +373,22 @@ final class GEMFINDRB_JewelCloud {
 		}
 
 		return $arr;
+	}
+
+	/**
+	 * Map a direct JewelCloud RingBuilder URL to its jcProxy equivalent, e.g.
+	 * https://api.jewelcloud.com/api/RingBuilder/GetDiamondDetail? → {proxy}/GetDiamondDetail?
+	 */
+	public static function to_proxy_url( string $url, string $proxy_base ): string {
+		if ( ! preg_match( '#^https?://api\.jewelcloud\.com/api/RingBuilder/([A-Za-z]+)(\?.*)?$#i', $url, $m ) ) {
+			return $url;
+		}
+		$query = $m[2] ?? '';
+		// Plain permalinks: rest_url() already contains "?rest_route=", so the endpoint's "?" must become "&".
+		if ( $query !== '' && str_contains( $proxy_base, '?' ) ) {
+			$query = '&' . substr( $query, 1 );
+		}
+		return $proxy_base . '/' . $m[1] . $query;
 	}
 
 	/**

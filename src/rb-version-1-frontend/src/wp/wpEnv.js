@@ -39,6 +39,18 @@ export const restNonce = () => wpConfig().nonce || '';
 /** Headers every plugin REST call must carry (WordPress cookie auth). */
 export const nonceHeaders = () => (restNonce() ? { 'X-WP-Nonce': restNonce() } : {});
 
+/**
+ * fetch() that adds the REST nonce to plugin API calls (jcProxy, jcVideoProxy, …).
+ * Other URLs pass through unchanged.
+ */
+export const wpFetch = (url, options = {}) => {
+    const headers = new Headers(options.headers || {});
+    if (String(url).includes('/gemfind-ring-builder/v1') && restNonce() && !headers.has('X-WP-Nonce')) {
+        headers.set('X-WP-Nonce', restNonce());
+    }
+    return fetch(url, { ...options, headers });
+};
+
 /** Query-string suffix for plain-link navigations (PDF downloads) that cannot send headers. */
 export const nonceQuery = (url) => {
     const nonce = restNonce();

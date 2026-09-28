@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 // import Typography from '@material-ui/core/Typography';
 import { Modal } from "react-responsive-modal";
-import Nouislider from "nouislider-react";
+import Nouislider from "../../elements/SafeNouislider";
 import Skeleton from "react-loading-skeleton";
 import "nouislider/distribute/nouislider.css";
 import color from "../../../images/color.jpg";
