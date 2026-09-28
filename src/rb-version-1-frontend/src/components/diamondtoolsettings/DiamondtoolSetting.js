@@ -29,7 +29,7 @@ import { useLocation } from "react-router-dom";
 import emerald from "../../images/emerald_Large.jpg";
 import marquise from "../../images/marquise_Large.png";
 import { useNavigate } from "react-router-dom";
-import { RB_BASE } from '../../wp/wpEnv';
+import { RB_BASE, wpFetch } from '../../wp/wpEnv';
 
 // "Last" pip sentinel id = highest real id + 1. Using range.length + 1 broke when ids are sparse
 // (e.g. polish only returns id "3" -> sentinel "2" -> min > max, a broken single-handle slider).
@@ -358,7 +358,7 @@ const DiamondtoolSetting = (props) => {
                 const tabType = labGown ? "LAB GROWN" : "MINED";
             }
             setLoaded(true);
-            const res = await fetch(url);
+            const res = await wpFetch(url);
             const settingProduct = await res.json();
 
             if (settingProduct.diamondList) {
@@ -386,7 +386,7 @@ const DiamondtoolSetting = (props) => {
                 if (gettabname !== "fancycolor") {
                     probeUrl += `&IsLabGrown=${labGown}`;
                 }
-                const probe = await fetch(probeUrl).then((r) => r.json()).catch(() => null);
+                const probe = await wpFetch(probeUrl).then((r) => r.json()).catch(() => null);
                 if (probe && Number(probe.count) === 0) {
                     // Setting shape/carat has no inventory: relax them for listing and search again.
                     enableSettingFilterRelax();
@@ -423,7 +423,6 @@ const DiamondtoolSetting = (props) => {
     const shapeName = (shapeName) => {
         shapeselected(shapeName);
         setQuerySearchShape("1");
-        setLoaded(true);
     };
 
     // Define the handler function to handle order type changes
@@ -452,13 +451,11 @@ const DiamondtoolSetting = (props) => {
 
         if (getSelectedCut !== finalCut) {
             setSelectedCut(finalCut);
-            setLoaded(true);
         }
     };
 
     const inticutname = (cutName) => {
         setinitCut(cutName);
-        setLoaded(true);
     };
 
     const fancyColorName = (colorName) => {
@@ -475,7 +472,6 @@ const DiamondtoolSetting = (props) => {
             .join(",");
 
         setSelectedfancyColor(finalfancycolor);
-        setLoaded(true);
     };
 
     const fancyintensityname = (cutName) => {
@@ -495,9 +491,6 @@ const DiamondtoolSetting = (props) => {
             .join(",");
 
         setSelectedintensity(finalIntensity);
-        // setTimeout(() => {
-        setLoaded(true);
-        // }, 500);
     };
 
     //POLISH NAME
@@ -518,14 +511,10 @@ const DiamondtoolSetting = (props) => {
             .join(",");
 
         setSelectedpolish(finalpolish);
-        setTimeout(() => {
-            setLoaded(true);
-        }, 500);
     };
 
     const intpolishname = (polishName) => {
         setinitpolish(polishName);
-        setLoaded(true);
     };
 
     //FLUORESCENCE NAME
@@ -546,15 +535,10 @@ const DiamondtoolSetting = (props) => {
             .join(",");
 
         setSelectedfluore(finalfluorescence);
-
-        setTimeout(() => {
-            setLoaded(true);
-        }, 500);
     };
 
     const intfluore = (fluoreName) => {
         setinitfluore(fluoreName);
-        setLoaded(true);
     };
 
     //SYMMETRY NAME
@@ -575,14 +559,10 @@ const DiamondtoolSetting = (props) => {
             .join(",");
 
         setSelectedsymmetry(finalsymmetry);
-        setTimeout(() => {
-            setLoaded(true);
-        }, 500);
     };
 
     const initsymmetry = (symmetryName) => {
         setinitsymmetry(symmetryName);
-        setLoaded(true);
     };
 
     const colorName = (colorName) => {
@@ -603,9 +583,6 @@ const DiamondtoolSetting = (props) => {
         // Only update if the value has actually changed
         if (getSelectedColor !== finalColor) {
             setSelectedColor(finalColor);
-            setTimeout(() => {
-                setLoaded(true);
-              }, 500);
         }
     };
 
@@ -631,7 +608,6 @@ const DiamondtoolSetting = (props) => {
         // Only update if the value has actually changed
         if (getSelectedClarity !== finalClarity) {
             setSelectedClarity(finalClarity);
-            setLoaded(true);
         }
     };
 
@@ -649,7 +625,6 @@ const DiamondtoolSetting = (props) => {
             setCaratmax(caratValue[1]);
             window.minicarat = caratValue[0];
             window.maxcarat = caratValue[1];
-            setLoaded(true);
         }
     };
 
@@ -662,7 +637,6 @@ const DiamondtoolSetting = (props) => {
             setDepthmax(parseInt(depthValue[1]));
             window.minidepth = depthValue[0];
             window.maxdepth = depthValue[1];
-            setLoaded(true);
         }
     };
 
@@ -675,7 +649,6 @@ const DiamondtoolSetting = (props) => {
             setTablemax(parseInt(tableValue[1]));
             window.minitable = tableValue[0];
             window.maxtable = tableValue[1];
-            setLoaded(true);
         }
     };
 
@@ -688,36 +661,30 @@ const DiamondtoolSetting = (props) => {
             setPricemax(parseFloat(priceValue[1]));
             window.miniprice = priceValue[0];
             window.maxprice = priceValue[1];
-            setLoaded(true);
         }
     };
 
     const pagesizevalue = (sizevalue) => {
         setpageSizeselected(sizevalue);
-        setLoaded(true);
     };
 
     const pageorderbytype = (type) => {
         setpageordertypeelected(type);
-        setLoaded(true);
     };
 
     const ascdesctype = (type1) => {
         // Always refetch: a field change resets to ASC even when ASC was already selected.
         setascdescordertypeelected(type1);
-        setLoaded(true);
     };
 
     const currentpagevalue = (currentPage) => {
         setselectedpageno(currentPage);
         setPageRestoredFromCookie(false); // Reset flag when user manually changes page
-        setLoaded(true);
     };
 
     const searchValueCurrent = (searchval) => {
         if (getfilledsearch !== searchval) {
             setfilledsearch(searchval);
-            setLoaded(true);
         }
     };
 
@@ -874,6 +841,7 @@ const DiamondtoolSetting = (props) => {
             // Check if window.initData exists and has the required data
             if (!window.initData || !window.initData.data || !window.initData.data[0]) {
                 console.error('window.initData is not properly initialized');
+                setLoaded(false);
                 return;
             }
 
@@ -881,18 +849,20 @@ const DiamondtoolSetting = (props) => {
             if (tabname === "fancycolor") {
                 if (!window.initData.data[0].filterapifancy) {
                     console.error('filterapifancy API endpoint not configured');
+                    setLoaded(false);
                     return;
                 }
                 url = `${window.initData.data[0].filterapifancy}DealerID=` + DealerID;
             } else {
                 if (!window.initData.data[0].filterapi) {
                     console.error('filterapi API endpoint not configured');
+                    setLoaded(false);
                     return;
                 }
                 url = `${window.initData.data[0].filterapi}DealerID=` + DealerID;
             }
         
-            const res = await fetch(url);
+            const res = await wpFetch(url);
             if (!res.ok) {
                 throw new Error(`HTTP error! status: ${res.status}`);
             }
@@ -1120,6 +1090,7 @@ const DiamondtoolSetting = (props) => {
             }, 1000);
         } catch (error) {
             console.error('Error in getInitFilterDiamondData:', error);
+            setLoaded(false);
             // Set default values to prevent crashes
             setShowPriceFilter(false);
             setShape([]);
@@ -1136,7 +1107,7 @@ const DiamondtoolSetting = (props) => {
                 return;
             }
             const url = `${initData.navigationapi}DealerId=${initData.dealerid}`;
-            const res = await fetch(url);
+            const res = await wpFetch(url);
             const actualRes = await res.json();
             if (actualRes?.[0]) {
                 const nav = actualRes[0];

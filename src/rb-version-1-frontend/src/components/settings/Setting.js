@@ -14,6 +14,7 @@ import { useLocation } from "react-router-dom";
 import DataDiamond from "../elements/data-diamond";
 import { useNavigate } from "react-router-dom";
 import Topheader from "../elements/Topheader";
+import { wpFetch } from "../../wp/wpEnv";
 // import Input_slider from "./settings-element/Input_slider";
 
 const Setting = (props) => {
@@ -206,7 +207,7 @@ const Setting = (props) => {
                 var url = `${window.initData.data[0].ringfiltersapi}DealerID=${DealerID}&IsLabSettingsAvailable=${islab}`;
             }
             
-            const res = await fetch(url);
+            const res = await wpFetch(url);
             const acrualRes = await res.json();
             setShowPriceFilter(acrualRes[1][0].isShowPrice);
             setCollectionData(acrualRes[1][0].collections);
@@ -303,7 +304,7 @@ const Setting = (props) => {
         }
         
         try {
-            const res = await fetch(url);
+            const res = await wpFetch(url);
 
             const settingProduct = await res.json();
             setDataSettingProduct(settingProduct.mountingList);
@@ -340,7 +341,6 @@ const Setting = (props) => {
         
         if (part === "labgrownsettings" || isLabSettingsPath) {
             settabname("labgrown");
-            setLoaded(true);
         }
 
         //THIS IS FOR SAVED SEARCH VALUE LOAD ON PAGE LOAD

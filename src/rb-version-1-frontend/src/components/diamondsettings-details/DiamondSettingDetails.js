@@ -15,6 +15,7 @@ import DataDiamond from "../elements/data-diamond";
 import DiamondDetailsListing from "./diamondsettings-element/DiamondDetailsListing";
 import { useNavigate } from "react-router-dom";
 import { diamondService } from "../../Services";
+import { wpFetch } from "../../wp/wpEnv";
 
 const DiamondSettingDetails = () => {
     const [openModel, setOpenModel] = useState(false);
@@ -179,7 +180,7 @@ const DiamondSettingDetails = () => {
             }),
         };
         try {
-            const res = await fetch(
+            const res = await wpFetch(
                 `${window.initData.data[0].dealerauthapi}`,
                 requestOptions
             );
@@ -207,7 +208,7 @@ const DiamondSettingDetails = () => {
                 var url = `${window.initData.data[0].diamonddetailapi}DealerID=${DealerID}&DID=${productId}&IsLabGrown=${getIslab}`;
             }
 
-            const res = await fetch(url);
+            const res = await wpFetch(url);
 
             const productDetails = await res.json();
 
@@ -246,7 +247,7 @@ const DiamondSettingDetails = () => {
                     `${window.initData.data[0].filterapi}DealerID=` + DealerID;
             }
 
-            const res = await fetch(url);
+            const res = await wpFetch(url);
             const acrualRes = await res.json();
             //Price Range
             setpriceRange(acrualRes[1][0].priceRange);
@@ -337,7 +338,7 @@ const DiamondSettingDetails = () => {
                 var url = `${window.initData.data[0].diamondlistapifancy}DealerID=${window.initData.data[0].dealerid}&Shape=${getShape}&PriceMin=${minPrice}&PriceMax=${maxPrice}&CaratMin=${centerstonemincarat}&CaratMax=${centerstonemaxcarat}&TableMin=${getTablemin}&TableMax=${getTablemax}&DepthMin=${getDepthmin}&DepthMax=${getDepthmax}&Certificate=${getCertificate}&OrderBy=${getpageordertypeelected}&OrderType=${getascdescordertypeelected}&PageNumber=${getselectedpageno}&PageSize=${getselectedpageSize}&IsLabGrown=${getLabgown}`;
             }
 
-            const res = await fetch(url);
+            const res = await wpFetch(url);
             const settingProduct = await res.json();
             
             setDataSettingProduct(settingProduct.diamondList);

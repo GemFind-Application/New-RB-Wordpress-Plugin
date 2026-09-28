@@ -1,5 +1,5 @@
 /**
- * Setting-constrained diamond search fallback (WordPress fix, was scripts/patch-v1-setting-filter-fallback.js).
+ * Setting-constrained diamond search fallback (WordPress fix).
  *
  * After "Add your diamond" the setting cookie (_shopify_ringsetting) forces the diamond search to the
  * setting's center-stone shape and carat range. When that combination has no inventory the listing

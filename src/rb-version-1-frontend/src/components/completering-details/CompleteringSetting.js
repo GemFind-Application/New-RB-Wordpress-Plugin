@@ -9,7 +9,7 @@ import CompleteRingGallary from "./completering-element/CompleteRingGallary";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import { browserHistory } from "react-router";
-import { RB_BASE } from '../../wp/wpEnv';
+import { RB_BASE, wpFetch } from '../../wp/wpEnv';
 
 window.addEventListener("pageshow", function (event) {
     var historyTraversal =
@@ -53,7 +53,7 @@ const CompleteringSetting = () => {
                 var url = `${window.initData.data[0].mountinglistapifancy}DealerID=${DealerID}&SID=${getSettingId}`;
             }
 
-            const res = await fetch(url);
+            const res = await wpFetch(url);
             const productDetails = await res.json();
             setSettingProductData(productDetails);
         } catch (error) {
@@ -72,7 +72,7 @@ const CompleteringSetting = () => {
                 var url = `${window.initData.data[0].diamonddetailapi}DealerID=${DealerID}&DID=${getDiamondId}`;
             }
 
-            const res = await fetch(url);
+            const res = await wpFetch(url);
             const productDetails = await res.json();
             setdiamondProductData(productDetails);
             setTimeout(() => {

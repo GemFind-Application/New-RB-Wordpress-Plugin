@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 // import Typography from '@material-ui/core/Typography';
 import { Modal } from "react-responsive-modal";
-import Nouislider from "nouislider-react";
+import Nouislider from "../../elements/SafeNouislider";
 import "nouislider/distribute/nouislider.css";
 const Fancyintensity = (props) => {
     const [open, setOpen] = useState(false);
