@@ -576,7 +576,8 @@ final class GEMFINDRB_JewelCloud {
 	private static function proxy_get_raw( string $endpoint, array $params = [], int $timeout = 30 ): array|string|bool|int|float|null|WP_Error {
 		$url = self::JC_BASE . $endpoint;
 		if ( $params !== [] ) {
-			// RFC3986 keeps literal "+" (e.g. OrderBy=cost+desc) as %2B instead of a space.
+			// RFC3986: spaces become %20 (OrderBy=cost%20desc sorts); a literal "+" becomes %2B,
+			// which JewelCloud does not read as a space, so callers must send "cost desc".
 			$url .= '?' . http_build_query( $params, '', '&', PHP_QUERY_RFC3986 );
 		}
 
