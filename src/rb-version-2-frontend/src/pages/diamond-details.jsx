@@ -14,7 +14,7 @@ import VideoDiamondTryOn from "../components/VideoDiamondTryOn";
 import Header from "../components/Header";
 import ShowCostInCardDiamond from "../components/showCostInCardDiamond";
 import SocialIcon from "../components/SocialIcon";
-import { utils, downloadDiamondPdf, downloadCertificatePdf } from "../Helpers";
+import { utils, downloadDiamondPdf, downloadCertificatePdf, trackDiamondView } from "../Helpers";
 import DropHintPopup from "../components/DropHintPopup";
 import ScheduleViewingPopup from "../components/ScheduleViewingPopup";
 import RequestInfoPopup from "../components/RequestInfoPopup";
@@ -122,6 +122,7 @@ const DiamondPage = ({ formSetting, configAppData, additionOptionSetting, shopUr
         handleVideoIconClick(diamondIdToShow)
 
         if (res.diamondId) {
+          trackDiamondView(res, configAppData.dealerid);
 
           let selectedRingSetting = JSON.parse(localStorage.getItem('selectedRing'));
           if (selectedRingSetting) {

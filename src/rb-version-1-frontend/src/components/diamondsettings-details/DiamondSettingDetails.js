@@ -15,6 +15,7 @@ import DataDiamond from "../elements/data-diamond";
 import DiamondDetailsListing from "./diamondsettings-element/DiamondDetailsListing";
 import { useNavigate } from "react-router-dom";
 import { diamondService } from "../../Services";
+import { trackDiamondView } from "../../utils/tracking";
 import { wpFetch } from "../../wp/wpEnv";
 
 const DiamondSettingDetails = () => {
@@ -229,7 +230,7 @@ const DiamondSettingDetails = () => {
             setFluorescence(productDetails.fluorescence);
             setskeltonLoad(true);
             setinitdataload(true);
-            // WordPress: JewelCloud view-tracking pingback removed in 1.0.2 (see readme changelog).
+            trackDiamondView(productDetails, DealerID);
         } catch (error) {
             console.log(error);
         }
