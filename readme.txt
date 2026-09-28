@@ -103,7 +103,7 @@ v2 is the current Ring Builder experience (default). v1 is the classic UI for si
 
 = What data is sent to external servers? =
 
-This plugin requires JewelCloud for live ring and diamond inventory and optionally connects to other third-party services (spam protection, social widgets, virtual try-on, webfonts). See the **External services** section below for what each service is used for, what data is sent, when calls happen, and links to each provider's terms of service and privacy policy.
+This plugin requires JewelCloud for live ring and diamond inventory, reports diamond and ring setting detail-page views to JewelCloud (including the visitor's public IP address, looked up from ipify), and optionally connects to other third-party services (spam protection, social widgets, virtual try-on, webfonts). See the **External services** section below for what each service is used for, what data is sent, when calls happen, and links to each provider's terms of service and privacy policy.
 
 == Screenshots ==
 
@@ -116,7 +116,7 @@ This plugin requires JewelCloud for live ring and diamond inventory and optional
 
 == External services ==
 
-This plugin connects to third-party and external services. JewelCloud is **required** for live ring settings and diamond inventory. Other services below are optional or only used when a merchant enables the related feature. The policy links below were verified at the time of this release.
+This plugin connects to third-party and external services. JewelCloud is **required** for live ring settings and diamond inventory. JewelCloud view tracking (#2) and the ipify IP lookup it uses (#3) run on every diamond and ring setting detail page. Other services below are optional or only used when a merchant enables the related feature. The policy links below were verified at the time of this release.
 
 = 1. JewelCloud API (api.jewelcloud.com) =
 
@@ -127,21 +127,34 @@ This plugin connects to third-party and external services. JewelCloud is **requi
 
 JewelCloud is operated by GemFind Digital Solutions. GemFind's Terms of Service define the GemFind Network as including `www.jewelcloud.com`. Use the GemFind Terms link above for contractual terms; use the JewelCloud privacy policy link above for JewelCloud data-handling practices.
 
-= 2. Facebook (facebook.com) =
+= 2. JewelCloud view tracking (apps-api.jewelcloud.com) =
+
+* **What it is and what it's used for.** GemFind/JewelCloud analytics endpoints that record when a visitor views a diamond detail page or a ring setting detail page, in both the classic v1 and v2 storefronts. The jeweler and GemFind use these view counts for inventory and vendor reporting. This is part of the JewelCloud inventory service, not an advertising pixel.
+* **What data is sent and when.** The visitor's browser sends a GET request directly to `https://apps-api.jewelcloud.com/api/DiamondLink/DiamondTracking` (diamond views) or `https://apps-api.jewelcloud.com/api/RingBuilder/ProductTracking` (ring setting views) once each detail page loads. Repeat loads of the same item within 3 seconds are counted once. Each request contains the retailer (dealer) ID, vendor ID, the diamond or setting inventory ID, the item price, the site's origin URL, and the **visitor's public IP address** (see #3). No visitor name, email, phone number, or form data is sent. Tracking is always on for detail pages and cannot be turned off in plugin settings.
+* **Terms of service.** https://gemfind.com/pages/terms-of-service
+* **Privacy policy.** https://www.jewelcloud.com/policies/privacy-policy
+
+= 3. ipify visitor IP lookup (api.ipify.org) =
+
+* **What it is and what it's used for.** ipify is a public IP address lookup service. A browser cannot read its own public IP address, so the storefront asks ipify for it and includes it in the JewelCloud view-tracking request (#2).
+* **What data is sent and when.** The visitor's browser sends a GET request to `https://api.ipify.org?format=json` the first time the visitor opens a diamond or ring setting detail page in a browser session. ipify receives the visitor's IP address and standard browser request headers, as with any web request. The returned IP is kept in the browser's `sessionStorage` (`gemfindrb_visitor_ip`) for the rest of the session and is not stored by the plugin on the server. No other data is sent to ipify.
+* **Terms of service and privacy policy.** At the time of release, ipify does not publish separate Terms of Service or Privacy Policy pages. Its service page, https://www.ipify.org, states: "No visitor information is ever logged."
+
+= 4. Facebook (facebook.com) =
 
 * **What it is and what it's used for.** Optional Facebook Share and Like on diamond and setting detail pages when the merchant enables "Show Facebook Share" or "Show Facebook Like" in plugin settings. The storefront opens `facebook.com/sharer/sharer.php` or `facebook.com/plugins/like.php` in a new tab. No Facebook SDK is loaded.
 * **What data is sent and when.** The current page URL is passed in the share/like link when the visitor clicks. Sent only when the related setting is enabled and the visitor clicks Share or Like. The plugin does not send visitor form data to Facebook.
 * **Terms of service.** https://www.facebook.com/terms.php
 * **Privacy policy.** https://www.facebook.com/privacy/policy
 
-= 3. Google reCAPTCHA =
+= 5. Google reCAPTCHA =
 
 * **What it is and what it's used for.** Optional spam protection on storefront contact forms (Drop a Hint, Email a Friend, Schedule a Viewing, Request More Info). Loaded only when the merchant configures a reCAPTCHA Site Key in plugin settings (scripts from Google).
 * **What data is sent and when.** Standard reCAPTCHA telemetry (browser/device signals, IP address, interaction data) is sent to Google when a visitor submits a protected form. With no Site Key configured, the plugin makes no calls to Google reCAPTCHA. The plugin does not store this data; Google does.
 * **Terms of service.** https://policies.google.com/terms
 * **Privacy policy.** https://policies.google.com/privacy
 
-= 4. Camweara virtual try-on (cdn.camweara.com) =
+= 6. Camweara virtual try-on (cdn.camweara.com) =
 
 * **What it is and what it's used for.** Optional virtual try-on experience (iframe) provided by Modaka Technologies (Camweara) when the merchant enables try-on in plugin settings (`display_tryon`). The iframe is loaded from `https://cdn.camweara.com` (ring SKU try-on at `/gemfind/index_client.php` and diamond try-on at `/camweara_diamond/`). The plugin also sends a Permissions-Policy header so the Camweara iframe may use the camera on Ring Builder storefront pages.
 * **What data is sent and when.** Diamond or setting identifiers embedded in the iframe URL (carat, shape, SKU/stock number, company name). Sent only when the visitor opens the try-on feature on a diamond, setting, or complete-ring page and try-on is enabled in settings. No visitor name, email, or message content is sent by the plugin to Camweara.
@@ -152,7 +165,7 @@ contact Camweara directly for any contractual terms applicable to your account.
 
 Use of GemFind Ring Builder (including the optional Camweara try-on integration) is governed by GemFind Terms of Service. Camweara is operated by Modaka Technologies; data handling for the try-on iframe is described in Camweara's privacy policy. Modaka Technologies does not publish a separate public Terms of Service URL for Camweara — merchant contractual terms are provided when subscribing to Camweara (contact info@modakatech.com).
 
-= 5. Optional: Social share links (pinterest.com, twitter.com — user-initiated) =
+= 7. Optional: Social share links (pinterest.com, twitter.com — user-initiated) =
 
 * **What it is and what it's used for.** Optional share icons on diamond and setting detail pages. When a visitor clicks a share icon, the browser opens a Pinterest or Twitter/X share URL with the current page address. No SDK is loaded and no request is made until the visitor clicks.
 * **What data is sent and when.** Only the current page URL is passed in the share link when the visitor clicks Pinterest or Twitter/X share. No visitor name, email, or form data is sent by the plugin.
@@ -161,14 +174,14 @@ Use of GemFind Ring Builder (including the optional Camweara try-on integration)
 * **Terms of service (Twitter/X).** https://twitter.com/en/tos
 * **Privacy policy (Twitter/X).** https://twitter.com/en/privacy
 
-= 6. Google Fonts (fonts.googleapis.com, fonts.gstatic.com) =
+= 8. Google Fonts (fonts.googleapis.com, fonts.gstatic.com) =
 
 * **What it is and what it's used for.** Webfonts used by the Ring Builder storefront. Default families (Lato for classic v1; Manrope, Libre Baskerville, and Inter for v2) are loaded with WordPress `wp_enqueue_style()`. The v2 storefront may also load a merchant-selected Google Font from the CSS configurator (`font_family` / `theme_font_family`). Font Awesome icons for classic v1 are bundled locally in the plugin (`assets/vendor/fontawesome/`); they are not loaded from a CDN. No other webfont, script, stylesheet, or image is loaded from a remote host.
 * **What data is sent and when.** The visitor's browser requests stylesheet and font files from Google Fonts when a Ring Builder storefront page loads, or when a custom Google Font is applied from settings. Google may receive the visitor's IP address and standard browser request headers. The plugin does not send visitor name, email, or form data to Google Fonts.
 * **Terms of service.** https://policies.google.com/terms
 * **Privacy policy.** https://policies.google.com/privacy
 
-= 7. YouTube and Vimeo (jewelry videos) =
+= 9. YouTube and Vimeo (jewelry videos) =
 
 * **What they are and what they are used for.** When JewelCloud `GetVideoUrl` returns a YouTube or Vimeo URL for a diamond or setting, the storefront may embed that video (YouTube nocookie / Vimeo player). This is part of showing inventory media from JewelCloud, not a standalone advertising pixel.
 * **What data is sent and when.** The video ID/URL from JewelCloud is loaded in an iframe or player only when the visitor opens a video on a detail page. YouTube or Vimeo may receive the visitor's IP address and standard browser request headers. No visitor form data is sent by the plugin.
@@ -182,10 +195,11 @@ Use of GemFind Ring Builder (including the optional Camweara try-on integration)
 Sites using this plugin should disclose in their privacy policy that:
 
 * Visitor ring and diamond search and inventory requests are processed through the JewelCloud API (`api.jewelcloud.com`), operated by GemFind Digital Solutions.
+* When a visitor opens a diamond or ring setting detail page, the visitor's browser looks up its public IP address from ipify (`api.ipify.org`) once per browser session, then reports the view to JewelCloud (`apps-api.jewelcloud.com`) with that IP address, the dealer and vendor IDs, the inventory ID, the price, and the site URL. This happens on every detail page and cannot be turned off in plugin settings.
 * Email addresses and messages submitted through Drop a Hint, Email a Friend, Schedule a Viewing, or Request More Info are sent to the jeweler's configured admin email address using either the WordPress mailer or the SMTP credentials saved in the plugin.
 * If the merchant configures a reCAPTCHA Site Key, Google reCAPTCHA collects browser and device signals on protected forms.
 * If the merchant enables Facebook Share or Like, Meta/Facebook may receive the page URL when the visitor clicks those links.
-* If visitors use social share icons, Pinterest or Twitter/X may receive the page URL per their policies (see "External services" #6 above).
+* If visitors use social share icons, Pinterest or Twitter/X may receive the page URL per their policies (see "External services" #7 above).
 * If the merchant enables virtual try-on, Camweara (`cdn.camweara.com`) loads in an iframe with product identifiers in the URL.
 * If JewelCloud provides a YouTube or Vimeo video URL, that host may load when the visitor plays the video.
 * The storefront loads webfonts from Google Fonts (`fonts.googleapis.com`). Classic v1 Font Awesome icons are bundled in the plugin and are not loaded from a CDN.
@@ -194,6 +208,7 @@ Sites using this plugin should disclose in their privacy policy that:
 == Changelog ==
 
 = 1.0.4 =
+* JewelCloud view tracking is back on diamond and ring setting detail pages in both the classic v1 and v2 storefronts (`DiamondTracking`, `ProductTracking` on `apps-api.jewelcloud.com`). Each view includes the visitor's public IP address, looked up once per browser session from `api.ipify.org`. Both services are documented under **External services** (#2 and #3) and in the **Privacy policy** section.
 * v2 settings: Price "Low to High" / "High to Low" sorting now orders results across all pages.
 * Classic v1 is now built entirely from source. The REST nonce, JewelCloud proxy URLs, single-value filter sliders, loader, and toast handling are part of the storefront code instead of inline scripts added by the shortcode.
 * Classic v1 no longer enqueues a separate `nouislider.min.js`; the slider is bundled in `frontend-v1.js`.
