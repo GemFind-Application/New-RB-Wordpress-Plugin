@@ -4,7 +4,7 @@ Tags: jewelry, diamonds, woocommerce, ecommerce, engagement
 Requires at least: 6.3
 Tested up to: 7.1
 Requires PHP: 8.1
-Stable tag: 1.0.3
+Stable tag: 1.0.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -192,6 +192,11 @@ Sites using this plugin should disclose in their privacy policy that:
 * WooCommerce, if used, applies its own checkout and customer data policies.
 
 == Changelog ==
+
+= 1.0.4 =
+* v2 settings: Price "Low to High" / "High to Low" sorting now orders results across all pages.
+* Classic v1 is now built entirely from source. The REST nonce, JewelCloud proxy URLs, single-value filter sliders, loader, and toast handling are part of the storefront code instead of inline scripts added by the shortcode.
+* Classic v1 no longer enqueues a separate `nouislider.min.js`; the slider is bundled in `frontend-v1.js`.
 
 = 1.0.3 =
 * Classic v1 no longer loads the Luma-Icons webfont from `db.onlinewebfonts.com`; its four icons now use the bundled Font Awesome 5 Free (no remote asset calls).
