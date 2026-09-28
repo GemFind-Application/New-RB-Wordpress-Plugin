@@ -128,8 +128,8 @@ function getQueryParam(option) {
   if (option.searchSetting && option.searchSetting !== undefined) {
     filterString = appendQueryParam(filterString, 'SID', option.searchSetting);
   }
-  // JewelCloud expects a literal "+" in OrderBy (e.g. cost+desc). Unencoded "+" is
-  // treated as a space in query strings / PHP $_GET, which truncates Lab setting pages.
+  // JewelCloud expects "field direction" separated by a space (e.g. "cost desc"); the
+  // "+" in its docs is just a URL-encoded space. A literal "+" (%2B) disables sorting.
   if (option.orderBy && option.orderBy !== undefined) {
     filterString = appendQueryParam(filterString, 'OrderBy', option.orderBy);
   }
