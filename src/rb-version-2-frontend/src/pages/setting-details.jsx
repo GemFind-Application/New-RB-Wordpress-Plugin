@@ -28,7 +28,7 @@ import Footer from "../components/Footer"
 import { settingService } from '../Services';
 import VideoModal from "../components/VideoModal";
 import { ConfigContext } from "../components/Context"
-import { utils } from "../Helpers";
+import { utils, trackSettingView } from "../Helpers";
 import ShowError from "../components/ShowError";
 import VideoTryOn from "../components/VideoTryOn";
 import VideoPopup from "../components/VideoPopup";
@@ -150,6 +150,7 @@ const SettingPage = ({ formSetting, settingNavigationData, isLabGrown, shopUrl, 
           navigate('/' + settingUrl + '/' + url);
         }
         setProduct(res);
+        trackSettingView(res, configAppData.dealerid);
         setConfigurableProduct(res.configurableProduct);
         let selectedSetting = res.configurableProduct.filter(item => item.gfInventoryId === settingId);
 

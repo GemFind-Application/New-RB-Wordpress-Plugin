@@ -15,6 +15,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { diamondService } from "../../Services";
 import { jcBase, wpFetch } from '../../wp/wpEnv';
+import { trackSettingView } from '../../utils/tracking';
 
 const SettingDetails = () => {
     const location = useLocation();
@@ -106,7 +107,7 @@ const SettingDetails = () => {
             }) : [];
             setstonesizedata(stoneSize);
             setskeltonLoad(true);
-            // WordPress: JewelCloud view-tracking pingback removed in 1.0.2 (see readme changelog).
+            trackSettingView(productDetails, DealerID);
         } catch (error) {
             console.log(error);
         }

@@ -167,7 +167,7 @@ v2's `src/rb-version-2-frontend/` also has `.env-dev`, `.env-live`, and `.env.pr
 
 ## 6. External dependencies
 
-- **JewelCloud API** (`api.jewelcloud.com`) — required. This is GemFind's own inventory/catalog service; all diamond/mounting data comes from here, authenticated per-merchant via a JewelCloud dealer/account ID stored in plugin settings. The browser never calls it directly — everything goes through the plugin's `/jcProxy` and `/jcVideoProxy` REST routes, or server-side PHP calls in `GEMFINDRB_Jewelcloud`.
+- **JewelCloud API** (`api.jewelcloud.com`) — required. This is GemFind's own inventory/catalog service; all diamond/mounting data comes from here, authenticated per-merchant via a JewelCloud dealer/account ID stored in plugin settings. Catalog requests never go from the browser to JewelCloud directly — they go through the plugin's `/jcProxy` and `/jcVideoProxy` REST routes, or server-side PHP calls in `GEMFINDRB_Jewelcloud`. The one exception is view tracking: detail pages call `apps-api.jewelcloud.com` (`DiamondTracking` / `ProductTracking`) from the browser, after looking up the visitor IP from `api.ipify.org` (see `tracking.js` in each storefront).
 - **WooCommerce** — optional, required only for add-to-cart/checkout functionality.
 - Optional, client-side-only integrations (no server dependency): Camweara virtual try-on iframe, Google Fonts, Google reCAPTCHA (only if a site key is configured), Facebook/Pinterest/Twitter share links (click-out only, no SDKs loaded), YouTube/Vimeo embeds when JewelCloud returns a video URL.
 
