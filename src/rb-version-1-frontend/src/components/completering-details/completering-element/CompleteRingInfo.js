@@ -1102,7 +1102,7 @@ const CompleteRingInfo = (props) => {
                                             <p>Stock Number</p>
                                         </div>
                                         <div className="diamonds-info">
-                                            <p>{props.diamondDetailsData.stockNumber}</p>
+                                            <p>{props.diamondDetailsData.diamondId}</p>
                                         </div>
                                     </li>
                                     <li>

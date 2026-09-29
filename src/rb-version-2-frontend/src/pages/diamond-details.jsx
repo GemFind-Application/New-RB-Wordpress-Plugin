@@ -417,10 +417,9 @@ const DiamondPage = ({ formSetting, configAppData, additionOptionSetting, shopUr
                 <div className="specs-container">
                   <div className="specs-content">
                     <div className="specs-details">
-                      {diamondDetail.stockNumber !== "" &&
-                        <div className="id-3832123221">{(additionOptionSetting.show_In_House_Diamonds_First) ?
-                          "Stock Number: " + diamondDetail.stockNumber :
-                          "SKU#: " + diamondDetail.diamondId}</div>}
+                      {diamondDetail.diamondId &&
+                        <div className="id-3832123221">{(additionOptionSetting.show_In_House_Diamonds_First ?
+                          "Stock Number: " : "SKU#: ") + diamondDetail.diamondId}</div>}
                       <h1 className="product--title">
                         {/* {diamondDetail.shape} {' '}{diamondDetail.caratWeight} CARAT */}
                         {diamondDetail.mainHeader}
