@@ -9,7 +9,7 @@ import { useCookies } from "react-cookie";
 import { LoadingOverlay, Loader } from "react-overlay-loader";
 import Filter from "../diamondtoolsettings/settings-element/Filter";
 import { formatPrice } from "../../utils/priceUtils";
-import { RB_BASE } from '../../wp/wpEnv';
+import { RB_BASE, wpFetch } from '../../wp/wpEnv';
 
 const parseCookieArray = (cookieValue) => {
     if (!cookieValue) {
@@ -188,7 +188,7 @@ const Compare = () => {
                     }
 
                     // Fetch diamond data
-                    const response = await fetch(url);
+                    const response = await wpFetch(url);
                     if (!response.ok) {
                         console.error(`Failed to fetch diamond ${diamondId}`);
                         return null;

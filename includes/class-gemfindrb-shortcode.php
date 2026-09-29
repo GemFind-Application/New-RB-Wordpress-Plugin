@@ -218,21 +218,6 @@ final class GEMFINDRB_Shortcode {
 			'form_api_url' => $rest_base,
 		];
 
-		$fetch_patch = "(function(){if(window.__gemfindrbFetchPatched||typeof window.fetch!=='function')return;window.__gemfindrbFetchPatched=true;var o=window.fetch.bind(window);function rw(u){var c=window.gemfindRBConfig||{};if(!u||!c.jcProxyUrl)return u;var p=c.jcProxyUrl.replace(/\\/$/,''),v=(c.jcVideoUrl||'').replace(/\\?$/,'').replace(/\\/$/,'');var m=u.match(/api\\.jewelcloud\\.com\\/api\\/RingBuilder\\/([A-Za-z]+)(\\?.*)?$/i);if(m)return p+'/'+m[1]+(m[2]||'');var vm=u.match(/api\\.jewelcloud\\.com\\/api\\/jewelry\\/GetVideoUrl(\\?.*)?$/i);if(vm&&v)return v+(vm[1]||'');return u;}window.fetch=function(i,n){n=n||{};var u=typeof i==='string'?i:(i&&i.url?i.url:'');var ru=rw(u);if(ru&&ru!==u){if(typeof i==='string')i=ru;else if(i instanceof Request)i=new Request(ru,i);else i=Object.assign({},i,{url:ru});u=ru;}var c=window.gemfindRBConfig||{},x=c.nonce||'';if(x&&u&&(u.indexOf('/wp-json/gemfind-ring-builder/v1')!==-1||(c.restUrl&&u.indexOf(c.restUrl)!==-1))){var h=new Headers(n.headers||(i instanceof Request?i.headers:undefined));if(!h.has('X-WP-Nonce'))h.set('X-WP-Nonce',x);n.headers=h;}return o(i,n);};})();";
-
-		$xhr_nonce_patch = "(function(){if(window.__gemfindrbXhrPatched||typeof XMLHttpRequest==='undefined')return;window.__gemfindrbXhrPatched=true;var oOpen=XMLHttpRequest.prototype.open,oSet=XMLHttpRequest.prototype.setRequestHeader,oSend=XMLHttpRequest.prototype.send;XMLHttpRequest.prototype.open=function(m,u){this.__gfrbUrl=String(u||'');this.__gfrbHdrs={};return oOpen.apply(this,arguments);};XMLHttpRequest.prototype.setRequestHeader=function(n,v){this.__gfrbHdrs=Object.assign({},this.__gfrbHdrs);this.__gfrbHdrs[String(n).toLowerCase()]=true;return oSet.apply(this,arguments);};XMLHttpRequest.prototype.send=function(b){var u=this.__gfrbUrl||'',c=window.gemfindRBConfig||{},n=c.nonce||'';if(n&&(u.indexOf('/wp-json/gemfind-ring-builder/v1')!==-1||(c.restUrl&&u.indexOf(c.restUrl)!==-1))){if(!this.__gfrbHdrs||!this.__gfrbHdrs['x-wp-nonce'])oSet.call(this,'X-WP-Nonce',n);}return oSend.apply(this,arguments);};})();";
-
-		$v1_toast_dedup_patch = "(function(){if(window.__gemfindrbToastDeduped)return;window.__gemfindrbToastDeduped=true;function pruneContainers(){var all=[].slice.call(document.querySelectorAll('.Toastify__toast-container'));if(all.length<2)return;var pref=all.filter(function(el){return el.className.indexOf('bottom-center')>=0;});var keep=pref.length?pref[pref.length-1]:all[all.length-1];all.forEach(function(el){if(el!==keep&&el.parentNode)el.parentNode.removeChild(el);});}function pruneToasts(){var all=[].slice.call(document.querySelectorAll('.Toastify__toast'));for(var i=1;i<all.length;i++){if(all[i].parentNode)all[i].parentNode.removeChild(all[i]);}}function run(){pruneContainers();pruneToasts();}run();if(document.body){try{new MutationObserver(run).observe(document.body,{childList:true,subtree:true});}catch(e){}}})();";
-
-		// Runtime safety net for a v1 diamond list "stuck spinner": a failed list re-query used to leave
-		// react-overlay-loader's full-page spinner up. The source now clears the loading flag on error
-		// (src/rb-version-1-frontend); this watchdog still force-hides a spinner that has been visible
-		// unreasonably long.
-		$v1_loader_watchdog_patch = "(function(){if(window.__gemfindrbV1LoaderWatchdog)return;window.__gemfindrbV1LoaderWatchdog=true;var STUCK_MS=9000;function tick(){var now=Date.now();[].slice.call(document.querySelectorAll('._loading_overlay_wrapper')).forEach(function(el){var hasSpinner=!!el.querySelector('.react-overlay-loader-spinner');if(hasSpinner){if(!el.dataset.gfrbSeenAt)el.dataset.gfrbSeenAt=String(now);else if(now-Number(el.dataset.gfrbSeenAt)>STUCK_MS&&el.style.display!=='none'){el.style.display='none';el.dataset.gfrbForced='1';}}else{delete el.dataset.gfrbSeenAt;if(el.dataset.gfrbForced){el.style.display='';delete el.dataset.gfrbForced;}}});}setInterval(tick,1000);})();";
-
-		// Runtime safety net for global noUiSlider (standalone enqueue). Bundled copies are patched at build time.
-		$noui_safe_range_patch = "(function(){if(window.__gemfindrbNoUiRangeSafe)return;window.__gemfindrbNoUiRangeSafe=true;function sanitize(opts){if(!opts||typeof opts!=='object')return opts;var r=opts.range;if(!r||typeof r!=='object')return opts;var min=r.min,max=r.max;if(min!==max)return opts;var step=Number(opts.step);if(!isFinite(step)||step<=0)step=1;var nextRange={};for(var k in r){if(Object.prototype.hasOwnProperty.call(r,k))nextRange[k]=r[k];}nextRange.max=Number(min)+step;var out={};for(var ok in opts){if(Object.prototype.hasOwnProperty.call(opts,ok))out[ok]=opts[ok];}out.range=nextRange;return out;}function wrap(api){if(!api||api.__gemfindRangeSafe)return;if(typeof api.create==='function'){var c=api.create.bind(api);api.create=function(el,opts){return c(el,sanitize(opts||{}));};}if(typeof api.updateOptions==='function'){var u=api.updateOptions.bind(api);api.updateOptions=function(opts,fire){return u(sanitize(opts||{}),fire);};}api.__gemfindRangeSafe=true;}wrap(window.noUiSlider);var n=0,t=setInterval(function(){wrap(window.noUiSlider);if(++n>50)clearInterval(t);},50);})();";
-
 		if ( $use_v1 ) {
 			$build_dir = GEMFINDRB_PATH . 'public/static/';
 			$build_url = GEMFINDRB_URL . 'public/static/';
@@ -272,23 +257,9 @@ final class GEMFINDRB_Shortcode {
 
 			if ( file_exists( $js_file ) ) {
 				$ver = $asset_ver . '.' . (string) filemtime( $js_file );
-				$deps = [];
-				$slider = $build_dir . 'js/nouislider.min.js';
-				if ( file_exists( $slider ) ) {
-					wp_enqueue_script( 'gemfindrb-nouislider', $build_url . 'js/nouislider.min.js', [], $asset_ver, true );
-					$deps[] = 'gemfindrb-nouislider';
-				}
-				wp_enqueue_script( 'gemfindrb-frontend-v1', $build_url . 'js/frontend-v1.js', $deps, $ver, true );
+				wp_enqueue_script( 'gemfindrb-frontend-v1', $build_url . 'js/frontend-v1.js', [], $ver, true );
 				wp_localize_script( 'gemfindrb-frontend-v1', 'gemfindRBConfig', $config );
 				wp_localize_script( 'gemfindrb-frontend-v1', 'gemfindRBShopify', $shopify_shaped );
-				if ( in_array( 'gemfindrb-nouislider', $deps, true ) ) {
-					wp_add_inline_script( 'gemfindrb-nouislider', $noui_safe_range_patch, 'after' );
-				}
-				wp_add_inline_script( 'gemfindrb-frontend-v1', $noui_safe_range_patch, 'before' );
-				wp_add_inline_script( 'gemfindrb-frontend-v1', $xhr_nonce_patch, 'before' );
-				wp_add_inline_script( 'gemfindrb-frontend-v1', $fetch_patch, 'before' );
-				wp_add_inline_script( 'gemfindrb-frontend-v1', $v1_toast_dedup_patch, 'after' );
-				wp_add_inline_script( 'gemfindrb-frontend-v1', $v1_loader_watchdog_patch, 'after' );
 			} else {
 				add_action(
 					'wp_footer',
@@ -335,8 +306,6 @@ final class GEMFINDRB_Shortcode {
 				wp_enqueue_script( 'gemfindrb-frontend', $build_url . 'frontend.js', [], $ver, true );
 				wp_localize_script( 'gemfindrb-frontend', 'gemfindRBConfig', $config );
 				wp_localize_script( 'gemfindrb-frontend', 'gemfindRBShopify', $shopify_shaped );
-				wp_add_inline_script( 'gemfindrb-frontend', $noui_safe_range_patch, 'before' );
-				wp_add_inline_script( 'gemfindrb-frontend', $fetch_patch, 'before' );
 			} else {
 				add_action(
 					'wp_footer',

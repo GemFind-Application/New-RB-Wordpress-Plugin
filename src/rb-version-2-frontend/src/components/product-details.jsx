@@ -388,9 +388,7 @@ const ProductDetails = ({
                                             </b>
                                             <div className="id-3832123223">
                                                 {'SKU#:'}{' '}
-                                                {additionOptionSetting.show_In_House_Diamonds_First
-                                                    ? diamondDetail.stockNumber
-                                                    : diamondDetail.diamondId}
+                                                {diamondDetail.diamondId}
                                             </div>
                                         </div>
                                         <b className="b23">

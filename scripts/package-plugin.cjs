@@ -115,10 +115,6 @@ function copyPublicBuilds(destRoot) {
   if (fs.existsSync(path.join(pluginRoot, v1License))) {
     copyFileRel(v1License, destRoot);
   }
-  const v1Slider = "public/static/js/nouislider.min.js";
-  if (fs.existsSync(path.join(pluginRoot, v1Slider))) {
-    copyFileRel(v1Slider, destRoot);
-  }
 }
 
 function walkFiles(dir, out = []) {

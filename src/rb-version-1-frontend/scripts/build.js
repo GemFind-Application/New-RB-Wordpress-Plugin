@@ -7,7 +7,7 @@
  *
  * Uses Create React App's own webpack config, with fixed filenames, a single chunk, and no
  * index.html / asset-manifest. Only the files above (and the media folder) are written or replaced;
- * everything else in public/static (e.g. js/nouislider.min.js) is left alone.
+ * everything else in public/static is left alone.
  */
 process.env.NODE_ENV = "production";
 process.env.BABEL_ENV = "production";

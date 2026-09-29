@@ -63,7 +63,6 @@ $culet      = (string) ( $diamond['culet'] ?? '' );
 $fluo       = (string) ( $diamond['fluorescence'] ?? '' );
 $meas       = (string) ( $diamond['measurement'] ?? $diamond['measurements'] ?? '' );
 $diamond_price = GEMFINDRB_Email::format_print_price( $diamond );
-$stock_no   = (string) ( $diamond['stockNumber'] ?? $diamond_id );
 
 $diamond_img_url      = isset( $diamond_img_url ) ? (string) $diamond_img_url : '';
 $diamond_img_data_uri = isset( $diamond_img_data_uri ) ? (string) $diamond_img_data_uri : '';
@@ -82,7 +81,7 @@ $ring_rows = [
 ];
 
 $diamond_rows = [
-	__( 'Stock Number', 'gemfind-ring-builder' )   => $stock_no,
+	__( 'Stock Number', 'gemfind-ring-builder' )   => $diamond_id,
 	__( 'Carat Weight', 'gemfind-ring-builder' )   => $carat,
 	__( 'Cut', 'gemfind-ring-builder' )            => $cut,
 	__( 'Color', 'gemfind-ring-builder' )          => $color,

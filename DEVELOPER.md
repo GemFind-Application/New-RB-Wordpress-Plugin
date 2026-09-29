@@ -11,12 +11,12 @@ This plugin ships **three separate frontend bundles** (a legacy "v1" storefront,
 | `admin/` | wp-admin PHP: menu registration, page scaffolding (mount points for the React admin bundle), asset enqueue. |
 | `templates/` | The full-width WP page template that hosts the storefront SPA. |
 | `public/frontpublic/build/` | **v2 build output only** — served by WordPress; not source. |
-| `public/static/` | **v1 prebuilt bundle** (`frontend-v1.js`/`.css`, `nouislider.min.js`) — see §3, this is not built from source in this repo. |
+| `public/static/` | **v1 build output only** (`frontend-v1.js`/`.css`, `media/`) — served by WordPress; not source. |
 | `src/admin-frontend/` | **Admin UI source** (React 18 + Vite), builds to `assets/build/admin.js`. |
-| `src/rb-version-1-frontend/` | A shell — only a `package.json` with a no-op build guard. No real v1 source lives here (see §3). |
+| `src/rb-version-1-frontend/` | **v1 source** (React 17 + CRA), builds to `public/static/` (see §3). |
 | `src/rb-version-2-frontend/` | **v2 source** (React 18 + Vite), builds to `public/frontpublic/build/assets/frontend.js`/`frontend.css`. |
 | `assets/` | Compiled admin bundle output (`assets/build/`), static CSS overrides, images, bundled Font Awesome (used by v1, not loaded from CDN). |
-| `scripts/` | Node build orchestration (`build-all.cjs`, `package-plugin.cjs`, `download-local-images.js`) and ~20 `patch-v1-*.js` scripts that string-patch the prebuilt v1 bundle. |
+| `scripts/` | Node build orchestration (`build-all.cjs`, `package-plugin.cjs`, `download-local-images.js`) and `scan-external-images.js` (lists remote asset URLs, for WP.org review). |
 | `vendor/` | Composer deps — only `dompdf/dompdf` and its transitive deps, used for PDF export (print diamond/ring/certificate). Ignore the stray `vendor/vendor/...` nested duplicate tree; it's a packaging artifact the release script already excludes. |
 | `composer.json` / `composer.lock` | PHP deps (`dompdf/dompdf ^3.1.6`, PHP >=8.1). |
 | `readme.txt` | WordPress.org-style readme; also documents external services and shortcode usage. |
@@ -35,23 +35,17 @@ The wp-admin side is separate: `admin/class-gemfindrb-admin.php` registers Setti
 
 ## 3. Where the code for each version lives
 
-### v1 — legacy/classic storefront (`public/static/js/frontend-v1.js`)
+### v1 — legacy/classic storefront (`src/rb-version-1-frontend/`)
 
-**There is no v1 React source in this repo.** `src/rb-version-1-frontend/` only contains a `package.json` whose `build` script is a guard that checks the prebuilt bundle exists, then chains ~19 `scripts/patch-v1-*.js` scripts that do **string replacement against the already-minified bundle** (e.g. rewriting `TN=e=>...`-style minified code). There is no JSX/CRA source to edit and no hot-reload dev server for v1.
+Real source, React 17 + Create React App (webpack), adapted from `Ring-builder-CI-to-Laravel/frontend-version-1` for the WordPress REST API. `src/rb-version-1-frontend/scripts/build.js` runs CRA's production webpack config and writes straight into `public/static/js/frontend-v1.js`, `public/static/css/frontend-v1.css` and `public/static/media/`. There is no dev server for v1: edit → `npm run build:v1` → refresh a real WP page.
 
-What "building v1" actually does — categories of patches applied to the checked-in bundle:
-- **WordPress path rewriting** (Shopify `/apps/ringbuilder` → WP `/ringbuilder`).
-- **UI bug fixes patched into minified code** (toast dedup, sort direction, default grid/list view, compare-image fallback, gift deadline defaults, video modal centering, vendor-info overlay, advanced filter toggle, filter popup scoping).
-- **noUiSlider safety** (guards against `min === max` throwing, unsafe pip-label lookups, sentinel id math) — reverified after every build via `scripts/smoke-nouislider-range.js`.
-- **Asset/URL localization** (replacing external `ringbuilderdev.gemfind.us` image URLs with local plugin assets; swapping the remote Luma-Icons `@font-face` in `frontend-v1.css` for glyphs from the bundled Font Awesome — WP.org disallows loading assets from third-party hosts).
-- **API/cart correctness** (sending `list_type`/`diamond_type` so the API resolves stone type; adding a WP REST nonce to PDF download links; relaxing filters when a setting+cookie combo returns zero results).
-- **Privacy** (removing the Facebook JS SDK, replaced with plain click-out links).
-
-On top of the build-time patches, `GEMFINDRB_Shortcode::do_enqueue()` also injects several **runtime** JS patches via `wp_add_inline_script` (sort-order fix, toast dedup, a "loader watchdog", the same noUiSlider safe-range guard, fetch/XHR nonce injection, mount-point fixups) — this is a second, independent patch mechanism that runs on every page load regardless of which build of the bundle is deployed. If you need to change v1 behavior, you generally have two options:
-1. Add/extend a `scripts/patch-v1-*.js` script (locate the target substring in the minified bundle, patch it, re-run `npm run build:v1`), or
-2. Add/extend an inline runtime patch in `GEMFINDRB_Shortcode::do_enqueue()`.
-
-The original unminified v1 source (React/CRA) is not part of this checkout; per `readme.txt` it's expected to live in a separate public GitHub repo (`GemFind-Application/New-RB-Wordpress-Plugin`) under `src/rb-version-1-frontend/` "when present."
+- `src/Main.js` — top-level component: loads `/reactconfig` into `window.initData` and defines the routes.
+- `src/components/` — settings list/detail, diamond tool, diamond detail, compare, complete-ring pages.
+- `src/Services/` — axios clients for the plugin REST API (nonce added by `wpAxiosInterceptor`).
+- `src/wp/wpEnv.js` — everything the bundle needs from WordPress (`window.gemfindRBConfig`): REST base, nonce, `jcBase()`, and `wpFetch()` (plain `fetch` that adds the REST nonce to plugin API calls). Use `wpFetch` for any call to the plugin REST API.
+- JewelCloud endpoint URLs in `window.initData` (`diamonddetailapi`, `mountinglistapi`, …) are already jcProxy URLs — `GEMFINDRB_JewelCloud::get_react_config()` maps the stored direct URLs to the proxy.
+- Sliders import `components/elements/SafeNouislider` (not `nouislider-react` directly): v1 ships noUiSlider 14, which throws when a filter facet has a single value (`min === max`). (v2's noUiSlider 15 handles that natively.)
+- Full-page loaders: the function that makes the request owns the `loaded` flag (on before the request, off in both success and error paths). Event handlers should change filter state, not turn the loader on themselves.
 
 ### v2 — current storefront (`src/rb-version-2-frontend/`)
 
@@ -85,7 +79,7 @@ All under `includes/`:
 | File | Responsibility |
 |---|---|
 | `class-gemfindrb-api.php` | Registers every REST route under `gemfind-ring-builder/v1` (see table below). |
-| `class-gemfindrb-shortcode.php` | `[gemfindRB_ring_builder]` shortcode; decides v1 vs v2; enqueues assets; localizes `window.gemfindRBConfig`; injects v1 runtime patches. |
+| `class-gemfindrb-shortcode.php` | `[gemfindRB_ring_builder]` shortcode; decides v1 vs v2; enqueues assets; localizes `window.gemfindRBConfig`. |
 | `class-gemfindrb-public-routes.php` | `/ringbuilder/*` SEO rewrite rules + legacy URL compatibility. |
 | `class-gemfindrb-full-width-template.php` | Registers the full-width page template used to host the SPA. |
 | `class-gemfindrb-frontend-version.php` | Decides/normalizes v1 vs v2 (default v2). |
@@ -132,18 +126,18 @@ Cart-mutating routes require WooCommerce + either an authenticated admin or a va
 Root `package.json` scripts:
 
 ```
-npm run install:all   # npm install in src/rb-version-2-frontend and src/admin-frontend
+npm run install:all   # npm install in src/rb-version-2-frontend, src/admin-frontend and src/rb-version-1-frontend
 npm run build         # build all 3 targets (admin, v2, v1) via scripts/build-all.cjs
 npm run build:admin   # admin only
 npm run build:v2      # v2 only
-npm run build:v1      # v1 only (re-applies the patch-v1-*.js chain)
+npm run build:v1      # v1 only
 npm run dev:admin     # vite dev server for the admin app
 npm run dev:v2        # vite dev server for the v2 storefront
 npm run download:images  # pulls legacy image assets so v2 doesn't depend on an external host at runtime
 npm run package       # zips a release build (does not build anything itself)
 ```
 
-`scripts/build-all.cjs` builds whichever targets are requested (default: all three), running `npm install` first if `node_modules` is missing for `admin`/`v2` (v1 has nothing to install), then `npm run build` in each target directory, then verifies the expected output files exist. After building `v1` and/or `v2` it always re-runs the noUiSlider range patch + a smoke test, since both bundles include a copy of the same slider code.
+`scripts/build-all.cjs` builds whichever targets are requested (default: all three), running `npm install` first if a target's `node_modules` is missing, then `npm run build` in each target directory, then verifies the expected output files exist.
 
 Output → WordPress enqueue mapping:
 
@@ -151,7 +145,7 @@ Output → WordPress enqueue mapping:
 |---|---|---|
 | Admin | `assets/build/admin.js` | `admin/class-gemfindrb-admin.php::enqueue_assets()` |
 | v2 | `public/frontpublic/build/assets/frontend.js` / `frontend.css` | `includes/class-gemfindrb-shortcode.php::do_enqueue()` |
-| v1 | `public/static/js/frontend-v1.js` / `public/static/css/frontend-v1.css` (+ `nouislider.min.js`) | `includes/class-gemfindrb-shortcode.php::do_enqueue()` |
+| v1 | `public/static/js/frontend-v1.js` / `public/static/css/frontend-v1.css` | `includes/class-gemfindrb-shortcode.php::do_enqueue()` |
 
 `scripts/package-plugin.cjs` builds the release ZIP: it does **not** rebuild anything, it just asserts the expected build outputs already exist, then copies PHP + built assets (never `src/rb-version-2-frontend/`) into a staging folder, strips dev-only files (`node_modules`, `.git`, `.map`, the duplicate `vendor/vendor` tree, `index.html` build artifacts, etc.), zips with POSIX paths (so Linux hosts extract it correctly), and validates the result. Output: `../gemfind-ring-builder-<version>.zip`.
 
@@ -169,17 +163,16 @@ Output → WordPress enqueue mapping:
 
 v2's `src/rb-version-2-frontend/` also has `.env-dev`, `.env-live`, and `.env.production` files defining `VITE_APP_FORM_API_URL`/`VITE_IMAGE_URL` for different targets. Only `.env.production` follows Vite's actual env-file naming convention (`.env.<mode>`) and is confirmed to be what the production build uses (pointing at the relative WP REST path `/wp-json/gemfind-ring-builder/v1`); `.env-dev`/`.env-live` use non-standard filenames (dash instead of dot) — verify Vite is actually picking them up via `--mode` before relying on them.
 
-**Iterating on v1**: there's no source to hot-reload. See §3 — either extend a `scripts/patch-v1-*.js` script and rebuild, or add an inline runtime patch in `GEMFINDRB_Shortcode::do_enqueue()`.
+**Iterating on v1**: edit `src/rb-version-1-frontend/src` → `npm run build:v1` → refresh the real WP page (see §3).
 
 ## 6. External dependencies
 
-- **JewelCloud API** (`api.jewelcloud.com`) — required. This is GemFind's own inventory/catalog service; all diamond/mounting data comes from here, authenticated per-merchant via a JewelCloud dealer/account ID stored in plugin settings. The browser never calls it directly — everything goes through the plugin's `/jcProxy` and `/jcVideoProxy` REST routes, or server-side PHP calls in `GEMFINDRB_Jewelcloud`.
+- **JewelCloud API** (`api.jewelcloud.com`) — required. This is GemFind's own inventory/catalog service; all diamond/mounting data comes from here, authenticated per-merchant via a JewelCloud dealer/account ID stored in plugin settings. Catalog requests never go from the browser to JewelCloud directly — they go through the plugin's `/jcProxy` and `/jcVideoProxy` REST routes, or server-side PHP calls in `GEMFINDRB_Jewelcloud`. The one exception is view tracking: detail pages call `apps-api.jewelcloud.com` (`DiamondTracking` / `ProductTracking`) from the browser, after looking up the visitor IP from `api.ipify.org` (see `tracking.js` in each storefront).
 - **WooCommerce** — optional, required only for add-to-cart/checkout functionality.
 - Optional, client-side-only integrations (no server dependency): Camweara virtual try-on iframe, Google Fonts, Google reCAPTCHA (only if a site key is configured), Facebook/Pinterest/Twitter share links (click-out only, no SDKs loaded), YouTube/Vimeo embeds when JewelCloud returns a video URL.
 
 ## 7. Known quirks worth knowing about
 
-- `src/rb-version-1-frontend/` looks like a real source folder but isn't — don't spend time searching it for v1 logic; see §3.
 - `vendor/vendor/...` is a duplicate/nested Composer install artifact, not something to maintain; the packaging script already excludes it.
-- v1 has two independent patch mechanisms (build-time string patches in `scripts/patch-v1-*.js`, and runtime inline-script patches in `GEMFINDRB_Shortcode::do_enqueue()`) — check both when tracking down v1 behavior.
+- Don't patch built bundles (string-replacing `public/static/js/frontend-v1.js` or `frontend.js`) or inject runtime JS from PHP (`wp_add_inline_script`) — fix behavior in the React source and rebuild.
 - Many `src/rb-version-2-frontend/src/components/` files have generic/legacy names (`component.jsx`, `sh1.jsx`, `head2.jsx`, etc.) rather than descriptive ones — this is pre-existing debt, not dead code.
