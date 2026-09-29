@@ -17,7 +17,7 @@ import {
     registerCompareDiamondType,
     removeCompareDiamondType,
 } from "../../../utils/compareUtils";
-import { RB_BASE, jcVideoUrl } from '../../../wp/wpEnv';
+import { RB_BASE, jcVideoUrl, wpFetch } from '../../../wp/wpEnv';
 import diamondGif from '../../../images/diamond.gif';
 import spinnerGif from '../../../images/spinner.gif';
 import VideoFrame from "../../elements/VideoFrame";
@@ -182,8 +182,8 @@ const DiamondSettingsProducts = (props) => {
         setpaginationpagecount(event.target.value);
     };
 
-    // Sort state, toolbar icon and the API request must always agree (WordPress fix, was
-    // scripts/patch-v1-sort-direction.js). The toolbar shows only the ".active" link.
+    // Sort state, toolbar icon and the API request must always agree. The toolbar shows only the
+    // ".active" link.
     const applyOrder = (orderBy, newOrder) => {
         if (orderBy) {
             props.orderbytype(orderBy);
@@ -225,7 +225,7 @@ const DiamondSettingsProducts = (props) => {
         
         try {
             const videoApiUrl = (window.initData?.data?.[0]?.videoapi || jcVideoUrl()) + `InventoryID=${diamondId}&Type=Diamond`;
-            const res = await fetch(videoApiUrl);
+            const res = await wpFetch(videoApiUrl);
             
             if (!res.ok) {
                 throw new Error(`HTTP error! status: ${res.status}`);

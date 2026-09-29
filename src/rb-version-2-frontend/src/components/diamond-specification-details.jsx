@@ -43,9 +43,7 @@ const DiamondSpecificationDetail = ({ className = "", diamond,onClose,configAppD
           <div className="stats">
             <div className="spec-labels1">
               <div className="stats-label">{"Stock Number"}:</div>
-              <a className="spec-values">{utils.displaySpecValue(additionOptionSetting.show_In_House_Diamonds_First ?
-                       diamond.stockNumber:
-                       diamond.diamondId)}</a>
+              <a className="spec-values">{utils.displaySpecValue(diamond.diamondId)}</a>
             </div>
             <div className="spec-labels1">
               <div className="stats-label">Price:</div>

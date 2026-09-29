@@ -14,7 +14,8 @@ import { LoadingOverlay, Loader } from "react-overlay-loader";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { diamondService } from "../../Services";
-import { jcBase } from '../../wp/wpEnv';
+import { jcBase, wpFetch } from '../../wp/wpEnv';
+import { trackSettingView } from '../../utils/tracking';
 
 const SettingDetails = () => {
     const location = useLocation();
@@ -51,7 +52,7 @@ const SettingDetails = () => {
             // Reset loading state to show skeleton during fetch
             setskeltonLoad(false);
 
-            const res = await fetch(
+            const res = await wpFetch(
                 `${window.initData.data[0].mountinglistapifancy}DealerID=${DealerID}&SID=${productId}`
             );
 
@@ -106,7 +107,7 @@ const SettingDetails = () => {
             }) : [];
             setstonesizedata(stoneSize);
             setskeltonLoad(true);
-            // WordPress: JewelCloud view-tracking pingback removed in 1.0.2 (see readme changelog).
+            trackSettingView(productDetails, DealerID);
         } catch (error) {
             console.log(error);
         }
@@ -151,7 +152,7 @@ const SettingDetails = () => {
             const navigationapi =
                 window.initData?.data?.[0]?.navigationapi ||
                 `${jcBase()}/GetNavigation?`;
-            const res = await fetch(`${navigationapi}DealerId=${DealerID}`);
+            const res = await wpFetch(`${navigationapi}DealerId=${DealerID}`);
             const data = await res.json();
             if (data && data[0]) {
                 setDiamondNavigation(data[0]);
@@ -188,7 +189,7 @@ const SettingDetails = () => {
         };
 
         try {
-            const res = await fetch(
+            const res = await wpFetch(
                 `${window.initData.data[0].dealerauthapi}`,
                 requestOptions
             );
@@ -275,7 +276,7 @@ const SettingDetails = () => {
 
     if (skeltonLoad == false) {
         // No ToastContainer here: the skeleton's container lingered next to the loaded one and
-        // produced duplicate success toasts (WordPress fix, was scripts/patch-v1-toast.js).
+        // produced duplicate success toasts.
         return (
             <>
                 <div className="tool-container">
@@ -329,6 +330,7 @@ const SettingDetails = () => {
         return (
             <>
                 <ToastContainer
+                    limit={1}
                     position="bottom-center"
                     autoClose={1000}
                     hideProgressBar={false}

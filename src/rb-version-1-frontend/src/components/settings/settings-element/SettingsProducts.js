@@ -12,7 +12,7 @@ import { Fancybox } from "@fancyapps/ui";
 import "@fancyapps/ui/dist/fancybox.css";
 import { LoadingOverlay, Loader } from "react-overlay-loader";
 import { formatPrice } from "../../../utils/priceUtils";
-import { RB_BASE, jcVideoUrl } from '../../../wp/wpEnv';
+import { RB_BASE, jcVideoUrl, wpFetch } from '../../../wp/wpEnv';
 import loader2Gif from '../../../images/loader-2.gif';
 import ringGif from '../../../images/ring.gif';
 import VideoFrame from "../../elements/VideoFrame";
@@ -154,7 +154,7 @@ const SettingsProduct = (props) => {
         
         try {
             const videoApiUrl = (window.initData?.data?.[0]?.videoapi || jcVideoUrl()) + `InventoryID=${settingId}&Type=Jewelry`;
-            const res = await fetch(videoApiUrl);
+            const res = await wpFetch(videoApiUrl);
             
             if (!res.ok) {
                 throw new Error(`HTTP error! status: ${res.status}`);
@@ -528,6 +528,7 @@ const SettingsProduct = (props) => {
                 <>
                     <iframe
                         id="tryoniframe"
+                        onLoad={() => setLoaded(false)}
                         src={getTryonsrc}
                         allow="camera"
                         width={"100%"}

@@ -836,6 +836,7 @@ const DiamondProductInformation = (props) => {
     return (
         <>
             <ToastContainer
+                limit={1}
                 position="top-center"
                 autoClose={5000}
                 hideProgressBar={false}
@@ -915,7 +916,7 @@ const DiamondProductInformation = (props) => {
                                             <p>Stock Number</p>
                                         </div>
                                         <div className="diamonds-info">
-                                            <p>{props.productDetailsData.stockNumber ? props.productDetailsData.stockNumber : '-'}</p>
+                                            <p>{props.productDetailsData.diamondId ? props.productDetailsData.diamondId : '-'}</p>
                                         </div>
                                     </li>
                                     <li>

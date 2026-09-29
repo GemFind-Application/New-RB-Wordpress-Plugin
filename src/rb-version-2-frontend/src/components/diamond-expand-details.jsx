@@ -85,7 +85,7 @@ const DiamondExpandDetail = ({ className = "", diamond, configAppData, getdiamon
           <div className="stats">
             <div className="spec-labels1">
               <div className="stats-label">Stock Number:</div>
-              <a className="spec-values">{utils.displaySpecValue(diamond.sku)}</a>
+              <a className="spec-values">{utils.displaySpecValue(diamond.diamondId)}</a>
             </div>
             <div className="spec-labels1">
               <div className="stats-label">Price Per Carat:</div>

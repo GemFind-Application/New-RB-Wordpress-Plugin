@@ -20,7 +20,7 @@ import {
     registerCompareDiamondType,
     removeCompareDiamondType,
 } from "../../../utils/compareUtils";
-import { RB_BASE, jcVideoUrl } from '../../../wp/wpEnv';
+import { RB_BASE, jcVideoUrl, wpFetch } from '../../../wp/wpEnv';
 import diamondGif from '../../../images/diamond.gif';
 import spinnerGif from '../../../images/spinner.gif';
 import formatMeasurement from "../../../utils/formatMeasurement";
@@ -115,7 +115,7 @@ const ListDataTable = (props) => {
                 var url = `${window.initData.data[0].diamonddetailapi}DealerID=${window.initData.data[0].dealerid}&DID=${currentId}&IsLabGrown=false`;
             }
 
-            const res = await fetch(url);
+            const res = await wpFetch(url);
             const productDetails = await res.json();
             setDiamondID(currentId);
             setShape(productDetails.shape);
@@ -280,7 +280,7 @@ const ListDataTable = (props) => {
     const handleModel = async (event) => {
         setvideoloader("true");
         try {
-            const res = await fetch(
+            const res = await wpFetch(
                 `${window.initData?.data?.[0]?.videoapi || jcVideoUrl()}InventoryID=${event.target.id}&Type=Diamond`
             );
             const geturl = await res.json();

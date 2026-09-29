@@ -7,7 +7,7 @@ import { useLocation } from "react-router-dom";
 import { LoadingOverlay, Loader } from "react-overlay-loader";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { RB_BASE } from '../../../wp/wpEnv';
+import { RB_BASE, wpFetch } from '../../../wp/wpEnv';
 
 const Filter = (props) => {
     const location = useLocation();
@@ -173,19 +173,16 @@ const Filter = (props) => {
 
             if (e.target.id === "mined") {
                 setTab(e.target.id);
-                setLoaded(true);
                 props.callbacktab(e.target.id);
                 navigate(`${RB_BASE}/diamondtools`);
             }
             if (e.target.id === "labgrown") {
                 setTab(e.target.id);
-                setLoaded(true);
                 props.callbacktab(e.target.id);
                 navigate(`${RB_BASE}/diamondtools/navlabgrown`);
             }
             if (e.target.id === "fancycolor") {
                 setTab(e.target.id);
-                setLoaded(true);
                 props.callbacktab(e.target.id);
                 navigate(`${RB_BASE}/diamondtools/navfancycolored`);
             }
@@ -199,7 +196,7 @@ const Filter = (props) => {
                 return;
             }
             const url = `${initData.navigationapi}DealerId=${initData.dealerid}`;
-            const res = await fetch(url);
+            const res = await wpFetch(url);
             const actualRes = await res.json();
             if (actualRes?.[0]) {
                 const nav = actualRes[0];
@@ -222,11 +219,9 @@ const Filter = (props) => {
         if (loaded === false) {
             if (part === "navlabgrown") {
                 setTab("labgrown");
-                setLoaded(true);
             }
             if (part === "navfancycolored") {
                 setTab("fancycolor");
-                setLoaded(true);
             }
             if (part === "compare") {
                 setTab("compare");
@@ -273,6 +268,7 @@ const Filter = (props) => {
                     </LoadingOverlay>
                 )}
                 <ToastContainer
+                    limit={1}
                     position="top-center"
                     autoClose={5000}
                     hideProgressBar={false}

@@ -14,7 +14,7 @@ import VideoDiamondTryOn from "../components/VideoDiamondTryOn";
 import Header from "../components/Header";
 import ShowCostInCardDiamond from "../components/showCostInCardDiamond";
 import SocialIcon from "../components/SocialIcon";
-import { utils, downloadDiamondPdf, downloadCertificatePdf } from "../Helpers";
+import { utils, downloadDiamondPdf, downloadCertificatePdf, trackDiamondView } from "../Helpers";
 import DropHintPopup from "../components/DropHintPopup";
 import ScheduleViewingPopup from "../components/ScheduleViewingPopup";
 import RequestInfoPopup from "../components/RequestInfoPopup";
@@ -122,6 +122,7 @@ const DiamondPage = ({ formSetting, configAppData, additionOptionSetting, shopUr
         handleVideoIconClick(diamondIdToShow)
 
         if (res.diamondId) {
+          trackDiamondView(res, configAppData.dealerid);
 
           let selectedRingSetting = JSON.parse(localStorage.getItem('selectedRing'));
           if (selectedRingSetting) {
@@ -416,10 +417,9 @@ const DiamondPage = ({ formSetting, configAppData, additionOptionSetting, shopUr
                 <div className="specs-container">
                   <div className="specs-content">
                     <div className="specs-details">
-                      {diamondDetail.stockNumber !== "" &&
-                        <div className="id-3832123221">{(additionOptionSetting.show_In_House_Diamonds_First) ?
-                          "Stock Number: " + diamondDetail.stockNumber :
-                          "SKU#: " + diamondDetail.diamondId}</div>}
+                      {diamondDetail.diamondId &&
+                        <div className="id-3832123221">{(additionOptionSetting.show_In_House_Diamonds_First ?
+                          "Stock Number: " : "SKU#: ") + diamondDetail.diamondId}</div>}
                       <h1 className="product--title">
                         {/* {diamondDetail.shape} {' '}{diamondDetail.caratWeight} CARAT */}
                         {diamondDetail.mainHeader}
