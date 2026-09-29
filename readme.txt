@@ -4,7 +4,7 @@ Tags: jewelry, diamonds, woocommerce, ecommerce, engagement
 Requires at least: 6.3
 Tested up to: 7.1
 Requires PHP: 8.1
-Stable tag: 1.0.4
+Stable tag: 1.0.5
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -206,6 +206,9 @@ Sites using this plugin should disclose in their privacy policy that:
 * WooCommerce, if used, applies its own checkout and customer data policies.
 
 == Changelog ==
+
+= 1.0.5 =
+* The diamond "Stock Number" / "SKU#" now always shows the diamond ID, in both the classic v1 and v2 storefronts and on the diamond and complete-ring print pages. Previously the v2 table view's expanded row showed the `sku` field, and detail, complete-ring, and print pages showed `stockNumber`.
 
 = 1.0.4 =
 * JewelCloud view tracking is back on diamond and ring setting detail pages in both the classic v1 and v2 storefronts (`DiamondTracking`, `ProductTracking` on `apps-api.jewelcloud.com`). Each view includes the visitor's public IP address, looked up once per browser session from `api.ipify.org`. Both services are documented under **External services** (#2 and #3) and in the **Privacy policy** section.
