@@ -36,7 +36,6 @@ $fluo       = (string) ( $diamond['fluorescence'] ?? '' );
 $meas       = (string) ( $diamond['measurement'] ?? $diamond['measurements'] ?? '' );
 $price_raw  = (string) ( $diamond['fltPrice'] ?? $diamond['price'] ?? '' );
 $currency   = (string) ( $diamond['currencySymbol'] ?? $diamond['currency'] ?? '$' );
-$stock_no   = (string) ( $diamond['stockNumber'] ?? $diamond_id );
 $img_url      = isset( $img_url ) ? (string) $img_url : '';
 $img_data_uri = isset( $img_data_uri ) ? (string) $img_data_uri : '';
 $img_src      = $img_data_uri !== '' ? $img_data_uri : $img_url;
@@ -45,7 +44,7 @@ $img_src_attr = $img_src === ''
 	: ( str_starts_with( $img_src, 'data:' ) ? esc_attr( $img_src ) : esc_url( $img_src ) );
 
 $rows = [
-	__( 'Stock Number', 'gemfind-ring-builder' )   => $stock_no,
+	__( 'Stock Number', 'gemfind-ring-builder' )   => $diamond_id,
 	__( 'Carat Weight', 'gemfind-ring-builder' )   => $carat,
 	__( 'Cut', 'gemfind-ring-builder' )            => $cut,
 	__( 'Color', 'gemfind-ring-builder' )          => $color,
