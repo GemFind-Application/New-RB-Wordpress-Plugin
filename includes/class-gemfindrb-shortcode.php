@@ -36,8 +36,6 @@ final class GEMFINDRB_Shortcode {
 		return self::is_storefront_request();
 	}
 
-	private static bool $mount_output_done = false;
-
 	/**
 	 * Allow camera for Camweara try-on iframe on Ring Builder storefront pages.
 	 */
@@ -52,9 +50,13 @@ final class GEMFINDRB_Shortcode {
 		header( 'Permissions-Policy: camera=(self "https://cdn.camweara.com"), microphone=(self "https://cdn.camweara.com")', true );
 	}
 
+	/**
+	 * Only the main loop's content, and not a run-once guard: themes and plugins run the_content early
+	 * (excerpts, widgets) and discard the result. A one-shot fallback spent itself on that early pass,
+	 * which also made the real shortcode render return '' on every /ringbuilder/* URL.
+	 */
 	public function inject_mount_fallback( string $content ): string {
-		static $applied = false;
-		if ( $applied || is_admin() || ! self::is_storefront_request() || self::$mount_output_done ) {
+		if ( is_admin() || ! self::is_storefront_request() || ! in_the_loop() || ! is_main_query() ) {
 			return $content;
 		}
 		if (
@@ -64,7 +66,6 @@ final class GEMFINDRB_Shortcode {
 		) {
 			return $content;
 		}
-		$applied = true;
 		return $content . $this->render( [] );
 	}
 
@@ -78,11 +79,12 @@ final class GEMFINDRB_Shortcode {
 		$this->do_enqueue( self::shortcode_version_override_from_post( $post_content ) );
 	}
 
+	/**
+	 * Returns the mount on every call. A run-once guard here left the page empty whenever something
+	 * rendered the content first and threw it away. The React entry mounts the first
+	 * #ringbuilder-root / #gemfindrb-root, so a repeated render is harmless.
+	 */
 	public function render( array|string $atts ): string {
-		if ( self::$mount_output_done ) {
-			return '';
-		}
-
 		$atts = shortcode_atts( [ 'version' => '' ], is_array( $atts ) ? $atts : [] );
 
 		global $post;
@@ -92,8 +94,6 @@ final class GEMFINDRB_Shortcode {
 		}
 
 		$this->do_enqueue( $effective_version );
-
-		self::$mount_output_done = true;
 
 		$shop     = gemfindRB_shop_key();
 		$cfg      = GEMFINDRB_DB::get_config( $shop );
