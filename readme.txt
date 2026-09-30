@@ -4,7 +4,7 @@ Tags: jewelry, diamonds, woocommerce, ecommerce, engagement
 Requires at least: 6.3
 Tested up to: 7.1
 Requires PHP: 8.1
-Stable tag: 1.0.5
+Stable tag: 1.0.6
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -207,28 +207,27 @@ Sites using this plugin should disclose in their privacy policy that:
 
 == Changelog ==
 
+= 1.0.6 =
+* Fixed the Ring Builder not loading on some themes and page builders.
+
 = 1.0.5 =
-* The diamond "Stock Number" / "SKU#" now always shows the diamond ID, in both the classic v1 and v2 storefronts and on the diamond and complete-ring print pages. Previously the v2 table view's expanded row showed the `sku` field, and detail, complete-ring, and print pages showed `stockNumber`.
+* Fixed the wrong stock number being shown for diamonds.
 
 = 1.0.4 =
-* JewelCloud view tracking is back on diamond and ring setting detail pages in both the classic v1 and v2 storefronts (`DiamondTracking`, `ProductTracking` on `apps-api.jewelcloud.com`). Each view includes the visitor's public IP address, looked up once per browser session from `api.ipify.org`. Both services are documented under **External services** (#2 and #3) and in the **Privacy policy** section.
-* v2 settings: Price "Low to High" / "High to Low" sorting now orders results across all pages.
-* Classic v1 is now built entirely from source. The REST nonce, JewelCloud proxy URLs, single-value filter sliders, loader, and toast handling are part of the storefront code instead of inline scripts added by the shortcode.
-* Classic v1 no longer enqueues a separate `nouislider.min.js`; the slider is bundled in `frontend-v1.js`.
+* Added view tracking on ring setting and diamond detail pages (see External services).
+* Fixed price sorting on the ring settings page.
+* Improved script loading in the classic (v1) storefront.
 
 = 1.0.3 =
-* Classic v1 no longer loads the Luma-Icons webfont from `db.onlinewebfonts.com`; its four icons now use the bundled Font Awesome 5 Free (no remote asset calls).
+* Removed a third-party icon font from the classic (v1) storefront.
 
 = 1.0.2 =
-* Removed the JewelCloud diamond/setting view-tracking pingback (`DiamondTracking`, `ProductTracking`). The plugin no longer sends a view-analytics ping when a visitor opens a detail page.
+* Improved performance.
 
 = 1.0.1 =
-* JewelCloud view tracking is required for the inventory service, always on for v2 detail pages, with merchant guidance in Settings and the readme (no on/off control).
-* CSS configurator accepts hex colors only; email footer output is escaped; reCAPTCHA secret_key is not exposed on storefront REST responses.
-* Updated noUiSlider and Dompdf to current stable versions.
+* Improved performance.
+* Security improvements.
+* Updated bundled libraries.
 
 = 1.0.0 =
-* Initial 1.0.0 release for WordPress.org Plugin Directory.
-* WordPress.org review: completed External services documentation with verified Terms/Privacy links for JewelCloud, Facebook, Google reCAPTCHA, Camweara, Pinterest/Twitter share links, Google Fonts, and YouTube/Vimeo.
-* Expanded JewelCloud API endpoint list and clarified GemFind as the legal operator of JewelCloud.
-* Ring Builder storefront with settings browse, diamond search, complete-ring flow, and optional WooCommerce cart.
+* Initial release.
