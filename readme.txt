@@ -121,7 +121,7 @@ This plugin connects to third-party and external services. JewelCloud is **requi
 = 1. JewelCloud API (api.jewelcloud.com) =
 
 * **What it is and what it's used for.** JewelCloud is GemFind Digital Solutions' jewelry inventory platform. The plugin loads live catalog data for ring settings and diamonds: filters, search results, mounting lists, detail pages, navigation, dealer authentication, jewelry video URLs, and JC options. Browser requests are proxied through the WordPress REST API (`gemfind-ring-builder/v1/jcProxy/*` and `/jcVideoProxy`) to avoid CORS issues. PHP also calls `https://api.jewelcloud.com` directly for activation defaults, email detail lookups, and server-side diamond/setting resolution. Endpoints used include: `AccountAuthentication`, `GetNavigation`, `GetRBNavigation`, `GetFilters`, `GetMountingList`, `GetMountingDetail`, `GetStyleSetting`, `GetDiamondFilter`, `GetColorDiamondFilter`, `GetDiamond`, `GetColorDiamond`, `GetShapeByColorFilter`, `GetDiamondDetail`, `GetDiamondsJCOptions`, `GetInitialFilter`, and `api/jewelry/GetVideoUrl`.
-* **What data is sent and when.** The merchant's JewelCloud Dealer ID (saved in plugin settings) is sent on every call. Filter and search query parameters (shape, carat range, metal, colour, clarity, etc.) are sent when the storefront loads or the visitor changes filters. Setting IDs and diamond inventory IDs are sent when a visitor opens a detail page, requests a video URL, or uses WooCommerce add-to-cart. If the merchant enables AccountAuthentication, the configured dealer password is also sent once during plugin initialisation. The plugin does not intentionally send visitor name, email, or phone number to JewelCloud inventory APIs.
+* **What data is sent and when.** The merchant's JewelCloud Dealer ID (saved in plugin settings, or the plugin's default account ID 4488 if none is saved) is sent on every call. Filter and search query parameters (shape, carat range, metal, colour, clarity, etc.) are sent when the storefront loads or the visitor changes filters. Setting IDs and diamond inventory IDs are sent when a visitor opens a detail page, requests a video URL, or uses WooCommerce add-to-cart. If the merchant enables AccountAuthentication, the configured dealer password is also sent once during plugin initialisation. The plugin does not intentionally send visitor name, email, or phone number to JewelCloud inventory APIs.
 * **Terms of service.** https://gemfind.com/pages/terms-of-service — please refer to GemFind for Terms of Service, as JewelCloud is operated by GemFind Digital Solutions.
 * **Privacy policy.** https://www.jewelcloud.com/policies/privacy-policy
 
@@ -208,7 +208,7 @@ Sites using this plugin should disclose in their privacy policy that:
 == Changelog ==
 
 = 1.0.7 =
-* Updated the default JewelCloud account used by the classic (v1) storefront.
+* Updated the default JewelCloud account, now used whenever no Dealer ID is saved. Saved Dealer IDs are not changed.
 
 = 1.0.6 =
 * Fixed the Ring Builder not loading on some themes and page builders.

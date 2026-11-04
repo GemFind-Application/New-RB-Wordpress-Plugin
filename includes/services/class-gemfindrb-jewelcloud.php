@@ -86,7 +86,7 @@ final class GEMFINDRB_JewelCloud {
 
 	public static function get_style_settings( string $shop ): array {
 		$cfg       = GEMFINDRB_DB::get_config( $shop );
-		$dealer_id = is_object( $cfg ) ? trim( (string) ( $cfg->dealerid ?? '' ) ) : '';
+		$dealer_id = is_object( $cfg ) ? trim( (string) ( $cfg->dealerid ?? '' ) ) : GEMFINDRB_DEFAULT_DEALER_ID;
 		if ( $dealer_id === '' ) {
 			return [];
 		}
@@ -326,7 +326,7 @@ final class GEMFINDRB_JewelCloud {
 	public static function get_react_config( string $shop ): array {
 		$cfg = GEMFINDRB_DB::get_config( $shop );
 		if ( ! $cfg ) {
-			return [ 'shop' => $shop ];
+			return [ 'shop' => $shop, 'dealerid' => GEMFINDRB_DEFAULT_DEALER_ID ];
 		}
 
 		$arr = (array) $cfg;

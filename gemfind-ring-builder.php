@@ -21,6 +21,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 define( 'GEMFINDRB_VERSION', '1.0.7' );
+// JewelCloud account used when a site has no saved Dealer ID.
+define( 'GEMFINDRB_DEFAULT_DEALER_ID', '4488' );
 define( 'GEMFINDRB_PATH', plugin_dir_path( __FILE__ ) );
 define( 'GEMFINDRB_URL', plugin_dir_url( __FILE__ ) );
 define( 'GEMFINDRB_BASENAME', plugin_basename( __FILE__ ) );

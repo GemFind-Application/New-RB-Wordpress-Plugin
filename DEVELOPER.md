@@ -156,7 +156,7 @@ Output → WordPress enqueue mapping:
 3. Install JS deps: `npm run install:all` from the plugin root.
 4. Build everything: `npm run build` (or `build:admin`/`build:v2`/`build:v1` individually while iterating).
 5. Activate the plugin in a local WordPress install — activation creates the `/ringbuilder/` page automatically.
-6. Configure the shop: in wp-admin → "GemFind Ring Builder" → Settings, register the shop and set the JewelCloud dealer/account ID; use the CSS Configurator to theme the storefront.
+6. Configure the shop: in wp-admin → "GemFind Ring Builder" → Settings, register the shop and set the JewelCloud dealer/account ID; use the CSS Configurator to theme the storefront. Sites with no saved ID use `GEMFINDRB_DEFAULT_DEALER_ID` (4488), applied on read by `GEMFINDRB_DB::get_config()`; the v1 source repeats the same value as its client-side fallback, so change both together.
 7. Visit `/ringbuilder/settings/` (mountings) or `/ringbuilder/diamondlink/` (diamonds) to see the live storefront.
 
 **Iterating on v2 or the admin UI**: `npm run dev:v2` / `npm run dev:admin` start a Vite dev server, but neither app gets real WP data unless it's loaded against an actual WP page/admin screen — both apps read their config from `window.gemfindRBConfig` / `window.gemfindRBAdminConfig`, which is only ever localized by PHP on a real request. There's no dev-server proxy configured in either `vite.config.mjs`. In practice, the fastest loop for logic changes is: edit → `npm run build:v2` (or `:admin`) → refresh the real WP page.
