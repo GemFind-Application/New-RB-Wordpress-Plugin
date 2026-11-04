@@ -4,7 +4,7 @@ Tags: jewelry, diamonds, woocommerce, ecommerce, engagement
 Requires at least: 6.3
 Tested up to: 7.1
 Requires PHP: 8.1
-Stable tag: 1.0.6
+Stable tag: 1.0.7
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -206,6 +206,9 @@ Sites using this plugin should disclose in their privacy policy that:
 * WooCommerce, if used, applies its own checkout and customer data policies.
 
 == Changelog ==
+
+= 1.0.7 =
+* Updated the default JewelCloud account used by the classic (v1) storefront.
 
 = 1.0.6 =
 * Fixed the Ring Builder not loading on some themes and page builders.
