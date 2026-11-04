@@ -57,7 +57,7 @@ const Setting = (props) => {
         "shopify_ringbackvalue",
     ]);
 
-    //const [delearid, setdelearid] = useState('1089');
+    //const [delearid, setdelearid] = useState('4488');
     const [getsettingcookies, setsettingcookies] = useCookies([
         "_shopify_ringsetting",
     ]);

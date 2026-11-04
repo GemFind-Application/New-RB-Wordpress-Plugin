@@ -135,12 +135,12 @@ const CompleteringSetting = () => {
         // }
         if (loadvarible === true) {
             getRingData(
-                window.initData?.data?.[0]?.dealerid || 1089,
+                window.initData?.data?.[0]?.dealerid || 4488,
                 getSelectedSettingId,
                 getSelectedProductId
             );
             getDiamondData(
-                window.initData?.data?.[0]?.dealerid || 1089,
+                window.initData?.data?.[0]?.dealerid || 4488,
                 getSelectedDiamondId
             );
         }
