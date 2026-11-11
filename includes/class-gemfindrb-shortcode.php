@@ -195,7 +195,7 @@ final class GEMFINDRB_Shortcode {
 			'nonce'          => $nonce,
 			'shop'           => $shop,
 			'siteUrl'        => home_url(),
-			'dealerId'       => is_object( $cfg ) ? (string) ( $cfg->dealerid ?? '' ) : '',
+			'dealerId'       => is_object( $cfg ) ? (string) ( $cfg->dealerid ?? '' ) : GEMFINDRB_DEFAULT_DEALER_ID,
 			'routerBasename' => self::canonical_ringbuilder_basename(),
 			'jcProxyUrl'     => $rest_base . '/jcProxy',
 			'imageBaseUrl'   => GEMFINDRB_URL . 'public/frontpublic/build',

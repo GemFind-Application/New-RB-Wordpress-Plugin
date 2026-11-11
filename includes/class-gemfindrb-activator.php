@@ -146,7 +146,7 @@ class GEMFINDRB_Activator {
 				$table_config,
 				[
 					'shop'                 => $shop,
-					'dealerid'             => '',
+					'dealerid'             => GEMFINDRB_DEFAULT_DEALER_ID,
 					'dealerauthapi'        => $jc . 'AccountAuthentication',
 					'ringfiltersapi'       => $jc . 'GetFilters?',
 					'mountinglistapi'      => $jc . 'GetMountingList?',

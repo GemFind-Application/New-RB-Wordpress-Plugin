@@ -173,9 +173,13 @@ class GEMFINDRB_DB {
 	/** @return object|null */
 	public static function get_config( string $shop ) {
 		global $wpdb;
-		return $wpdb->get_row(
+		$row = $wpdb->get_row(
 			$wpdb->prepare( 'SELECT * FROM %i WHERE shop = %s LIMIT 1', self::config_table(), $shop )
 		);
+		if ( is_object( $row ) && trim( (string) ( $row->dealerid ?? '' ) ) === '' ) {
+			$row->dealerid = GEMFINDRB_DEFAULT_DEALER_ID;
+		}
+		return $row;
 	}
 
 	public static function update_config( array $data, string $shop ): bool {

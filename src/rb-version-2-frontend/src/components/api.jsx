@@ -1,7 +1,7 @@
 import { resolveJcApiBase } from '../Helpers/jc-api-base';
 
 export const BASE_URL = resolveJcApiBase();
-export const DEALER_ID = 4141;
+export const DEALER_ID = 4488;
 
 export const getMountingList = (isLabSettingsAvailable, pageNumber, pageSize, shape = '', collection = '', metalType = '', centerStoneMinCarat = '', centerStoneMaxCarat = '', priceMin = 0, priceMax = 29678.00, orderBy = 'cost asc') => {
   const base = resolveJcApiBase();
