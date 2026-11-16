@@ -17,6 +17,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { cartService, emailService } from '../../../Services';
 import { formatPrice } from '../../../utils/priceUtils';
 import UsDateField from '../../elements/UsDateField';
+import { getLocationTiming, getTimeSlotsForDate, getTodayValue } from '../../../utils/scheduleSlots';
 import { shopDomain } from '../../../wp/wpEnv';
 import formatMeasurement from "../../../utils/formatMeasurement";
 
@@ -79,57 +80,6 @@ const CompleteRingInfo = (props) => {
     const addressList = props.diamondDetailsData?.retailerInfo?.addressList ? props.diamondDetailsData?.retailerInfo?.addressList : [];
 
     const timingList = props.diamondDetailsData?.retailerInfo?.timingList ? props.diamondDetailsData?.retailerInfo?.timingList : [];
-
-    // Extract the day names, start times, and end times
-    const days = [
-        {
-            name: 'Sunday',
-            start: timingList && timingList[0] ? timingList[0].sundayStart : 'NA',
-            end: timingList && timingList[0] ? timingList[0].sundayEnd : 'NA',
-        },
-        {
-            name: 'Monday',
-            start: timingList && timingList[0] ? timingList[0].mondayStart : 'NA',
-            end: timingList && timingList[0] ? timingList[0].mondayEnd : 'NA',
-        },
-        {
-            name: 'Tuesday',
-            start: timingList && timingList[0] ? timingList[0].tuesdayStart : 'NA',
-            end: timingList && timingList[0] ? timingList[0].tuesdayEnd : 'NA',
-        },
-        {
-            name: 'Wednesday',
-            start: timingList && timingList[0] ? timingList[0].wednesdayStart : 'NA',
-            end: timingList && timingList[0] ? timingList[0].wednesdayEnd : 'NA',
-        },
-        {
-            name: 'Thursday',
-            start: timingList && timingList[0] ? timingList[0].thursdayStart : 'NA',
-            end: timingList && timingList[0] ? timingList[0].thursdayEnd : 'NA',
-        },
-        {
-            name: 'Friday',
-            start: timingList && timingList[0] ? timingList[0].fridayStart : 'NA',
-            end: timingList && timingList[0] ? timingList[0].fridayEnd : 'NA',
-        },
-        {
-            name: 'Saturday',
-            start: timingList && timingList[0] ? timingList[0].saturdayStart : 'NA',
-            end: timingList && timingList[0] ? timingList[0].saturdayEnd : 'NA',
-        },
-    ];
-
-    // Filter days with available slots
-    const daysWithSlots = days.filter((day) => day.start);
-
-    const [missingDays, setMissingDays] = useState([]);
-
-    useEffect(() => {
-        const foundDays = daysWithSlots.map((day) => day.name);
-        const allDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-        const missing = allDays.filter((day) => !foundDays.includes(day));
-        setMissingDays(missing);
-    }, []);
 
     const [openSecond, setOpenSecond] = useState(false);
     const [openThird, setOpenThird] = useState(false);
@@ -228,6 +178,7 @@ const CompleteRingInfo = (props) => {
         setschddate('');
         setschdtime('');
         setLocation('');
+        setErrorMessage('');
         setOpenFive(true);
     };
 
@@ -654,8 +605,6 @@ const CompleteRingInfo = (props) => {
     const [getschdtime, setschdtime] = useState('');
     const [location, setLocation] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
-
-    const [showTime, setShowtime] = useState(false);
     const [getschderror, setschderror] = useState(['']);
 
     const handleSchdname = (event) => {
@@ -670,33 +619,36 @@ const CompleteRingInfo = (props) => {
     const handleSchdmsg = (event) => {
         setschdmsg(event.target.value);
     };
+    // Opening hours of the location picked in Schedule Viewing, and the
+    // 30-minute slots for the picked date (same as version 2).
+    const scheduleTiming = getLocationTiming(addressList, timingList, location);
+    const scheduleSlots = getTimeSlotsForDate(scheduleTiming, getschddate);
+
     const handleSchddate = (event) => {
-        // setschddate(event.target.value);
-
         const selectedDate = event.target.value;
-        // Parse the selected date to a JavaScript Date object
-        const selectedDateObj = new Date(selectedDate);
+        const slots = getTimeSlotsForDate(scheduleTiming, selectedDate);
 
-        const selectedDay = selectedDateObj.toLocaleDateString('en-US', {
-            weekday: 'long',
-        });
-
-        if (missingDays.includes(selectedDay)) {
-            setErrorMessage('Slots not available on selected date');
-            setShowtime(false);
+        if (slots.length === 0) {
+            setErrorMessage(selectedDate ? 'Slots not available on selected date' : '');
             setschddate('');
+            setschdtime('');
         } else {
             setErrorMessage('');
-            setShowtime(true);
             setschddate(selectedDate);
+            setschdtime(slots[0]);
         }
     };
 
     const handleSchdtime = (event) => {
         setschdtime(event.target.value);
     };
+    // A new location has different opening hours, so drop the date/time
+    // picked for the previous one (same as version 2).
     const handleChange = (event) => {
         setLocation(event.target.value);
+        setschddate('');
+        setschdtime('');
+        setErrorMessage('');
     };
 
     const handleschdSubmit = async (e) => {
@@ -743,7 +695,8 @@ const CompleteRingInfo = (props) => {
         }
 
         //Availibilty Date
-        if (getschddate === '') {
+        // Only asked for when the location has opening hours
+        if (scheduleTiming && getschddate === '') {
             errors['yourdate'] = 'Please select your availibility date';
             formIsValid = false;
         }
@@ -1689,17 +1642,19 @@ const CompleteRingInfo = (props) => {
                                                 </Select>
                                                 {getschderror.yourlocation && <p className="form-error">{getschderror.yourlocation}</p>}
 
-                                                <UsDateField
-                                                    id="date"
-                                                    label="When are you available?"
-                                                    value={getschddate}
-                                                    onChange={handleSchddate}
-                                                    minDate={currentDate}
-                                                />
-                                                {getschderror.yourdate && <p className="form-error">{getschderror.yourdate}</p>}
+                                                {scheduleTiming && (
+                                                    <UsDateField
+                                                        id="date"
+                                                        label="When are you available?"
+                                                        value={getschddate}
+                                                        onChange={handleSchddate}
+                                                        minDate={getTodayValue()}
+                                                    />
+                                                )}
+                                                {scheduleTiming && getschderror.yourdate && <p className="form-error">{getschderror.yourdate}</p>}
                                                 {errorMessage && <p className="form-error">{errorMessage}</p>}
 
-                                                {showTime === true && (
+                                                {scheduleSlots.length > 0 && (
                                                     <Select
                                                         labelId="demo-simple-select-standard-label"
                                                         id="select_time"
@@ -1709,9 +1664,9 @@ const CompleteRingInfo = (props) => {
                                                         focused
                                                         variant="outlined"
                                                     >
-                                                        {daysWithSlots.map((day, index) => (
-                                                            <MenuItem key={index} value={`${day.name}: ${day.start} - ${day.end}`}>
-                                                                {`${day.name}: ${day.start} - ${day.end}`}
+                                                        {scheduleSlots.map((slot) => (
+                                                            <MenuItem key={slot} value={slot}>
+                                                                {slot}
                                                             </MenuItem>
                                                         ))}
                                                     </Select>
